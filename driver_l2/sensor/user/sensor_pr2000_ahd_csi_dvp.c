@@ -1,0 +1,1279 @@
+/**************************************************************************
+ *                                                                        *
+ *         Copyright (c) 2014 by Generalplus Inc.                         *
+ *                                                                        *
+ *  This software is copyrighted by and is the property of Generalplus    *
+ *  Inc. All rights are reserved by Generalplus Inc.                      *
+ *  This software may only be used in accordance with the                 *
+ *  corresponding license agreement. Any unauthorized use, duplication,   *
+ *  distribution, or disclosure of this software is expressly forbidden.  *
+ *                                                                        *
+ *  This Copyright notice MUST not be removed or modified without prior   *
+ *  written consent of Generalplus Technology Co., Ltd.                   *
+ *                                                                        *
+ *  Generalplus Inc. reserves the right to modify this software           *
+ *  without notice.                                                       *
+ *                                                                        *
+ *  Generalplus Inc.                                                      *
+ *  No.19, Industry E. Rd. IV, Hsinchu Science Park                       *
+ *  Hsinchu City 30078, Taiwan, R.O.C.                                    *
+ *                                                                        *
+ **************************************************************************/
+/*******************************************************
+	Include file
+*******************************************************/
+
+#include "drv_l2.h"
+#if (defined _SENSOR_PR2000_AHD_CSI_DVP) && (_SENSOR_PR2000_AHD_CSI_DVP == 1)
+
+
+/**************************************************************************
+ *                           C O N S T A N T S                            *
+ **************************************************************************/
+
+#define PR2000_DVP_CSI_DEV	    CSI_0_PATH
+
+#define PR2000_DVP_ID			    0xB8//0x58 , 0x5A
+
+#if 1
+/*ISP Input*/
+#define PR2000_DVP_WIDTH		    1280
+#define PR2000_DVP_HEIGHT		    720
+
+/*ISP Output*/
+#define PR2000_DVP_OUT_WIDTH	    1280
+#define PR2000_DVP_OUT_HEIGHT	    720
+#else
+/*ISP Input*/
+#define PR2000_DVP_WIDTH		    1920
+#define PR2000_DVP_HEIGHT		    1080
+
+/*ISP Output*/
+#define PR2000_DVP_OUT_WIDTH	    1920
+#define PR2000_DVP_OUT_HEIGHT	    1080
+#endif
+
+/**************************************************************************
+ *                              M A C R O S                               *
+ **************************************************************************/
+#define PR2000_DVP_I2C_MODE	            SENSOR_I2C_MODE_SW
+
+#if PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_SW
+    #define PR2000_DVP_GPIO_SCL		    IO_B4
+    #define PR2000_DVP_GPIO_SDA		    IO_B5
+    #define PR2000_DVP_GPIO_DRIVING	    IOC_DRV_10mA
+#else
+    #define PR2000_DVP_I2C_DEVICE		I2C_0
+#endif
+/**************************************************************************
+ *                          D A T A    T Y P E S                          *
+ **************************************************************************/
+typedef struct regval8_s
+{
+	INT8U	reg_num;
+	INT8U	value;
+} regval8_t;
+
+
+/**************************************************************************
+ *                         G L O B A L    D A T A                         *
+ **************************************************************************/
+#if PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_SW
+sccb_config_t pr2000_dvp_sccb_config =
+{
+	PR2000_DVP_GPIO_SCL,		//scl_port
+	PR2000_DVP_GPIO_DRIVING,	//scl_drv
+	PR2000_DVP_GPIO_SDA,		//sda_port
+	PR2000_DVP_GPIO_DRIVING,	//sda_drv
+	IO_F15,			    //pwdn_port
+	PR2000_DVP_GPIO_SDA, //pwdn_drv
+	0,			//have_pwdn
+	8,			//RegBits
+	8,			//DataBits
+	PR2000_DVP_ID,	//slaveAddr
+	0x20000,	//timeout
+	100			//clock_rate
+};
+static void	 *pr2000_dvp_handle;
+
+#elif PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_HW
+static drv_l1_i2c_bus_handle_t	pr2000_dvp_handle;
+#endif
+
+static regval8_t pr2000_dvp_init[]=
+{
+
+#if 1 // 25 fps
+   //                      Page0 sys
+  { 0xff, 0x00},
+  { 0x10, 0x82},
+  { 0x11, 0x07},
+  { 0x12, 0x00},
+  { 0x13, 0x00},
+  { 0x14, 0x21},    //b[1:0}, => Select Camera Input. VinP(1), VinN(3), Differ(0). / ORI 0x21
+  { 0x15, 0x44},
+  { 0x16, 0x0d},
+  { 0x40, 0x00},
+  { 0x47, 0x3a},
+  { 0x4e, 0x3f},
+  { 0x80, 0x56},//B[5]pol invertion
+  { 0x81, 0x0e},
+  { 0x82, 0x0d},
+  { 0x84, 0x30},
+  { 0x86, 0x20},
+  { 0x87, 0x00},
+  { 0x8a, 0x00},
+  { 0x90, 0x00},
+  { 0x91, 0x00},
+  { 0x92, 0x00},
+  { 0x94, 0xff},
+  { 0x95, 0xff},
+  { 0x96, 0xff},
+  { 0xa0, 0x00},
+  { 0xa1, 0x20},
+  { 0xa4, 0x01},
+
+//MPP4-HSYNC,MPP3-VSYNC
+/*
+{0xa5, 0xe3},
+{0xa6, 0x00},
+{0xa7, 0x12},
+{0xa8, 0x00},
+*/
+
+//MPP1-HSYNC(IOD8),MPP2-VSYNC (IOD9)
+{0xa5, 0xe0},
+{0xa6, 0x08},//B[2]:Hsync pol invert
+{0xa7, 0x85},//vsync 0x85:falling,0x81:rising, B[2]:Vsync Pol invert
+{0xa8, 0x08},
+
+  { 0xd0, 0x30},
+  { 0xd1, 0x08},
+  { 0xd2, 0x21},
+  { 0xd3, 0x00},
+  { 0xd8, 0x31},
+  { 0xd9, 0x08},
+  { 0xda, 0x21},
+  { 0xe0, 0x39},
+
+  {0xe1, 0x90}, //CCIR_656
+  //{0xe1, 0xd0}, //CCIR_601
+
+  { 0xe2, 0x38},  // ori : 0x38
+  { 0xe3, 0x19},
+  { 0xe4, 0x19},
+  { 0xea, 0x01},
+  { 0xeb, 0xff},
+  { 0xf1, 0x44},
+  { 0xf2, 0x01},
+
+//                Page1 vdec
+  { 0xff, 0x01},
+  { 0x00, 0xe4},
+  { 0x01, 0x61},
+  { 0x02, 0x00},
+  { 0x03, 0x57},
+  { 0x04, 0x0c},
+  { 0x05, 0x88},
+  { 0x06, 0x04},
+  { 0x07, 0xb2},
+  { 0x08, 0x44},
+  { 0x09, 0x34},
+  { 0x0a, 0x02},
+  { 0x0b, 0x14},
+  { 0x0c, 0x04},
+  { 0x0d, 0x08},
+  { 0x0e, 0x5e},
+  { 0x0f, 0x5e},
+  { 0x10, 0x26},
+  { 0x11, 0x01}, // ori 0x1
+  { 0x12, 0x45},
+  { 0x13, 0x0c},
+  { 0x14, 0x00},
+  { 0x15, 0x1b}, // ori 0x1b
+  { 0x16, 0xd0},
+  { 0x17, 0x00},
+  { 0x18, 0x41},
+  { 0x19, 0x46},
+  { 0x1a, 0x22},
+  { 0x1b, 0x05},
+  { 0x1c, 0xea},
+  { 0x1d, 0x45}, // ori 0x45
+  { 0x1e, 0x4c},
+  { 0x1f, 0x00},
+  { 0x20, 0x80},
+  { 0x21, 0x80},
+  { 0x22, 0x90},
+  { 0x23, 0x80},
+  { 0x24, 0x80},
+  { 0x25, 0x80},
+  { 0x26, 0x84},
+  { 0x27, 0x82},
+  { 0x28, 0x00},
+  { 0x29, 0x7d}, // ori 7d
+  { 0x2a, 0x00}, // ori 00
+  { 0x2b, 0x00},
+  { 0x2c, 0x00},
+  { 0x2d, 0x00},
+  { 0x2e, 0x00},
+  { 0x2f, 0x00},
+  { 0x30, 0x00},
+  { 0x31, 0x00},
+  { 0x32, 0xc0},
+  { 0x33, 0x14},
+  { 0x34, 0x14},
+  { 0x35, 0x80},
+  { 0x36, 0x80},
+  { 0x37, 0xaa},
+  { 0x38, 0x48},
+  { 0x39, 0x08},
+  { 0x3a, 0x27},
+  { 0x3b, 0x02},
+  { 0x3c, 0x01},
+  { 0x3d, 0x23},
+  { 0x3e, 0x02},
+  { 0x3f, 0xc4},
+  { 0x40, 0x05},
+  { 0x41, 0x55},
+  { 0x42, 0x01},
+  { 0x43, 0x33},
+  { 0x44, 0x6a},
+  { 0x45, 0x00},
+  { 0x46, 0x09},
+  { 0x47, 0xe2},
+  { 0x48, 0x01},
+  { 0x49, 0x00},
+  { 0x4a, 0x7b},
+  { 0x4b, 0x60},
+  { 0x4c, 0x00},
+  { 0x4d, 0x4a},
+  { 0x4e, 0x00},
+  { 0x4f, 0x24},  // ori = 0x24
+  { 0x50, 0x01},
+  { 0x51, 0x28},
+  { 0x52, 0x40},
+  { 0x53, 0x0c},
+  { 0x54, 0x0f},
+  { 0x55, 0x8d},
+  { 0x70, 0x06},
+  { 0x71, 0x08},
+  { 0x72, 0x0a},
+  { 0x73, 0x0c},
+  { 0x74, 0x0e},
+  { 0x75, 0x10},
+  { 0x76, 0x12},
+  { 0x77, 0x14},
+  { 0x78, 0x06},
+  { 0x79, 0x08},
+  { 0x7a, 0x0a},
+  { 0x7b, 0x0c},
+  { 0x7c, 0x0e},
+  { 0x7d, 0x10},
+  { 0x7e, 0x12},
+  { 0x7f, 0x14},
+  { 0x80, 0x00},
+  { 0x81, 0x09},
+  { 0x82, 0x00},
+  { 0x83, 0x07},
+  { 0x84, 0x00},
+  { 0x85, 0x17},
+  { 0x86, 0x03},
+  { 0x87, 0xe5},
+  { 0x88, 0x0a},
+  { 0x89, 0x48},
+  { 0x8a, 0x0a},
+  { 0x8b, 0x48},
+  { 0x8c, 0x0b},
+  { 0x8d, 0xe0},
+  { 0x8e, 0x05},
+  { 0x8f, 0x47},
+  { 0x90, 0x05},
+  { 0x91, 0x69},
+  { 0x92, 0x73},
+  { 0x93, 0xe8},
+  { 0x94, 0x0f},
+  { 0x95, 0x5e},
+  { 0x96, 0x07},
+  { 0x97, 0x90},
+  { 0x98, 0x17},
+  { 0x99, 0x34},
+  { 0x9a, 0x13},
+  { 0x9b, 0x56},
+  { 0x9c, 0x0b},
+  { 0x9d, 0x9a},
+  { 0x9e, 0x09},
+  { 0x9f, 0xab},
+  { 0xa0, 0x01},
+  { 0xa1, 0x74},
+  { 0xa2, 0x01},
+  { 0xa3, 0x6b},
+  { 0xa4, 0x00},
+  { 0xa5, 0xba},
+  { 0xa6, 0x00},
+  { 0xa7, 0xa3},
+  { 0xa8, 0x01},
+  { 0xa9, 0x39},
+  { 0xaa, 0x01},
+  { 0xab, 0x39},
+  { 0xac, 0x00},
+  { 0xad, 0xc1},
+  { 0xae, 0x00},
+  { 0xaf, 0xc1},
+  { 0xb0, 0x0b},
+  { 0xb1, 0x99},
+  { 0xb2, 0x12},
+  { 0xb3, 0xca},
+  { 0xb4, 0x00},
+  { 0xb5, 0x17},
+  { 0xb6, 0x08},
+  { 0xb7, 0xe8},
+  { 0xb8, 0xb0},
+  { 0xb9, 0xce},
+  { 0xba, 0x90},
+  { 0xbb, 0x00},
+  { 0xbc, 0x00},
+  { 0xbd, 0x04},
+  { 0xbe, 0x07}, // ori 0x5
+  { 0xbf, 0x80}, // ori 0
+  { 0xc0, 0x00},
+  { 0xc1, 0x12},  // ori 0x12
+  { 0xc2, 0x02},
+  { 0xc3, 0xd0},
+
+ #if 0 // test pattern
+  { 0x4f, 0x10},
+  { 0xff, 0x02},
+  { 0x80, 0xb8},   //color pattern b: color bar a: black pattern
+  { 0x84, 0x05},
+
+  #endif
+
+  { 0xff, 0x01},
+  { 0x54, 0x0e},
+  { 0xff, 0x01},
+  { 0x54, 0x0f},
+
+
+#else // 30fps
+   //                      Page0 sys
+  { 0xff, 0x00},
+  { 0x10, 0x92},
+  { 0x11, 0x07},
+  { 0x12, 0x00},
+  { 0x13, 0x00},
+  { 0x14, 0x21},    //b[1:0}, => Select Camera Input. VinP(1), VinN(3), Differ(0).
+  { 0x15, 0x44},
+  { 0x16, 0x0d},
+  { 0x40, 0x00},
+  { 0x47, 0x3a},
+  { 0x4e, 0x3f},
+  { 0x80, 0x56},
+  { 0x81, 0x0e},
+  { 0x82, 0x0d},
+  { 0x84, 0x30},
+  { 0x86, 0x20},
+  { 0x87, 0x00},
+  { 0x8a, 0x00},
+  { 0x90, 0x00},
+  { 0x91, 0x00},
+  { 0x92, 0x00},
+  { 0x94, 0xff},
+  { 0x95, 0xff},
+  { 0x96, 0xff},
+  { 0xa0, 0x00},
+  { 0xa1, 0x20},
+  { 0xa4, 0x01},
+  { 0xa5, 0xe3},
+  { 0xa6, 0x00},
+  { 0xa7, 0x12},
+  { 0xa8, 0x00},
+  { 0xd0, 0x30},
+  { 0xd1, 0x08},
+  { 0xd2, 0x21},
+  { 0xd3, 0x00},
+  { 0xd8, 0x31},
+  { 0xd9, 0x08},
+  { 0xda, 0x21},
+  { 0xe0, 0x39},
+  { 0xe1, 0x90},
+  { 0xe2, 0x38},
+  { 0xe3, 0x19},
+  { 0xe4, 0x19},
+  { 0xea, 0x01}, //02
+  { 0xeb, 0xff},
+  { 0xf1, 0x44},
+  { 0xf2, 0x01},
+
+//                      Page1 vdec
+  { 0xff, 0x01},
+  { 0x00, 0xe4},
+  { 0x01, 0x61},
+  { 0x02, 0x00},
+  { 0x03, 0x57},
+  { 0x04, 0x0c},
+  { 0x05, 0x88},
+  { 0x06, 0x04},
+  { 0x07, 0xb2},
+  { 0x08, 0x44},
+  { 0x09, 0x34},
+  { 0x0a, 0x02},
+  { 0x0b, 0x14},
+  { 0x0c, 0x04},
+  { 0x0d, 0x08},
+  { 0x0e, 0x5e},
+  { 0x0f, 0x5e},
+  { 0x10, 0x26},
+  { 0x11, 0x00},
+  { 0x12, 0x45},
+  { 0x13, 0xfc},
+  { 0x14, 0x00},
+  { 0x15, 0x18},
+  { 0x16, 0xd0},
+  { 0x17, 0x00},
+  { 0x18, 0x41},
+  { 0x19, 0x46},
+  { 0x1a, 0x22},
+  { 0x1b, 0x05},
+  { 0x1c, 0xea},
+  { 0x1d, 0x45},
+  { 0x1e, 0x40},
+  { 0x1f, 0x00},
+  { 0x20, 0x80},
+  { 0x21, 0x80},
+  { 0x22, 0x90},
+  { 0x23, 0x80},
+  { 0x24, 0x80},
+  { 0x25, 0x80},
+  { 0x26, 0x84},
+  { 0x27, 0x82},
+  { 0x28, 0x00},
+  { 0x29, 0x7b},
+  { 0x2a, 0xa6},
+  { 0x2b, 0x00},
+  { 0x2c, 0x00},
+  { 0x2d, 0x00},
+  { 0x2e, 0x00},
+  { 0x2f, 0x00},
+  { 0x30, 0x00},
+  { 0x31, 0x00},
+  { 0x32, 0xc0},
+  { 0x33, 0x14},
+  { 0x34, 0x14},
+  { 0x35, 0x80},
+  { 0x36, 0x80},
+  { 0x37, 0xaa},
+  { 0x38, 0x48},
+  { 0x39, 0x08},
+  { 0x3a, 0x27},
+  { 0x3b, 0x02},
+  { 0x3c, 0x01},
+  { 0x3d, 0x23},
+  { 0x3e, 0x02},
+  { 0x3f, 0xc4},
+  { 0x40, 0x05},
+  { 0x41, 0x55},
+  { 0x42, 0x01},
+  { 0x43, 0x33},
+  { 0x44, 0x6a},
+  { 0x45, 0x00},
+  { 0x46, 0x09},
+  { 0x47, 0xdc},
+  { 0x48, 0xa0},
+  { 0x49, 0x00},
+  { 0x4a, 0x7b},
+  { 0x4b, 0x60},
+  { 0x4c, 0x00},
+  { 0x4d, 0x4a},
+  { 0x4e, 0x00},
+  { 0x4f, 0x24},
+  { 0x50, 0x01},
+  { 0x51, 0x28},
+  { 0x52, 0x40},
+  { 0x53, 0x0c},
+  { 0x54, 0x0f},
+  { 0x55, 0x8d},
+  { 0x70, 0x06},
+  { 0x71, 0x08},
+  { 0x72, 0x0a},
+  { 0x73, 0x0c},
+  { 0x74, 0x0e},
+  { 0x75, 0x10},
+  { 0x76, 0x12},
+  { 0x77, 0x14},
+  { 0x78, 0x06},
+  { 0x79, 0x08},
+  { 0x7a, 0x0a},
+  { 0x7b, 0x0c},
+  { 0x7c, 0x0e},
+  { 0x7d, 0x10},
+  { 0x7e, 0x12},
+  { 0x7f, 0x14},
+  { 0x80, 0x00},
+  { 0x81, 0x09},
+  { 0x82, 0x00},
+  { 0x83, 0x07},
+  { 0x84, 0x00},
+  { 0x85, 0x17},
+  { 0x86, 0x03},
+  { 0x87, 0xe5},
+  { 0x88, 0x08},
+  { 0x89, 0x91},
+  { 0x8a, 0x08},
+  { 0x8b, 0x91},
+  { 0x8c, 0x0b},
+  { 0x8d, 0xe0},
+  { 0x8e, 0x05},
+  { 0x8f, 0x47},
+  { 0x90, 0x05},
+  { 0x91, 0xa0},
+  { 0x92, 0x73},
+  { 0x93, 0xe8},
+  { 0x94, 0x0f},
+  { 0x95, 0x5e},
+  { 0x96, 0x07},
+  { 0x97, 0x90},
+  { 0x98, 0x17},
+  { 0x99, 0x34},
+  { 0x9a, 0x13},
+  { 0x9b, 0x56},
+  { 0x9c, 0x0b},
+  { 0x9d, 0x9a},
+  { 0x9e, 0x09},
+  { 0x9f, 0xab},
+  { 0xa0, 0x01},
+  { 0xa1, 0x74},
+  { 0xa2, 0x01},
+  { 0xa3, 0x6b},
+  { 0xa4, 0x00},
+  { 0xa5, 0xba},
+  { 0xa6, 0x00},
+  { 0xa7, 0xa3},
+  { 0xa8, 0x01},
+  { 0xa9, 0x39},
+  { 0xaa, 0x01},
+  { 0xab, 0x39},
+  { 0xac, 0x00},
+  { 0xad, 0xc1},
+  { 0xae, 0x00},
+  { 0xaf, 0xc1},
+  { 0xb0, 0x09},
+  { 0xb1, 0xaa},
+  { 0xb2, 0x0f},
+  { 0xb3, 0xae},
+  { 0xb4, 0x00},
+  { 0xb5, 0x17},
+  { 0xb6, 0x08},
+  { 0xb7, 0xe8},
+  { 0xb8, 0xb0},
+  { 0xb9, 0xce},
+  { 0xba, 0x90},
+  { 0xbb, 0x00},
+  { 0xbc, 0x00},
+  { 0xbd, 0x04},
+  { 0xbe, 0x05},
+  { 0xbf, 0x00},
+  { 0xc0, 0x00},
+  { 0xc1, 0x18},
+  { 0xc2, 0x02},
+  { 0xc3, 0xd0},
+
+  { 0xff, 0x01},
+  { 0x54, 0x0e},
+  { 0xff, 0x01},
+  { 0x54, 0x0f},
+
+   #endif
+
+    {0xff, 0xff}
+
+};
+
+static regval8_t pr2000_1080p_dvp_init[]=
+{
+
+{0xff, 0x00},
+{0x10, 0x83},
+{0x11, 0x07},
+{0x12, 0x00},
+{0x13, 0x00},
+{0x14, 0x21},
+{0x15, 0x44},
+{0x16, 0x0d},
+{0x40, 0x00},
+{0x47, 0x3a},
+{0x4e, 0x3f},
+{0x80, 0x56},
+{0x81, 0x0e},
+{0x82, 0x0d},
+{0x84, 0x30},
+{0x86, 0x20},
+{0x87, 0x00},
+{0x8a, 0x00},
+{0x90, 0x00},
+{0x91, 0x00},
+{0x92, 0x00},
+{0x94, 0xff},
+{0x95, 0xff},
+{0x96, 0xff},
+{0xa0, 0x00},
+{0xa1, 0x20},
+{0xa4, 0x01},
+
+//MPP4-HSYNC,MPP3-VSYNC
+/*
+{0xa5, 0xe3},
+{0xa6, 0x00},
+{0xa7, 0x12},
+{0xa8, 0x00},
+*/
+
+//MPP1-HSYNC,MPP2-VSYNC
+{0xa5, 0xe0},
+{0xa6, 0x08},
+{0xa7, 0x81},
+{0xa8, 0x08},
+
+{0xd0, 0x30},
+{0xd1, 0x08},
+{0xd2, 0x21},
+{0xd3, 0x00},
+{0xd8, 0x30},
+{0xd9, 0x08},
+{0xda, 0x21},
+{0xe0, 0x35},
+
+///{0xe1, 0x80},//CCIR_656
+{0xe1, 0xc0},//CCIR_601
+{0xe2, 0x18},
+{0xe3, 0x00},
+{0xe4, 0x00},
+{0xea, 0x01},
+{0xeb, 0xff},
+{0xf1, 0x44},
+{0xf2, 0x01},
+
+{0xff, 0x01},
+{0x00, 0xe4},
+{0x01, 0x61},
+{0x02, 0x00},
+{0x03, 0x57},
+{0x04, 0x0c},
+{0x05, 0x88},
+{0x06, 0x04},
+{0x07, 0xb2},
+{0x08, 0x44},
+{0x09, 0x34},
+{0x0a, 0x02},
+{0x0b, 0x14},
+{0x0c, 0x04},
+{0x0d, 0x08},
+{0x0e, 0x5e},
+{0x0f, 0x5e},
+{0x10, 0x26},
+{0x11, 0x00},
+{0x12, 0x87},
+{0x13, 0x24},
+{0x14, 0x80},
+{0x15, 0x2a},
+{0x16, 0x38},
+{0x17, 0x00},
+{0x18, 0x80},
+{0x19, 0x48},
+{0x1a, 0x6c},
+{0x1b, 0x05},
+{0x1c, 0x61},
+{0x1d, 0x07},
+{0x1e, 0x7e},
+{0x1f, 0x80},
+{0x20, 0x80},
+{0x21, 0x80},
+{0x22, 0x90},
+{0x23, 0x80},
+{0x24, 0x80},
+{0x25, 0x80},
+{0x26, 0x84},
+{0x27, 0x82},
+{0x28, 0x00},
+{0x29, 0xff},
+{0x2a, 0xff},
+{0x2b, 0x00},
+{0x2c, 0x00},
+{0x2d, 0x00},
+{0x2e, 0x00},
+{0x2f, 0x00},
+{0x30, 0x00},
+{0x31, 0x00},
+{0x32, 0xc0},
+{0x33, 0x14},
+{0x34, 0x14},
+{0x35, 0x80},
+{0x36, 0x80},
+{0x37, 0xad},
+{0x38, 0x4b},
+{0x39, 0x00},
+{0x3a, 0x21},
+{0x3b, 0x02},
+{0x3c, 0x01},
+{0x3d, 0x23},
+{0x3e, 0x05},
+{0x3f, 0xc8},
+{0x40, 0x05},
+{0x41, 0x55},
+{0x42, 0x01},
+{0x43, 0x38},
+{0x44, 0x6a},
+{0x45, 0x00},
+{0x46, 0x14},
+{0x47, 0xb0},
+{0x48, 0xdf},
+{0x49, 0x00},
+{0x4a, 0x7b},
+{0x4b, 0x60},
+{0x4c, 0x00},
+{0x4d, 0x26},
+{0x4e, 0x00},
+{0x4f, 0x24},
+{0x50, 0x01},
+{0x51, 0x28},
+{0x52, 0x40},
+{0x53, 0x0c},
+{0x54, 0x0f},
+{0x55, 0x8d},
+{0x70, 0x06},
+{0x71, 0x08},
+{0x72, 0x0a},
+{0x73, 0x0c},
+{0x74, 0x0e},
+{0x75, 0x10},
+{0x76, 0x12},
+{0x77, 0x14},
+{0x78, 0x06},
+{0x79, 0x08},
+{0x7a, 0x0a},
+{0x7b, 0x0c},
+{0x7c, 0x0e},
+{0x7d, 0x10},
+{0x7e, 0x12},
+{0x7f, 0x14},
+{0x80, 0x00},
+{0x81, 0x09},
+{0x82, 0x00},
+{0x83, 0x07},
+{0x84, 0x00},
+{0x85, 0x17},
+{0x86, 0x03},
+{0x87, 0xe5},
+{0x88, 0x05},
+{0x89, 0x24},
+{0x8a, 0x05},
+{0x8b, 0x24},
+{0x8c, 0x08},
+{0x8d, 0xe8},
+{0x8e, 0x05},
+{0x8f, 0x47},
+{0x90, 0x02},
+{0x91, 0xb4},
+{0x92, 0x73},
+{0x93, 0xe8},
+{0x94, 0x0f},
+{0x95, 0x5e},
+{0x96, 0x03},
+{0x97, 0xd0},
+{0x98, 0x17},
+{0x99, 0x34},
+{0x9a, 0x13},
+{0x9b, 0x56},
+{0x9c, 0x0b},
+{0x9d, 0x9a},
+{0x9e, 0x09},
+{0x9f, 0xab},
+{0xa0, 0x01},
+{0xa1, 0x74},
+{0xa2, 0x01},
+{0xa3, 0x6b},
+{0xa4, 0x00},
+{0xa5, 0xba},
+{0xa6, 0x00},
+{0xa7, 0xa3},
+{0xa8, 0x01},
+{0xa9, 0x39},
+{0xaa, 0x01},
+{0xab, 0x39},
+{0xac, 0x00},
+{0xad, 0xc1},
+{0xae, 0x00},
+{0xaf, 0xc1},
+{0xb0, 0x05},
+{0xb1, 0xcc},
+{0xb2, 0x09},
+{0xb3, 0x6d},
+{0xb4, 0x00},
+{0xb5, 0x17},
+{0xb6, 0x08},
+{0xb7, 0xe8},
+{0xb8, 0xb0},
+{0xb9, 0xce},
+{0xba, 0x90},
+{0xbb, 0x00},
+{0xbc, 0x00},
+{0xbd, 0x04},
+{0xbe, 0x07},
+{0xbf, 0x80},
+{0xc0, 0x00},
+{0xc1, 0x20},
+{0xc2, 0x04},
+{0xc3, 0x38},
+
+{0xff, 0x01},
+{0x54, 0x0e},
+{0xff, 0x01},
+{0x54, 0x0f},
+
+{0xff, 0xff}
+};
+
+static INT32S pr2000_dvp_sccb_open(void)
+{
+#if PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_SW
+	pr2000_dvp_handle = drv_l2_sccb_open_ext(&pr2000_dvp_sccb_config);
+	if(pr2000_dvp_handle == 0)
+	{
+		DBG_PRINT("Sccb open fail.\r\n");
+		return STATUS_FAIL;
+	}
+
+#elif PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_HW
+	drv_l1_i2c_init(PR2000_DVP_I2C_DEVICE);
+	pr2000_dvp_handle.devNumber = PR2000_DVP_I2C_DEVICE;
+	pr2000_dvp_handle.slaveAddr = PR2000_DVP_ID;
+	pr2000_dvp_handle.clkRate = 100;
+#endif
+	return STATUS_OK;
+}
+
+static void pr2000_dvp_sccb_close(void)
+{
+
+#if PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_SW
+	if(pr2000_dvp_handle)
+	{
+		drv_l2_sccb_close(pr2000_dvp_handle);
+		pr2000_dvp_handle = NULL;
+	}
+
+#elif PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_HW
+	drv_l1_i2c_uninit(PR2000_DVP_I2C_DEVICE);
+	pr2000_dvp_handle.devNumber = 0;
+	pr2000_dvp_handle.slaveAddr = 0;
+	pr2000_dvp_handle.clkRate = 0;
+#endif
+}
+
+static INT32S pr2000_dvp_sccb_write(INT8U reg, INT8U value)
+{
+	INT32S ret;
+#if PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_SW
+	ret =  drv_l2_sccb_write(pr2000_dvp_handle, reg, value);
+	if (ret < 0)
+		DBG_PRINT("rn6752 sccb write fail\r\n");
+	return ret;
+
+#elif PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_HW
+	return drv_l1_reg_1byte_data_1byte_write(&pr2000_dvp_handle, reg, value);
+#endif
+}
+
+static INT32S pr2000_dvp_sccb_read(INT16U reg,INT16U *value)
+{
+#if PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_SW
+	INT16U	data;
+
+	if(drv_l2_sccb_read(pr2000_dvp_handle, reg, &data) >= 0)
+	{
+		*value = (INT16U) data;
+		//DBG_PRINT("0x%02x, 0x%02x\r\n", reg, *value);
+		return STATUS_OK;
+	}
+	else
+	{
+		*value = 0xFF;
+		//DBG_PRINT("0x%02x, 0x%02x\r\n", reg, *value);
+		return STATUS_FAIL;
+	}
+
+#elif PR2000_DVP_I2C_MODE == SENSOR_I2C_MODE_HW
+	if(drv_l1_reg_1byte_data_1byte_read(&pr2000_dvp_handle, reg, value) >= 0)
+	{
+		DBG_PRINT("0x%02x, 0x%02x\r\n", reg, *value);
+		return STATUS_OK;
+	}
+	else
+	{
+		DBG_PRINT("sccb_read fail...\r\n");
+		return STATUS_FAIL;
+	}
+
+#endif
+}
+
+static INT32S pr2000_dvp_sccb_write_table(regval8_t *pTable)
+{
+    INT32U retry_cnt = 0;
+
+	while(1)
+	{
+		if(pTable->reg_num == 0xff && pTable->value == 0xff)
+		{
+			break;
+		}
+        //DBG_PRINT("reg = 0x%x, val = 0x%x\r\n", pTable->reg_num, pTable->value);
+		if(pr2000_dvp_sccb_write(pTable->reg_num, pTable->value) < 0)
+		{
+			DBG_PRINT("%s: sccb write fail: reg = 0x%x, val = 0x%x\r\n", __FUNCTION__, pTable->reg_num, pTable->value);
+			retry_cnt += 1;
+			if(retry_cnt >= 10)
+				return STATUS_FAIL;
+			continue;
+		}
+#if 0
+		{
+			unsigned short tt;
+
+		    osDelay(10);
+		    pr2000_dvp_sccb_read(pTable->reg_num,&tt);
+		//    if(tt!= pTable->value)
+			DBG_PRINT("i2c reg[0x%04x] = 0x%04x, read = 0x%04x\r\n", pTable->reg_num, pTable->value, tt);
+		}
+#endif
+		pTable++;
+	}
+
+	return STATUS_OK;
+}
+
+/**C_PHASE:图像黑白的时候调试办法
+	1page 0x46:[5]:1:mannul; [4:0]:MSB C PHASE
+	      0x47[7:0]:
+	      0x48[7:0]:LSB C PHASE
+
+	默认值：0x46->12; 0x47->2f;0x48->4c;
+	c phase值是0x122f4c;
+	检测0page 0x01, 每400ms读取[2][1],如果不等于1；先设置1page 0x46[5] = 1;
+    然后c phase+0x40，持续5次如果还是不等于1，
+    c phase在默认值-0x40，持续5次，直到C lock status都等于1；
+    如果最后都不行，那么检查硬件和摄像头问题；
+*/
+void pr2000_dvp_phase_adj(void)
+{
+    INT8U Lock_Status=0;
+    INT8U Status0=0;
+    INT8U Status10=0;
+    INT32U C_PHASE_REF_orig_T=0;
+    INT32U C_PHASE_REF_orig_H=0;
+    INT32U C_PHASE_REF_orig_L=0;
+
+    INT32U C_PHASE_REF_H=0;
+    INT32U C_PHASE_REF_L=0;
+    INT32U C_PHASE_REF=0;
+
+    INT8U iCount=0;
+
+    pr2000_dvp_sccb_write(0xff,0x00);
+    pr2000_dvp_sccb_read(0x01,&Lock_Status);
+    DBG_PRINT("Lock_Status=0x%x\n",Lock_Status);
+    pr2000_dvp_sccb_read(0x00,&Status0);
+    DBG_PRINT("Status0=0x%x\n",Status0);
+    pr2000_dvp_sccb_read(0x10,&Status10);
+    DBG_PRINT("Status10=0x%x\n",Status10);
+
+    if((Lock_Status&0x06) != 0x06)
+    {
+        DBG_PRINT("->Start to modify C phase refrence\n");
+        osDelay(400);
+        pr2000_dvp_sccb_write(0xff,0x01);
+        pr2000_dvp_sccb_read(0x46,&C_PHASE_REF_orig_T);
+        pr2000_dvp_sccb_read(0x47,&C_PHASE_REF_orig_H);
+        pr2000_dvp_sccb_read(0x48,&C_PHASE_REF_orig_L);
+
+        pr2000_dvp_sccb_write(0x46,C_PHASE_REF_orig_T|0x20);
+
+        C_PHASE_REF_H = C_PHASE_REF_orig_H;
+        C_PHASE_REF_L = C_PHASE_REF_orig_L;
+        C_PHASE_REF = (C_PHASE_REF_H<<8)+C_PHASE_REF_L;
+
+        pr2000_dvp_sccb_write(0xff,0x00);
+        pr2000_dvp_sccb_read(0x01,&Lock_Status);
+        DBG_PRINT("Lock_Status=0x%x\n",Lock_Status);
+        osDelay(400);
+        for(iCount = 1;iCount<6;iCount++)	// Scan C phase refrence 5 times by plus 0x40
+        {
+            if((Lock_Status&0x06) != 0x06)
+            {
+                DBG_PRINT("->C_phase_ref plus times = %x\n",iCount);
+                C_PHASE_REF += 0x40;
+                C_PHASE_REF_H = C_PHASE_REF>>8;
+                C_PHASE_REF_L = C_PHASE_REF;
+                DBG_PRINT("->C_PHASE_REF = %x\n",C_PHASE_REF);
+                pr2000_dvp_sccb_write(0xff,0x01);
+                pr2000_dvp_sccb_write(0x47,C_PHASE_REF_H);
+                pr2000_dvp_sccb_write(0x48,C_PHASE_REF_L);
+                osDelay(400);
+                pr2000_dvp_sccb_write(0xff,0x00);
+                pr2000_dvp_sccb_read(0x01,&Lock_Status);
+                DBG_PRINT("Lock_Status=0x%x\n",Lock_Status);
+            }
+            else
+                osDelay(400);
+        }
+
+        if((Lock_Status&0x06) != 0x06)
+        {
+            pr2000_dvp_sccb_write(0xff,0x01);
+            pr2000_dvp_sccb_write(0x47,C_PHASE_REF_orig_H);
+            pr2000_dvp_sccb_write(0x48,C_PHASE_REF_orig_L);
+
+            C_PHASE_REF_H = C_PHASE_REF_orig_H;
+            C_PHASE_REF_L = C_PHASE_REF_orig_L;
+            C_PHASE_REF = (C_PHASE_REF_H<<8)+C_PHASE_REF_L;
+            for(iCount = 1;iCount<6;iCount++)	// Scan C phase refrence 5 times by minus 0x40
+            {
+                if((Lock_Status&0x06) != 0x06)
+                {
+                    DBG_PRINT("->C_phase_ref minus times = %x\n",iCount);
+                    C_PHASE_REF -= 0x40;
+                    C_PHASE_REF_H = C_PHASE_REF>>8;
+                    C_PHASE_REF_L = C_PHASE_REF;
+                    pr2000_dvp_sccb_write(0xff,0x01);
+                    pr2000_dvp_sccb_write(0x47,C_PHASE_REF_H);
+                    pr2000_dvp_sccb_write(0x48,C_PHASE_REF_L);
+                    DBG_PRINT("->C_PHASE_REF = %x\n",C_PHASE_REF);
+                    osDelay(400);
+                    pr2000_dvp_sccb_write(0xff,0x00);
+                    pr2000_dvp_sccb_read(0x01,&Lock_Status);
+                    DBG_PRINT("Lock_Status=0x%x\n",Lock_Status);
+                }
+                else
+                    osDelay(400);
+            }
+        }
+        pr2000_dvp_sccb_write(0xff,0x01);
+        pr2000_dvp_sccb_write(0x47,C_PHASE_REF_orig_H);
+        pr2000_dvp_sccb_write(0x48,C_PHASE_REF_orig_L);
+        DBG_PRINT("->C phase modify finished!\n");
+    }
+}
+
+void pr2000_dvp_csi_init(void)
+{
+	DBG_PRINT("%s\r\n", __func__);
+
+	// reguest sccb
+	pr2000_dvp_sccb_open();
+
+    drv_l1_csi_init(PR2000_DVP_CSI_DEV);
+
+	#ifdef REAR_SENSOR_RESET
+	gpio_set_port_attribute(REAR_SENSOR_RESET, ATTRIBUTE_HIGH);
+	gpio_init_io(REAR_SENSOR_RESET, GPIO_OUTPUT);
+	gpio_write_io(REAR_SENSOR_RESET, DATA_HIGH);
+	osDelay(100);
+	gpio_write_io(REAR_SENSOR_RESET, DATA_LOW);
+	osDelay(200);
+	gpio_write_io(REAR_SENSOR_RESET, DATA_HIGH);
+	osDelay(100);
+	#endif
+}
+
+/**
+ * @brief   un-initialization function
+ * @param   sensor format parameters
+ * @return 	none
+ */
+void pr2000_dvp_csi_uninit(void)
+{
+    //csi_stop;
+    drv_l2_csi_stop(PR2000_DVP_CSI_DEV);
+
+   // release sccb
+	pr2000_dvp_sccb_close();
+
+	drv_l1_csi_uninit(PR2000_DVP_CSI_DEV);
+
+    // disable mclk
+	drv_l2_sensor_set_mclkout(MCLK_NONE, PR2000_DVP_CSI_DEV);
+}
+
+/**
+ * @brief   stream start function
+ * @param   info index
+ *
+ * @return 	none
+ */
+void pr2000_dvp_csi_stream_start(INT32U index, INT32U bufA, INT32U bufB)
+{
+	gpCSIPara_t csi_Para;
+
+	gp_memset((INT8S *)&csi_Para, 0, sizeof(gpCSIPara_t));
+
+	/* set input & output format */
+	csi_Para.csi_fmt.input_format = pr2000_dvp_csi_ops.info[index].input_format;
+	csi_Para.csi_fmt.output_format = pr2000_dvp_csi_ops.info[index].output_format;
+    csi_Para.csi_tim.clki_inv = 1;
+    csi_Para.csi_fmt.interface_mode = pr2000_dvp_csi_ops.info[index].interface_mode;
+    csi_Para.csi_fmt.preview_mode = CSI_CAPTURE_MODE;
+	csi_Para.csi_fmt.clk_stopb = ENABLE;
+	csi_Para.csi_tim.fget_mode = (INT32U)pr2000_dvp_csi_ops.info[index].hsync_active;//
+    csi_Para.csi_tim.hrst_mode = (INT32U)pr2000_dvp_csi_ops.info[index].hsync_active;
+    csi_Para.csi_tim.vadd_mode = (INT32U)pr2000_dvp_csi_ops.info[index].vsync_active;
+    csi_Para.csi_tim.vrst_mode = (INT32U)pr2000_dvp_csi_ops.info[index].vsync_active;
+
+    csi_Para.csi_tim.hl_start = (INT32U)pr2000_dvp_csi_ops.info[index].hoffset;
+	csi_Para.csi_tim.vl0_start = (INT32U)pr2000_dvp_csi_ops.info[index].voffset;
+	csi_Para.csi_tim.vl1_start = 0x0;
+    csi_Para.csi_tim.d_type = ENUM_CSI_LATCH_DELAY_3_CLOCK;
+    csi_Para.h_start = csi_Para.v_start = 0x0;
+    csi_Para.h_end = csi_Para.v_end = 0xfff;
+
+	csi_Para.target_w = pr2000_dvp_csi_ops.info[index].target_w;
+	csi_Para.target_h = pr2000_dvp_csi_ops.info[index].target_h;
+	csi_Para.hratio = 0;		// No Scale
+	csi_Para.vratio = 0;		// No Scale
+
+	/* Set sensor's registers via SCCB */
+	if(pr2000_dvp_csi_ops.info[index].target_w ==1280)
+	{
+        if(pr2000_dvp_sccb_write_table((regval8_t *)pr2000_dvp_init) < 0) {
+            DBG_PRINT("pr2000_sccb_write_table fail!!!\r\n");
+        }
+        DBG_PRINT("pr2000_720p_dvp_init ok\r\n");
+	}
+	else
+	{
+        if(pr2000_dvp_sccb_write_table((regval8_t *)pr2000_1080p_dvp_init) < 0) {
+            DBG_PRINT("pr2000_sccb_write_table fail!!!\r\n");
+        }
+        DBG_PRINT("pr2000_1080p_dvp_init ok\r\n");
+	}
+	//gp_CSIDumpRegTable(PR2000_DVP_CSI_DEV);
+	//pr2000_dvp_phase_adj();
+
+	DBG_PRINT("%s = %d\r\n", __func__, index);
+    if(drv_l2_csi_set_fmt(PR2000_DVP_CSI_DEV,&csi_Para.csi_fmt) < 0)
+    {
+		DBG_PRINT("csi set fmt err!!!\r\n");
+	}
+	//bufA = 0x40600000;
+	if(bufA) {
+		drv_l2_csi_stream_on(PR2000_DVP_CSI_DEV,(gpCSIPara_t *)&csi_Para, bufA, 0);
+	} else {
+		DBG_PRINT("Input frame buffer address error, fail to start %s\r\n", pr2000_dvp_csi_ops.name);
+		pr2000_dvp_csi_ops.stream_stop();
+	}
+
+	DBG_PRINT("Sensor pr2000 sensor dvp init completed\r\n");
+
+//while(1);
+}
+
+/**
+ * @brief   stream stop function
+ * @param   none
+ * @return 	none
+ */
+void pr2000_dvp_csi_stream_stop(void)
+{
+	drv_l2_csi_stream_off(PR2000_DVP_CSI_DEV);
+}
+
+/**
+ * @brief   get info function
+ * @param   none
+ * @return 	pointer to sensor information data
+ */
+drv_l2_sensor_info_t *pr2000_dvp_csi_get_info(INT32U index)
+{
+	if(index > (MAX_INFO_NUM - 1))
+	{
+		return NULL;
+	}
+	else
+	{
+		return (drv_l2_sensor_info_t *) &pr2000_dvp_csi_ops.info[index];
+	}
+}
+
+/*********************************************
+*	sensor ops declaration
+*********************************************/
+const drv_l2_sensor_ops_t	pr2000_dvp_csi_ops =
+{
+
+  #if(PR2000_DVP_CSI_DEV == CSI_0_PATH)
+    SOURCE_CSI0_DVP,                    /* sensor name */
+    #else
+    SOURCE_CSI1_DVP,                    /* sensor name */
+    #endif
+	pr2000_dvp_csi_init,
+	pr2000_dvp_csi_uninit,
+	pr2000_dvp_csi_stream_start,
+	pr2000_dvp_csi_stream_stop,
+	pr2000_dvp_csi_get_info,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	{
+		/* 1nd info */
+		{
+		    MCLK_24M,		            /* CSI clock */
+		 #if(PR2000_DVP_WIDTH == 1920)
+			CSI_IN_UYVY,			    /* input format */
+         #else
+            CSI_IN_YUYV,			    /* input format */
+         #endif
+            #if C_AHDCSI_GP420_EN
+            CSI_OUT_GP420
+            #else
+			CSI_OUT_YUYV,			    /* output format */
+			#endif
+			25,	                	    /* FPS in sensor */
+			PR2000_DVP_OUT_WIDTH,		/* target width */
+			PR2000_DVP_OUT_HEIGHT,		/* target height */
+			PR2000_DVP_WIDTH,			/* sensor width */
+			PR2000_DVP_HEIGHT,			/* sensor height */
+			0,						    /* sensor h offset */
+			0,						    /* sensor v offset */
+			#if C_AHDCSI_GP420_EN
+			CSI_HSYNC_CCIR_601,         /* input interface */
+            CSI_NON_INTERLACE,		    /* interlace mode */
+			ENUM_CSI_RISING_EDGE,	    /* hsync pin active level */
+			ENUM_CSI_RISING_EDGE	    /* vsync pin active level */
+			#else
+			CSI_HSYNC_CCIR_656,         /* input interface */
+			CSI_NON_INTERLACE,		    /* interlace mode */
+			ENUM_CSI_FALLING_EDGE,	    /* hsync pin active level */
+			ENUM_CSI_FALLING_EDGE	    /* vsync pin active level */
+			#endif
+		},
+
+		/* 2st info */
+		{
+			MCLK_24M,//MASTER_CLOCK_24MHZ,		/* CSI clock */
+			CSI_IN_YUYV,			/* input format */
+			CSI_OUT_GP420,			/* output format */
+			25,						/* FPS in sensor */
+			PR2000_DVP_OUT_WIDTH,		/* target width */
+			PR2000_DVP_OUT_HEIGHT,		/* target height */
+			PR2000_DVP_WIDTH,			/* sensor width */
+			PR2000_DVP_HEIGHT,			/* sensor height */
+			0,						/* sensor h offset */
+			0,						/* sensor v offset */
+			CSI_HSYNC_CCIR_656,		/* input interface */
+			CSI_NON_INTERLACE,		/* interlace mode */
+			ENUM_CSI_RISING_EDGE,	/* hsync pin active level */
+			ENUM_CSI_RISING_EDGE	/* vsync pin active level */
+		},
+
+	 }
+};
+#endif //(defined _SENSOR_PR2000_AHD_CSI_DVP) && (_SENSOR_PR2000_AHD_CSI_DVP == 1)

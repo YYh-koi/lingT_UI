@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<emIDE_layout_file>
+	<ActiveTarget name="Debug" />
+	<ExpandedNodes>
+		<Node path="/btstack" />
+	</ExpandedNodes>
+	<Expand folder="/btstack" />
+	<UserSettings>
+		<bookmark>
+			<bookmarks />
+		</bookmark>
+		<debugger>
+			<breakpoints />
+		</debugger>
+	</UserSettings>
+</emIDE_layout_file>

@@ -1,0 +1,1 @@
+#define ATBM_WIFI_PUBLIC 1

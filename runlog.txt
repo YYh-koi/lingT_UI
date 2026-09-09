@@ -1,0 +1,321 @@
+
+[10:14:42.154]收←◆reliable  = 0x0 
+Ext RTC reliable is wrong=0x00, set again
+
+[10:14:42.206]收←◆[0] bus num:17 wc:0x30 lowest:1 
+[1] bus num:54 wc:0x30 lowest:1 
+[2] bus num:56 wc:0x60 lowest:1 
+
+clock freq: sys=222000000, cpu=666000000, pll=666000000, ddr=534000000
+set sd[1] bit_mode to 4
+set sd[0] bit_mode to 4
+==SYS_CLK=222000000==
+==SVN:1584:1864==Build Time:2026/06/02 09:02:41==
+==MEM Start:0x6f0ec0==Free:0x38ff13f==
+==Run:display_task_init==
+==Run:peripheral_handling_task_init==
+==Run:state_handling_task_init==
+==Run:state_app_init==
+==Run:video_encode_state_task_init==
+==Run:audio_encode_state_task_init==
+Aud[0]=0x6f4ec0
+Aud[1]=0x6f5f00
+Aud[2]=0x6f6f40
+Aud[3]=0x6f7f80
+Aud[4]=0x6f8fc0
+Aud[5]=0x6fa000
+Aud[6]=0x6fb040
+Aud[7]=0x6fc080
+Aud[8]=0x6fd0c0
+Aud[9]=0x6fe100
+Aud[10]=0x6ff140
+Aud[11]=0x700180
+Aud[12]=0x7011c0
+Aud[13]=0x702200
+Aud[14]=0x703240
+Aud[15]=0x704280
+Aud[16]=0x7052c0
+Aud[17]=0x706300
+Aud[18]=0x707340
+Aud[19]=0x708380
+Aud[20]=0x7093c0
+Aud[21]=0x70a400
+Aud[22]=0x70b440
+Aud[23]=0x70c480
+Aud[24]=0x70d4c0
+Aud[25]=0x70e500
+Aud[26]=0x70f540
+Aud[27]=0x710580
+Aud[28]=0x7115c0
+Aud[29]=0x712600
+Aud[30]=0x713640
+Aud[31]=0x714680
+Aud[32]=0x7156c0
+Aud[33]=0x716700
+Aud[34]=0x717740
+Aud[35]=0x718780
+Aud[36]=0x7197c0
+Aud[37]=0x71a800
+Aud[38]=0x71b840
+Aud[39]=0x71c880
+Aud[40]=0x71d8c0
+Aud[41]=0x71e900
+Aud[42]=0x71f940
+Aud[43]=0x720980
+Aud[44]=0x7219c0
+Aud[45]=0x722a00
+Aud[46]=0x723a40
+Aud[47]=0x724a80
+Aud[48]=0x725ac0
+Aud[49]=0x726b00
+Aud[50]=0x727b40
+Aud[51]=0x728b80
+Aud[52]=0x729bc0
+Aud[53]=0x72ac00
+Aud[54]=0x72bc40
+==Run:audio_dec_task_init==
+==Run:lvgl_state_task_init==
+==Run:display_task_entry==
+display_frame(cnt=5) addr = 0x72eac0
+display_frame_pool[1] addr = 0x85b2c0
+display_frame_pool[2] addr = 0x987ac0
+display_frame_pool[3] addr = 0xab42c0
+display_frame_pool[4] addr = 0xbe0ac0
+
+==TP2915-INIT-ENTER==
+Run tft_tp2915_init
+[TP2915] bank write (TFT_1)
+[TP2915] rb_switch ok
+[TP2915] signal_inv ok
+[TP2915] mode ok
+[TP2915] data_mode ok
+[TP2915] clk ok (DIVIDE_8 27.75MHz)
+[TP2915] pre-en ctrl=0x0000003e
+[TP2915] DEBUG: en_set DEFERRED (TFT output enabled after wifi by main.c)
+tft_tp2915_init OK
+[BL-DBG] backlight ON deferred (g_bl_delay_enable=0)
+audio_dac_task_entry ... 
+audio_task_init ... 
+audio memory = 38024
+decode memory -- 0x4c9940
+audio_dec_task_entry ... 
+==Run:state_handling_entry==
+state_handling_init ... 
+spifc target rate: 18500000, act rate 18500000
+SPIFC Header Tag is wrong 0x73704750
+load CRC = 63 89 57 02
+expect CRC = 24 ba 41 fa
+crc error
+nv_open retry fail~~~~~~!
+Failed to open resource from NVRAM 
+volume = 19
+state_handling_init OK!
+state_handling_entry ... 
+==Run:state_startup_entry==
+==Run:video_encode_state_task_entry==
+==Run:audio_encode_state_task_entry==
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+state_startup_init ... 
+volume = 19
+nv_open retry fail~~~~~~!
+open POWER_ON_LOGO.JPG fail.
+[BL-DBG] backlight ON deferred (g_bl_delay_enable=0)
+state_startup_entry ... 
+state_startup_exit ... 
+==Run:state_video_record_entry==
+state_video_record_init ... 
+==[ERR][allocate_and_draw_ascii_string_icon:70]==fail to ap_state_resource_ascii_string_resolution_get
+==STATE_VIDEO_RECORD:4==
+==display:[w:1024,h:600,f:1]==
+==pip:[w:128,h:96]==
+atbm_gp_sdio_init card addr 5e5568 host addr 5e5608
+size gp_sdio_info:160 gp_sdio_ctrl:136 gp_sdio_host:24 68
+##SDIO CMD0 ok!
+##SDIO CMD5 ok! resp=d0ffff00, spend_ms=0
+##SDIO pwrup stable! spend_ms=0
+##SDIO CMD3 ok! resp=10000
+##SDIO CMD7 ok!
+SDIO_CCCR_IF value=0
+atbm_gp_sdio_init_func atbm_gp_wifi_sdio_func addr d14fc0
+[atbm_log]:atbm_sdio_module_init
+[atbm_log]:atbm_init_firmware
+[atbm_log]:[Wifi] Enter atbm_sdio_module_init 
+[atbm_log]:SVN_VER=4690,DPLL_CLOCK=24,BUILD_TIME=[===SDIO-ATHENAB==
+[atbm_log]:BRT SVN_VER=20260616_4690_brt_r33069
+[atbm_log]:atbm: Atbmwifi_halEntry() <===
+++WORK_TASK =1 WORK_TASK_PRIO
+++ELOOP_TASK =2ELOOP_TASK_PRIO
+
+[10:14:42.615]收←◆[atbm_log]:atbm_init_chip_priv : chip_id = 31 
+[atbm_log]:atbm_register_bh
+[atbm_log]:atbm_urb_queue_init ==>
+++TX_BH_TASK_ =5TX_BH_TASK_PRIO
+[atbm_log]:Thread Atbm_TX 0 start
+++BH_TASK =4BH_TASK_PRIO
+[atbm_log]:Thread Atbm_RX 100 start
+[atbm_log]:atbm_urb_queue_init <==
+++BH_TASK =4BH_TASK_PRIO
+[atbm_log]:Thread atbm_bh 100000 start
+[atbm_log]:atbm_load_bt_firmware++
+[atbm_log]:start load bt fw 491520
+[atbm_log]:bt load itcm start P:2010000, l:78000
+[atbm_log]:atbm_load_firmware_generic: addr 2010000: len 78000
+
+[10:14:42.744]收←◆[atbm_log]:bt load dtcm start P:2800000, l:18000
+[atbm_log]:atbm_load_firmware_generic: addr 2800000: len 18000
+[atbm_log]:BT TEST FW
+[atbm_log]:atbm_before_load_firmware++
+task_periph[atbm_log]:ehread atbm_Thread atbmtimer 0 star_timer 0 stt
+task_peripa 
+heral_handling_entry ... 
+[atb[atbm_log]:atbm_before_load_firmware:read 0x16101004,1cdc2240
+m_log]:atbm_before_load_firmware:read 0x16101004,1cdc2240
+[atbm_log]:atbm_before_load_firmware:read 0x16100074,0
+[atbm_log]:atbm_before_load_firmware:read 0xa900000 0
+[atbm_log]:atbm_before_load_firmware:0xa900000 [0]
+[atbm_log]:atbm_start_load_firmware++
+[atbm_log]:atbm_start_load_firmware: START DOWNLOAD ICCM=========
+[atbm_log]:atbm_load_firmware_generic: addr 1060000: len 20000
+[atbm_log]:atbm_start_load_firmware: START DOWNLOAD DCCM=========
+[atbm_log]:atbm_load_firmware_generic: addr 1800000: len 8000
+[atbm_log]:START DOWNLOAD BLE SRAM=========
+[atbm_log]:atbm_load_firmware_generic: addr c00000: len fa0
+[atbm_log]:atbm_start_load_firmware: FIRMWARE DOWNLOAD SUCCESS
+[atbm_log]:atbm_after_load_firmware++
+[DEBUG] atbm_gp_sdio_claim_irq
+atbm_gp_sdio_claim_irq irq_handler ea780
+atbm_gp_sdio_claim_irq reg 0x3
+
+[10:14:43.198]收←◆[atbm_log]:firmwareCap f1c9
+[atbm_log]:firmwareCap2 1204
+[atbm_log]:wsm_startup_indication : resv[15465] 
+[atbm_log]:wsm_caps.firmwareCap 1204f1c9 
+[atbm_log]:apollo wifi WSM init done.
+   Input buffers: 18 x 1632 bytes
+   Hardware: 7.21
+   WSM firmware [=MODEM=DPLL40M-NoBle-plat=1020251205118e2f8bc 2GHZ Dec 11 2025 20:45:51 Rx:7 (1) Tx:18 4]
+[atbm_log]:LmacVersion: 63676, build: 7936, api: 1060, cap: 0x1204F1C9 Config[31010]  expection c0a6b8, ep0 cmd addr c0a724 NumOfHwXmitedAddr[12634660]
+[atbm_log]:CAPABILITIES_ATBM_PRIVATE_IE   [0]
+[atbm_log]:CAPABILITIES_IPC 		[0]
+[atbm_log]:CAPABILITIES_NO_CONFIRM 		   [1]
+[atbm_log]:CAPABILITIES_WOW 		   [0]
+[atbm_log]:CAPABILITIES_NO_BACKOFF 		   [0]
+[atbm_log]:CAPABILITIES_CFO 		[1]
+[atbm_log]:CAPABILITIES_CHIP_FLAG 		[1]
+[atbm_log]:CAPABILITIES_TXCAL 		[1]
+[atbm_log]:CAPABILITIES_LMAC_BAB_SETUP 		[0]
+[atbm_log]:CAPABILITIES_FORCE_PM_ACTIVE 		[0]
+[atbm_log]:CAPABILITIES_SMARTCONFIG	[0]
+[atbm_log]:CAPABILITIES_ETF			[1]
+[atbm_log]:CAPABILITIES_BLE	[1]
+[atbm_log]:CAPABILITIES_40M		[1]
+[atbm_log]:CAPABILITIES_LDPC		[1]
+[atbm_log]:CAPABILITIES_NAV_ENABLE		[0]
+[atbm_log]:CAPABILITIES_USB_RECOVERY_BUG	 [0]
+[atbm_log]:CAPABILITIES_USE_IPC				[0]
+[atbm_log]:CAPABILITIES_OUTER_PA 			[0]
+[atbm_log]:CAPABILITIES_WFA	[0]
+[atbm_log]:CAPABILITIES_EAP_GROUP_REKEY	[0]
+[atbm_log]:CAPABILITIES_RTS_LONG_DURATION	[0]
+[atbm_log]:CAPABILITIES_TX_CFO_PPM_CORRECTION[0]
+[atbm_log]:CAPABILITIES_RXCAL	   [1]
+[atbm_log]:CAPABILITIES_HW_CHECKSUM			[0]
+[atbm_log]:CAPABILITIES_80211_TO_8023 [0]
+[atbm_log]:CAPABILITIES_NEW_CHIPER	[1]
+[atbm_log]:tx_channel_num 64, rx_channel_num 32
+[atbm_log]:atbmwifi_queue_init,cap(64)
+[atbm_log]:atbmwifi_queue_init,cap(64)
+[atbm_log]:atbmwifi_queue_init,cap(64)
+[atbm_log]:atbmwifi_queue_init,cap(64)
+[atbm_log]:MAC Addr[0]:[30:4a:c4:c4:2d:5d]
+[atbm_log]:efuse data is [0x3,0x3b,0x1,0x1,0x0,0x21,0x0,0x0,0x30:0x4a:0xc4:0xc4:0x2d:0x5d]
+[atbm_log]:atbmwifi_netstack_init
+[atbm_log]:__wpa_event_init
+++HIF_TASK =3HIF_TASK_PRIO
+[atbm_[atbm_log]:Tlog]:Threadhread atbm_h atbm_hif 1if 100000 st00000 startart
+
+[atbm_log]:atbm_alloc_netdev,netdev(0xd5ce80),nif(0xd68100),priv(0xd5ce94)
+[atbm_log]:wsm_generic_confirm status 2 
+[atbm_log]:<WARNING> wsm_write_mib fail !!! mibId=4105
+if[0] MAC addr :30:4a:c4:c4:2d:5d
+[atbm_log]:atbm_alloc_netdev,netdev(0xd6b300),nif(0xd76580),priv(0xd6b314)
+[atbm_log]:wsm_generic_confirm status 2 
+[atbm_log]:<WARNING> wsm_write_mib fail !!! mibId=4105
+if[1] MAC addr :32:4a:c4:c4:2d:5d
+++BH_TASK =4BH_TASK_PRIO
+[atbm_log]:Thread p2p_main 0 start
+cryptoexp:1 =0ms
+
+[10:14:43.523]收←◆state_video_record_entry ... 
+
+[10:14:43.569]收←◆cryptoexp:2 =152ms
+wps_ctx->dev.device_name device_name:DIRECT-GP-ATBM6165
+wpas_deinit_wps 
+[atbm_log]:tx drop ret=-2 
+[atbm_log]:atbmwifi_del_key  err (0 1)
+[atbm_log]:atbmwifi_del_key  err (0 0)
+[atbm_log]:atbmwifi_del_key  err (0 2)
+[atbm_log]:wpa_supplicant_event_disassoc 526
+[atbm_log]:wpa_s->wpa_state =0
+[atbm_log]:wpa_deauthen
+[atbm_log]:atbm_reorder_func_reset.
+
+[10:14:43.700]收←◆wps ap ssid:GP-ATBM6165, channel:36
+
+[atbm_log]:atbmwifi_start_ap++
+[atbm_log]:hostapd key_mgmt(2) wpa(2)
+
+[10:14:43.805]收←◆
+75 50 b7 fe e8 c4 55 24 1e 0b 6d 1e 5b 7e 53 0c 
+53 9b f3 ac 71 bf e8 34 d9 f1 f5 bd 95 bb ad c4 
+[atbm_log]:wpa_comm_init_extra_ie len (22),proto(ATBM_WPA_PROTO_RSN)
+[atbm_log]:hostapd_start 2577 ,8 maxstacnt = 8
+[atbm_log]:hostapd(GP-ATBM6165)(2 16)(0) start to beacon
+[atbm_log]:[AP] ch: 36(1), bcn: 100(3), brt: 0x540, ssid: GP-ATBM6165 0
+[atbm_log]:[AP] inactivity cfg min=39 max=1
+[atbm_log]:event_OsCallback atbmwifi_event_OsCallback 87
+[atbm_log]:atbm_hostapd_init_wps
+[atbm_log]:wps init end
+
+ Request ip over the range(1-128) 
+[DHCPS] init if=p0 ip=192.168.42.1 pool=20-128
+ATBM WiFi P2P GO start ret=0 ssid=GP-ATBM6165 channel=36
+xstack demo audio task status=0
+btstack: platform early init
+btstack sdp: init register psm status=0x00
+xstack demo init status=0
+xstack demo enable status=0
+xstack demo cover art mode status=0
+gp cmd: server socket 0x0
+[MAIN] TFT output enabled after-wifi (L95 deferred)
+btstack uart0 init baud=921600
+btstack h5: open baud=921600
+btstack uart0 open rx_dma=1 tx_dma=0 native_h5_dma=1
+btstack h[LVGL] fb=0x50xd9d94f804f80(1200KB)(1200KB) dr drawbuf=0xeawbuf=0xec0c0fc0(120KB)fc0(120KB)
+
+[LVGL] display path -> LVGL
+btstack h5: link initialized
+btstack h5: tx config #1 state=1 dic=0
+xstack demo service event: DEVICE_STATE(0) vcnt=1 v=[2,0,0]
+btstack h5: tx sync response state=1
+[LVGL] flush#0 area=(0,0)-(1023,59) w=1024 h=60btstack h5: 
+tx config response s[LVGL] flt119) w=102ush#1 area=(4 h=60
+0,60)-(1023,119) w=1024 h=60
+[LVGL] flush#2 area=(0,120)-(1023,179) w=1024 h=60
+
+[10:14:44.213]收←◆btstack h5: tx config #2 state=1 dic=0
+btstack h5: link activated dic=1
+
+[10:14:44.857]收←◆
+io_trap = 0x1D, sys = 72000000, cpu = 216000000 =0x1D ddr=18000000
+1st pwr on
+ICE mode ...

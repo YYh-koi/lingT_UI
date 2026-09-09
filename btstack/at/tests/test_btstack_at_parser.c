@@ -1,0 +1,185 @@
+#include <stdint.h>
+
+#include "btstack_at_internal.h"
+
+typedef struct {
+    const char *input;
+    uint16_t length;
+    btstack_at_command_id_t id;
+    btstack_at_command_form_t form;
+    int valid;
+} parse_case_t;
+
+static uint16_t test_length(const char *text)
+{
+    uint16_t length = 0u;
+    while (text[length] != '\0') {
+        length++;
+    }
+    return length;
+}
+
+static int check_case(const parse_case_t *test)
+{
+    btstack_at_command_t command;
+    int status = btstack_at_parse(
+        test->input,
+        test_length(test->input),
+        &command);
+
+    if (test->valid == 0) {
+        return (status != 0) ? 0 : 1;
+    }
+    if (status != 0) {
+        return 1;
+    }
+    if ((command.id != test->id) || (command.form != test->form)) {
+        return 1;
+    }
+    return 0;
+}
+
+int btstack_at_parser_tests(void)
+{
+    static const parse_case_t cases[] = {
+        { "AT", 2u, BTSTACK_AT_COMMAND_AT, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT\r\n", 4u, BTSTACK_AT_COMMAND_AT, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+PROFILE", 10u, BTSTACK_AT_COMMAND_PROFILE, BTSTACK_AT_FORM_QUERY, 1 },
+        { "AT+PROFILE=424", 14u, BTSTACK_AT_COMMAND_PROFILE, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+PROFILE=1192", 15u, BTSTACK_AT_COMMAND_PROFILE, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+VER", 6u, BTSTACK_AT_COMMAND_VER, BTSTACK_AT_FORM_QUERY, 1 },
+        { "AT+BTEN=1", 9u, BTSTACK_AT_COMMAND_BTEN, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+ADDR", 7u, BTSTACK_AT_COMMAND_ADDR, BTSTACK_AT_FORM_QUERY, 1 },
+        { "AT+NAME=ABC,1", 13u, BTSTACK_AT_COMMAND_NAME, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+PIN=0000", 11u, BTSTACK_AT_COMMAND_PIN, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+SSP=3", 8u, BTSTACK_AT_COMMAND_SSP, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+CFM=1C5CF226D773,1", 22u, BTSTACK_AT_COMMAND_CFM, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+PAIR", 7u, BTSTACK_AT_COMMAND_PAIR, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+PAIR=2", 9u, BTSTACK_AT_COMMAND_PAIR, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+PAGE", 7u, BTSTACK_AT_COMMAND_PAGE, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+COD=240404", 13u, BTSTACK_AT_COMMAND_COD, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+PLIST", 8u, BTSTACK_AT_COMMAND_PLIST, BTSTACK_AT_FORM_QUERY, 1 },
+        { "AT+PLIST=1C5CF226D773", 21u, BTSTACK_AT_COMMAND_PLIST, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+TDL=8", 8u, BTSTACK_AT_COMMAND_TDL, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+SCAN=1,10,Phone", 18u, BTSTACK_AT_COMMAND_SCAN, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+SCAN=2", 9u, BTSTACK_AT_COMMAND_SCAN, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+DSCA", 7u, BTSTACK_AT_COMMAND_DSCA, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+MICMUTE=1", 12u, BTSTACK_AT_COMMAND_MICMUTE, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+SPKVOL=15", 12u, BTSTACK_AT_COMMAND_SPKVOL, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+HFPCFG=7", 11u, BTSTACK_AT_COMMAND_HFPCFG, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+HFPSTAT", 10u, BTSTACK_AT_COMMAND_HFPSTAT, BTSTACK_AT_FORM_QUERY, 1 },
+        { "AT+HFPCONN=1c5cf226d773", 22u, BTSTACK_AT_COMMAND_HFPCONN, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+HFPDISC", 10u, BTSTACK_AT_COMMAND_HFPDISC, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+HFPDIAL", 10u, BTSTACK_AT_COMMAND_HFPDIAL, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+HFPDIAL=075527924639", 23u, BTSTACK_AT_COMMAND_HFPDIAL, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+HFPDTMF=#", 12u, BTSTACK_AT_COMMAND_HFPDTMF, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+HFPANSW", 10u, BTSTACK_AT_COMMAND_HFPANSW, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+HFPCHUP", 10u, BTSTACK_AT_COMMAND_HFPCHUP, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+HFPMCAL=2", 12u, BTSTACK_AT_COMMAND_HFPMCAL, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+HFPADTS", 10u, BTSTACK_AT_COMMAND_HFPADTS, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+HFPVR=1", 10u, BTSTACK_AT_COMMAND_HFPVR, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+A2DPSTAT", 11u, BTSTACK_AT_COMMAND_A2DPSTAT, BTSTACK_AT_FORM_QUERY, 1 },
+        { "AT+A2DPCONN=1C5CF226D773", 23u, BTSTACK_AT_COMMAND_A2DPCONN, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+A2DPDISC", 11u, BTSTACK_AT_COMMAND_A2DPDISC, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+A2DPMUTE=0", 13u, BTSTACK_AT_COMMAND_A2DPMUTE, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+PLAYPAUSE", 12u, BTSTACK_AT_COMMAND_PLAYPAUSE, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+PLAY", 7u, BTSTACK_AT_COMMAND_PLAY, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+PAUSE", 8u, BTSTACK_AT_COMMAND_PAUSE, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+STOP", 7u, BTSTACK_AT_COMMAND_STOP, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+NEXT", 7u, BTSTACK_AT_COMMAND_NEXT, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+PREV", 7u, BTSTACK_AT_COMMAND_PREV, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+FORWARD", 10u, BTSTACK_AT_COMMAND_FORWARD, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+BACKWARD", 11u, BTSTACK_AT_COMMAND_BACKWARD, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+REPEAT=1", 11u, BTSTACK_AT_COMMAND_REPEAT, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+SHUFFLE=0", 12u, BTSTACK_AT_COMMAND_SHUFFLE, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+SABSUP", 9u, BTSTACK_AT_COMMAND_SABSUP, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+SABSDOWN", 10u, BTSTACK_AT_COMMAND_SABSDOWN, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+PBAPSYNC=1C5CF226D773,15", 28u, BTSTACK_AT_COMMAND_PBAPSYNC, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+PBAPSYNC=1C5CF226D773,0", 27u, BTSTACK_AT_COMMAND_PBAPSYNC, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+PBAPCANCEL", 13u, BTSTACK_AT_COMMAND_PBAPCANCEL, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+PBAPAUTH=1234", 16u, BTSTACK_AT_COMMAND_PBAPAUTH, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+PBAPSTAT?", 12u, BTSTACK_AT_COMMAND_PBAPSTAT, BTSTACK_AT_FORM_QUERY, 1 },
+        { "AT+COVERMODE=0", 14u, BTSTACK_AT_COMMAND_COVERMODE, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+COVERMODE=1", 14u, BTSTACK_AT_COMMAND_COVERMODE, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+COVERMODE=2", 14u, BTSTACK_AT_COMMAND_COVERMODE, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+COVERIMAGE=JPEG,320,240,NONE", 31u, BTSTACK_AT_COMMAND_COVERIMAGE, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+COVERIMAGE=PNG,200,200,CROP", 29u, BTSTACK_AT_COMMAND_COVERIMAGE, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+COVERIMAGE=RAW,320,240,NONE", 30u, BTSTACK_AT_COMMAND_COVERIMAGE, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+COVERIMAGE=JPEG,0,240,NONE", 29u, BTSTACK_AT_COMMAND_COVERIMAGE, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+COVERIMAGE=JPEG,65536,240,NONE", 33u, BTSTACK_AT_COMMAND_COVERIMAGE, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+COVERIMAGE=JPEG,320,240,ROTATE", 33u, BTSTACK_AT_COMMAND_COVERIMAGE, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+COVERIMAGE=JPEG,320,240,NONE,1", 33u, BTSTACK_AT_COMMAND_COVERIMAGE, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+LEADV=1,160,240,0,020106,0303AAFE", 39u, BTSTACK_AT_COMMAND_LEADV, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+LEADV=0", 10u, BTSTACK_AT_COMMAND_LEADV, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+LEADV=1,160,240,0,000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F,00", 84u, BTSTACK_AT_COMMAND_LEADV, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+LESCAN=1,1,16,16,1", 22u, BTSTACK_AT_COMMAND_LESCAN, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+LESCAN=0,0,16,17,0", 22u, BTSTACK_AT_COMMAND_LESCAN, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+LECONN=0,010203040506", 24u, BTSTACK_AT_COMMAND_LECONN, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+LECFM=1", 10u, BTSTACK_AT_COMMAND_LECFM, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+LEPASS=123456", 16u, BTSTACK_AT_COMMAND_LEPASS, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+LEPASS=1000000", 17u, BTSTACK_AT_COMMAND_LEPASS, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+GATTSADD=180F", 16u, BTSTACK_AT_COMMAND_GATTSADD, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GATTSADD=00112233445566778899AABBCCDDEEFF", 44u, BTSTACK_AT_COMMAND_GATTSADD, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GATTSC=1,2A19,18,20,1", 25u, BTSTACK_AT_COMMAND_GATTSC, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GATTSVAL=3,0102", 20u, BTSTACK_AT_COMMAND_GATTSVAL, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GATTCDISC=0", 15u, BTSTACK_AT_COMMAND_GATTCDISC, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GATTCC=1,65535,2A19", 23u, BTSTACK_AT_COMMAND_GATTCC, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GATTCW=3,1,010203", 21u, BTSTACK_AT_COMMAND_GATTCW, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GATTCSUB=3,5,1", 18u, BTSTACK_AT_COMMAND_GATTCSUB, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GATTCSUB=3,5,0", 18u, BTSTACK_AT_COMMAND_GATTCSUB, BTSTACK_AT_FORM_SET, 1 },
+        { "AT+GETMP", 8u, BTSTACK_AT_COMMAND_UNSUPPORTED, BTSTACK_AT_FORM_EXECUTE, 1 },
+        { "AT+BTEN", 7u, BTSTACK_AT_COMMAND_BTEN, BTSTACK_AT_FORM_EXECUTE, 0 },
+        { "AT+PLAY=1", 9u, BTSTACK_AT_COMMAND_PLAY, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+HFPANSW=1", 12u, BTSTACK_AT_COMMAND_HFPANSW, BTSTACK_AT_FORM_SET, 0 },
+        { "at+play", 7u, BTSTACK_AT_COMMAND_UNSUPPORTED, BTSTACK_AT_FORM_EXECUTE, 0 },
+        { " AT", 3u, BTSTACK_AT_COMMAND_UNSUPPORTED, BTSTACK_AT_FORM_EXECUTE, 0 },
+        { "AT\nAT", 5u, BTSTACK_AT_COMMAND_UNSUPPORTED, BTSTACK_AT_FORM_EXECUTE, 0 },
+        { "AT+NAME=", 8u, BTSTACK_AT_COMMAND_NAME, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+PIN=123", 10u, BTSTACK_AT_COMMAND_PIN, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+SCAN=1,", 10u, BTSTACK_AT_COMMAND_SCAN, BTSTACK_AT_FORM_SET, 0 },
+        { "AT+HFPDTMF=A", 12u, BTSTACK_AT_COMMAND_HFPDTMF, BTSTACK_AT_FORM_SET, 0 }
+    };
+    uint32_t index;
+    int failures = 0;
+
+    for (index = 0u; index < (sizeof(cases) / sizeof(cases[0])); index++) {
+        failures += check_case(&cases[index]);
+    }
+
+    {
+        btstack_at_command_t command;
+        const char *input = "AT+HFPCONN=1c5cf226d773";
+        failures += btstack_at_parse(input, test_length(input), &command);
+        failures += (command.address[0] == 0x1cu) ? 0 : 1;
+        failures += (command.address[5] == 0x73u) ? 0 : 1;
+    }
+
+    {
+        btstack_at_command_t command;
+        const char *input = "AT+GATTSVAL=3,0102";
+        failures += btstack_at_parse(input, test_length(input), &command);
+        failures += (command.values[0] == 3u) ? 0 : 1;
+        failures += (command.binary_length == 2u) ? 0 : 1;
+        failures += (command.binary[0] == 1u) ? 0 : 1;
+        failures += (command.binary[1] == 2u) ? 0 : 1;
+    }
+
+    {
+        btstack_at_command_t command;
+        const char *input = "AT+COVERIMAGE=JPEG,320,240,CROP";
+        failures += btstack_at_parse(input, test_length(input), &command);
+        failures += (command.cover_art_descriptor.encoding ==
+            BT_XSTACK_COVER_ART_ENCODING_JPEG) ? 0 : 1;
+        failures += (command.cover_art_descriptor.width == 320u) ? 0 : 1;
+        failures += (command.cover_art_descriptor.height == 240u) ? 0 : 1;
+        failures += (command.cover_art_descriptor.transformation ==
+            BT_XSTACK_COVER_ART_TRANSFORMATION_CROP) ? 0 : 1;
+    }
+
+    return failures;
+}
+
+int main(void)
+{
+    return btstack_at_parser_tests();
+}

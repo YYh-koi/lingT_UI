@@ -1,0 +1,2019 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<emIDE_project_file>
+	<FileVersion major="1" minor="7" />
+	<Project>
+		<Option title="GPCV2178_Turnkey_SDK" />
+		<Option pch_mode="2" />
+		<Option compiler="armelfgcc" />
+		<SPIFlash>
+			<AfterDownload />
+			<BeforeDownload />
+		</SPIFlash>
+		<Option VerifyDownload="1" />
+		<Option DownloadLog="-1" />
+		<Build>
+			<Target title="Debug">
+				<Option output="prjDebug/bin/Debug/project" prefix_auto="1" extension_auto="1" />
+				<Option object_output="prjDebug/obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="armelfgcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-g" />
+					<Add option="-mfpu=neon-vfpv4" />
+					<Add option="-mfloat-abi=softfp" />
+					<Add option="-Wall" />
+					<Add option="-DGP_FREERTOS" />
+					<Add option="-D__CS_COMPILER__" />
+					<Add option="-DWIFI_VENDOR=3" />
+					<Add option="-DWIFI_DEMO=1" />
+					<Add option="-DLVGL_SUPPORT=1" />
+					<Add option="-std=gnu99" />
+					<Add option="-fdata-sections" />
+					<Add option="-ffunction-sections" />
+					<Add option="-mcpu=cortex-a7" />
+					<Add directory="inc" />
+					<Add directory="../Include" />
+					<Add directory="../../board_config/inc" />
+					<Add directory="../../os" />
+					<Add directory="../../os/freertos_v202012/Source/include" />
+					<Add directory="../../os/freertos_v202012/Source/portable/GCC/ARM_CA9" />
+					<Add directory="../../os/CMSIS/Include" />
+					<Add directory="../../os/CORTEXA/Include" />
+					<Add directory="../../driver_l1/inc" />
+					<Add directory="../../driver_l1/common/inc" />
+					<Add directory="../../driver_l1/cdsp/inc" />
+					<Add directory="../../driver_l1/crypto/inc" />
+					<Add directory="../../driver_l1/h264/inc" />
+					<Add directory="../../driver_l1/jpeg/inc" />
+					<Add directory="../../driver_l1/ppu/inc" />
+					<Add directory="../../driver_l1/sdc/inc" />
+					<Add directory="../../driver_l1/usbd/inc" />
+					<Add directory="../../driver_l1/usbh/inc" />
+					<Add directory="../../driver_l2/inc" />
+					<Add directory="../../driver_l2/ad_key/inc" />
+					<Add directory="../../driver_l2/ad_keyscan/inc" />
+					<Add directory="../../driver_l2/cdsp/inc" />
+					<Add directory="../../driver_l2/crypto/inc" />
+					<Add directory="../../driver_l2/csi/inc" />
+					<Add directory="../../driver_l2/display/inc" />
+					<Add directory="../../driver_l2/h264/inc" />
+					<Add directory="../../driver_l2/hdmi/inc" />
+					<Add directory="../../driver_l2/ipu/inc" />
+					<Add directory="../../driver_l2/jpeg/inc" />
+					<Add directory="../../driver_l2/power_save/inc" />
+					<Add directory="../../driver_l2/scaler/inc" />
+					<Add directory="../../driver_l2/sccb/inc" />
+					<Add directory="../../driver_l2/sensor/inc" />
+					<Add directory="../../driver_l2/spi_flash/inc" />
+					<Add directory="../../driver_l2/sdc/inc" />
+					<Add directory="../../driver_l2/usbd/inc" />
+					<Add directory="../../driver_l2/usbd/inc/uvc" />
+					<Add directory="../../driver_l2/usbd/inc/uac" />
+					<Add directory="../../driver_l2/usbd/inc/msdc" />
+					<Add directory="../../driver_l2/usbd/inc/cdc" />
+					<Add directory="../../driver_l2/usbh/inc" />
+					<Add directory="../../driver_l2/vcm/inc" />
+					<Add directory="../../driver_l2/gsensor/inc" />
+					<Add directory="../../driver_l2/system/inc" />
+					<Add directory="../../driver_l2/iram/inc" />
+					<Add directory="../../driver_l2/rotator/inc" />
+					<Add directory="../../gplib/fs" />
+					<Add directory="../../gplib/calendar/inc" />
+					<Add directory="../../gpstdlib/mm/inc" />
+					<Add directory="../../gpstdlib/sp_mm" />
+					<Add directory="../../gpstdlib/print_string/inc" />
+					<Add directory="../../gplib/fs/include" />
+					<Add directory="../../gplib/inc" />
+					<Add directory="../../gplib/fs/driver" />
+					<Add directory="../../gplib/ppu/inc" />
+					<Add directory="../../gplib/h264_rate_control" />
+					<Add directory="../../gplib/video_frame_manager/inc" />
+					<Add directory="../../gplib/gpzp/inc" />
+					<Add directory="../../gplib/video_muxer/inc" />
+					<Add directory="../../gplib/dynamic_quality/inc" />
+					<Add directory="../../gplib/avi_packer" />
+					<Add directory="../../gplib/MultiMediaParser/gplib_AviParser/Src" />
+					<Add directory="../../gplib/MultiMediaParser/gplib_MultiMediaParser/Src" />
+					<Add directory="../../gplib/video_muxer/src" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports/freertos/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/core" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/wlan_lib" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/bt_api" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/api" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/os/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/hal/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/hal/sdio" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/include/proto" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/include" />
+					<Add directory="../../gplib/wave_kernel" />
+					<Add directory="../../gplib/storages/inc" />
+					<Add directory="../../gplib/gp_paint/inc" />
+					<Add directory="../../gplib/MultiMediaParser/gplib_QtffParser/Src" />
+					<Add directory="../../gpstdlib/inc" />
+					<Add directory="../../application/inc" />
+					<Add directory="../../application/msg_manager/inc" />
+					<Add directory="../../application/task_display/inc" />
+					<Add directory="../../application/task_state_handling/inc" />
+					<Add directory="../../application/task_state_handling/state_bt_music/inc" />
+					<Add directory="../../application/task_state_handling/state_browse/inc" />
+					<Add directory="../../application/task_state_handling/state_photo_capture/inc" />
+					<Add directory="../../application/task_state_handling/state_setting/inc" />
+					<Add directory="../../application/task_state_handling/state_startup/inc" />
+					<Add directory="../../application/task_state_handling/state_video_record/inc" />
+					<Add directory="../../application/task_state_handling/state_audio_record/inc" />
+					<Add directory="../../application/task_encoder/inc" />
+					<Add directory="../../application/task_storage_service/inc" />
+					<Add directory="../../application/task_peripheral_handling/inc" />
+					<Add directory="../../application/task_decoder/inc" />
+					<Add directory="../../application/task_usb/inc" />
+					<Add directory="../../application/task_socket_cmd/inc" />
+					<Add directory="../../application/task_rtsp_service/inc" />
+					<Add directory="../../application/task_voice_recognition/inc" />
+					<Add directory="../../resource/inc" />
+					<Add directory="../../application/task_state_handling/state_wifi/inc" />
+					<Add directory="../../application/task_bsd/inc" />
+					<Add directory="../../driver_l2/dla/inc" />
+					<Add directory="../../driver_l1/dla/inc" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/dhcp" />
+					<Add directory="../../application/task_lvgl/inc" />
+					<Add directory="../LVGL" />
+					<Add directory="../LVGL/lvgl" />
+				</Compiler>
+				<Linker>
+					<Add option="-Wl,-Map" />
+					<Add option="-Wl,${TARGET_OUTPUT_FILE}.map" />
+					<Add option="-Wl,--gc-sections" />
+					<Add option="-n" />
+					<Add option="-Wl,-cref" />
+					<Add option="-mcpu=cortex-a7" />
+					<Add option="-T..\Setup\GPCV2178_512Mb.ld" />
+					<Add option="-specs=nosys.specs" />
+					<Add option="-mfpu=neon-vfpv4" />
+					<Add option="-mfloat-abi=softfp" />
+					<Add library="..\..\liba\lib_cdsp.a" />
+					<Add library="..\..\liba\lib_fs.a" />
+					<Add library="..\..\liba\lib_h264.a" />
+					<Add library="..\..\liba\lib_h264_ratecontrol.a" />
+					<Add library="..\..\liba\lib_jpeg.a" />
+					<Add library="..\..\liba\lib_movpacker.a" />
+					<Add library="..\..\liba\lib_pscaler.a" />
+					<Add library="..\..\liba\lib_scaler.a" />
+					<Add library="..\..\liba\lib_usbd.a" />
+					<Add library="..\..\liba\lib_usbh.a" />
+					<Add library="..\..\liba\lib_vfm.a" />
+					<Add library="..\..\gplib\liba\gplib_3a.a" />
+					<Add library="..\..\gplib\liba\gplib_Wav_Codec.a" />
+					<Add library="..\..\gplib\liba\libasr_SPI_Key.a" />
+					<Add library="..\..\liba\drv_l1_dla.a" />
+					<Add library="..\..\gplib\liba\libGPA7xxxA_NN_LDW.a" />
+					<Add library="..\..\gplib\liba\libGPA7xxxA_ADAS_V1.a" />
+					<Add library="..\..\gplib\liba_wifi_src\atbm\atbm6165\wlan_lib\libatbm_wifi.a" />
+					<Add library="..\..\gplib\liba_wifi_src\atbm\atbm6165\bt_api\libxstack_api.a" />
+				</Linker>
+				<PostOutput>
+					<ConvertedOutput PostOutputCreate="1" />
+					<ConvertedOutput PostOutputType="BIN" />
+					<ConvertedOutput PostOutputFile="${TARGET_OUTPUT_DIR}${TARGET_OUTPUT_BASENAME}" />
+				</PostOutput>
+			</Target>
+			<Target title="Release">
+				<Option output="prjRelease/bin/Release/project" prefix_auto="1" extension_auto="1" />
+				<Option object_output="prjRelease/obj/Release/" />
+				<Option type="1" />
+				<Option compiler="armelfgcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-g" />
+					<Add option="-Wall" />
+					<Add option="-DconfigTOTAL_HEAP_SIZE=0x1900000" />
+					<Add option="-DWIFI_VENDOR=3" />
+					<Add option="-fdata-sections" />
+					<Add option="-ffunction-sections" />
+					<Add option="-mcpu=cortex-a7" />
+					<Add option="-mfpu=neon-vfpv4" />
+					<Add option="-mfloat-abi=softfp" />
+					<Add directory="inc" />
+					<Add directory="../inc" />
+					<Add directory="../Include" />
+					<Add directory="../../board_config/inc" />
+					<Add directory="../../os" />
+					<Add directory="../../os/freertos_v202012/Source/include" />
+					<Add directory="../../os/freertos_v202012/Source/portable/GCC/ARM_CA9" />
+					<Add directory="../../driver_l1/inc" />
+					<Add directory="../../driver_l1/common/inc" />
+					<Add directory="../../driver_l1/jpeg/inc" />
+					<Add directory="../../driver_l1/ppu/inc" />
+					<Add directory="../../driver_l1/sdc/inc" />
+					<Add directory="../../driver_l2/inc" />
+					<Add directory="../../driver_l2/ad_key/inc" />
+					<Add directory="../../driver_l2/ad_keyscan/inc" />
+					<Add directory="../../driver_l2/csi/inc" />
+					<Add directory="../../driver_l2/display/inc" />
+					<Add directory="../../driver_l2/jpeg/inc" />
+					<Add directory="../../driver_l2/power_save/inc" />
+					<Add directory="../../driver_l2/scaler/inc" />
+					<Add directory="../../driver_l2/sccb/inc" />
+					<Add directory="../../driver_l2/sensor/inc" />
+					<Add directory="../../driver_l2/sd/inc" />
+					<Add directory="../../gplib/fs" />
+					<Add directory="../../gplib/mm/inc" />
+					<Add directory="../../gplib/print_string/inc" />
+					<Add directory="../../gplib/fs/include" />
+					<Add directory="../../gplib/inc" />
+					<Add directory="../../gplib/fs/driver" />
+					<Add directory="../../gplib/liba/inc" />
+					<Add directory="../../gplib/ppu/inc" />
+					<Add directory="../../gpstdlib/inc" />
+					<Add directory="../../application/inc" />
+					<Add directory="../../application/msg_manager/inc" />
+					<Add directory="../../gplib/video_frame_manager/inc" />
+					<Add directory="../../gplib/video_muxer/inc" />
+					<Add directory="../../gplib/dynamic_quality/inc" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/bt_api" />
+					<Add directory="../../gpstdlib/print_string/inc" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/core" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/api" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/os/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/hal/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/hal/sdio" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/include/proto" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/dhcp" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports/freertos/include" />
+					<Add directory="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports" />
+				</Compiler>
+				<Linker>
+					<Add option="-Wl,-Map" />
+					<Add option="-Wl,${TARGET_OUTPUT_FILE}.map" />
+					<Add option="-Wl,--gc-sections" />
+					<Add option="-n" />
+					<Add option="-Wl,-cref" />
+					<Add option="-mcpu=cortex-a7" />
+					<Add option="-T..\Setup\GPCV2178_512Mb.ld" />
+					<Add option="-specs=nosys.specs" />
+					<Add option="-mfpu=neon-vfpv4" />
+					<Add option="-mfloat-abi=softfp" />
+					<Add library="..\..\gplib\liba_wifi_src\atbm\atbm6165\bt_api\libxstack_api.a" />
+				</Linker>
+				<PostOutput>
+					<ConvertedOutput PostOutputCreate="1" />
+					<ConvertedOutput PostOutputType="BIN" />
+					<ConvertedOutput PostOutputFile="${TARGET_OUTPUT_DIR}${TARGET_OUTPUT_BASENAME}" />
+				</PostOutput>
+			</Target>
+		</Build>
+		<PostOutput>
+			<ConvertedOutput PostOutputCreate="0" />
+			<ConvertedOutput PostOutputType="HEX" />
+			<ConvertedOutput PostOutputFile="${TARGET_OUTPUT_DIR}${TARGET_OUTPUT_BASENAME}" />
+		</PostOutput>
+		<Unit filename="../../application/inc/application.h" />
+		<Unit filename="../../application/inc/turnkey_drv_msg.h" />
+		<Unit filename="../../application/inc/turnkey_sys_msg.h" />
+		<Unit filename="../../application/msg_manager/inc/msg_manager.h" />
+		<Unit filename="../../application/msg_manager/src/msg_manager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_audio_recognizer/inc/Pack_Group_1.h" />
+		<Unit filename="../../application/task_audio_recognizer/inc/vr_demo_global.h" />
+		<Unit filename="../../application/task_bsd/inc/ap_blind_spot_detection.h">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="../../application/task_bsd/inc/task_blind_spot_detection.h" />
+		<Unit filename="../../application/task_bsd/src/nn_api.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_bsd/src/task_blind_spot_detection.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_decoder/inc/task_audio_wav_dac.h" />
+		<Unit filename="../../application/task_decoder/inc/task_audio_wav_decoder.h" />
+		<Unit filename="../../application/task_decoder/inc/task_video_decoder.h" />
+		<Unit filename="../../application/task_decoder/inc/task_video_decoder_cfg.h" />
+		<Unit filename="../../application/task_decoder/src/ap_jpeg_h264.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_decoder/src/ap_video_decoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_decoder/src/state_video_decoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_decoder/src/task_audio_decoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_decoder/src/task_audio_wav_dac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_decoder/src/task_audio_wav_decoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_decoder/src/task_video_decoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_display/inc/ap_display_func.h" />
+		<Unit filename="../../application/task_display/inc/task_display.h" />
+		<Unit filename="../../application/task_display/inc/task_display_cfg.h" />
+		<Unit filename="../../application/task_display/src/ap_display_func.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_display/src/task_display.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/inc/audio_codec_callback.h" />
+		<Unit filename="../../application/task_encoder/inc/audio_encoder.h" />
+		<Unit filename="../../application/task_encoder/inc/audio_record.h" />
+		<Unit filename="../../application/task_encoder/inc/lib_sensor_engine.h" />
+		<Unit filename="../../application/task_encoder/inc/task_encoder_cfg.h" />
+		<Unit filename="../../application/task_encoder/src/ap_audio_encoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/ap_video_encoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/audio_codec_callback.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/audio_encoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/audio_record.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/black_jpeg_resource.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/callback_func_codec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/circular_buffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/lib_sensor_engine.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/task_encoder_audio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/task_encoder_packer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_encoder/src/task_encoder_video.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_peripheral_handling/inc/ap_peripheral_handling.h" />
+		<Unit filename="../../application/task_peripheral_handling/inc/task_peripheral_handling.h" />
+		<Unit filename="../../application/task_peripheral_handling/src/ap_peripheral_handling.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_peripheral_handling/src/task_peripheral_handling.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_rtsp_service/inc/h264_server.h" />
+		<Unit filename="../../application/task_rtsp_service/inc/iframes_dragon.h" />
+		<Unit filename="../../application/task_rtsp_service/inc/rtp.h" />
+		<Unit filename="../../application/task_rtsp_service/inc/rtsp.h" />
+		<Unit filename="../../application/task_rtsp_service/src/iframes_dragon.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_rtsp_service/src/rtsp_h264_gp_server.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_socket_cmd/inc/WIFI_MENU.xml" />
+		<Unit filename="../../application/task_socket_cmd/inc/socket_cmd.h" />
+		<Unit filename="../../application/task_socket_cmd/inc/socket_cmd_wifi.h" />
+		<Unit filename="../../application/task_socket_cmd/inc/wifi_menu.h" />
+		<Unit filename="../../application/task_socket_cmd/src/socket_cmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_socket_cmd/src/socket_cmd_wifi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_socket_cmd/src/task_wifi_lib_ext.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/inc/ap_music.h" />
+		<Unit filename="../../application/task_state_handling/inc/ap_state_config.h" />
+		<Unit filename="../../application/task_state_handling/inc/ap_state_handling.h" />
+		<Unit filename="../../application/task_state_handling/inc/ap_state_resource.h" />
+		<Unit filename="../../application/task_state_handling/inc/task_state_handling.h" />
+		<Unit filename="../../application/task_state_handling/src/ap_music.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/src/ap_state_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/src/ap_state_firmware_upgrade.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/src/ap_state_handling.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/src/ap_state_resource.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/src/task_state_handling.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_audio_record/inc/ap_audio_record.h" />
+		<Unit filename="../../application/task_state_handling/state_audio_record/inc/state_audio_record.h" />
+		<Unit filename="../../application/task_state_handling/state_audio_record/src/ap_audio_record.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_audio_record/src/state_audio_record.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_browse/inc/ap_browse.h" />
+		<Unit filename="../../application/task_state_handling/state_browse/inc/state_browse.h" />
+		<Unit filename="../../application/task_state_handling/state_browse/src/ap_browse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_browse/src/ap_browse_engine.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_browse/src/state_browse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_bt_music/inc/bt_music_art.h" />
+		<Unit filename="../../application/task_state_handling/state_bt_music/src/bt_music_art.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_photo_capture/inc/ap_photo_capture.h" />
+		<Unit filename="../../application/task_state_handling/state_photo_capture/inc/state_photo_capture.h" />
+		<Unit filename="../../application/task_state_handling/state_photo_capture/src/ap_photo_capture.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_photo_capture/src/state_photo_capture.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_setting/inc/ap_setting.h" />
+		<Unit filename="../../application/task_state_handling/state_setting/inc/state_setting.h" />
+		<Unit filename="../../application/task_state_handling/state_setting/src/ap_setting.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_setting/src/state_setting.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_startup/inc/ap_startup.h" />
+		<Unit filename="../../application/task_state_handling/state_startup/inc/state_startup.h" />
+		<Unit filename="../../application/task_state_handling/state_startup/src/ap_startup.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_startup/src/state_startup.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_video_record/inc/ap_video_record.h" />
+		<Unit filename="../../application/task_state_handling/state_video_record/inc/state_video_record.h" />
+		<Unit filename="../../application/task_state_handling/state_video_record/src/ap_video_record.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_video_record/src/state_video_record.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_state_handling/state_wifi/inc/state_wifi.h" />
+		<Unit filename="../../application/task_state_handling/state_wifi/src/state_wifi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_storage_service/inc/ap_storage_service.h" />
+		<Unit filename="../../application/task_storage_service/inc/task_storage_service.h" />
+		<Unit filename="../../application/task_storage_service/src/ap_storage_service.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_storage_service/src/task_storage_service.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_usb/inc/ap_usb.h" />
+		<Unit filename="../../application/task_usb/inc/state_usb.h" />
+		<Unit filename="../../application/task_usb/src/ap_usb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_usb/src/state_usbd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_usb/src/state_usbh.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_voice_recognition/inc/ap_voice_recg_func.h" />
+		<Unit filename="../../application/task_voice_recognition/inc/task_voice_recognition.h" />
+		<Unit filename="../../application/task_voice_recognition/src/ap_voice_recg_func.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_voice_recognition/src/task_voice_recognition.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../board_config/inc/board_config.h" />
+		<Unit filename="../../board_config/inc/pinmux_config.h" />
+		<Unit filename="../../board_config/src/board_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/cdsp/inc/drv_l1_cdsp.h" />
+		<Unit filename="../../driver_l1/cdsp/inc/drv_l1_front.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_adc.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_arm_cp15.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_binmode.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_clock.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_csi.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_dac.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_dma.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_gpio.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_hdmi.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_i2s_rx.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_i2s_tx.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_interrupt.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_keychange.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_mipi.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_mipi_tx.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_pscaler.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_rtc.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_scaler.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_system.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_system_fifo.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_tft.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_tft_spi.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_timer.h" />
+		<Unit filename="../../driver_l1/common/inc/drv_l1_uart.h" />
+		<Unit filename="../../driver_l1/common/inc/mmu_table.h" />
+		<Unit filename="../../driver_l1/common/src/arm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_adc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_arm_cp15.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_binmode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_bus_priority.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_clock.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_csi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_dac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_dma.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_gpio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_hdmi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_i2c.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_i2s_rx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_i2s_tx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_interrupt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_keychange.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_mipi_tx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_rotator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_rtc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_spifc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_system_fifo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_tft.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_tft_spi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_timer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_uart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_usbd_irq.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/drv_l1_usbh_irq.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/common/src/mmu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/crypto/inc/drv_l1_crypto.h" />
+		<Unit filename="../../driver_l1/crypto/src/drv_l1_crypto.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/dla/inc/drv_l1_dla.h">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="../../driver_l1/h264/inc/drv_l1_h264.h" />
+		<Unit filename="../../driver_l1/h264/inc/drv_l1_h264_version.h" />
+		<Unit filename="../../driver_l1/h264/inc/drv_l1_h264_version_template.h" />
+		<Unit filename="../../driver_l1/h264/inc/drv_l1_h264scaler.h" />
+		<Unit filename="../../driver_l1/inc/drv_l1.h" />
+		<Unit filename="../../driver_l1/inc/drv_l1_sfr.h" />
+		<Unit filename="../../driver_l1/jpeg/inc/drv_l1_jpeg.h" />
+		<Unit filename="../../driver_l1/sdc/inc/drv_l1_sdc.h" />
+		<Unit filename="../../driver_l1/sdc/src/drv_l1_sdc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/sdc/src/drv_l1_sdc_ext.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l1/usbd/inc/drv_l1_usbd.h" />
+		<Unit filename="../../driver_l1/usbh/inc/drv_l1_usbh.h" />
+		<Unit filename="../../driver_l1/usbh/inc/drv_l1_usbh_ehci.h" />
+		<Unit filename="../../driver_l1/usbh/inc/drv_l1_usbh_iso.h" />
+		<Unit filename="../../driver_l1/usbh/inc/drv_l1_usbh_ohci.h" />
+		<Unit filename="../../driver_l1/usbh/inc/drv_l1_usbh_version.h" />
+		<Unit filename="../../driver_l1/usbh/inc/drv_l1_usbh_version_template.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/drv_l2_3a.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/drv_l2_cdsp.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/drv_l2_cdsp_config.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/drv_l2_user_calibration.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/drv_l2_user_preference.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/gp_3a.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/gp_LensDef.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_calibration.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_gc1054_calibration.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_gc1054_preference.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_gc2053_calibration.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_gc2053_preference.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_gc2083_calibration.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_gc2083_preference.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_gc4653_calibration.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_gc4653_preference.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_jxh42_calibration.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_jxh42_preference.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_jxh62_calibration.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_jxh62_preference.h" />
+		<Unit filename="../../driver_l2/cdsp/inc/lens/gp_preference.h" />
+		<Unit filename="../../driver_l2/cdsp/src/user/drv_l2_cdsp_enable.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/crypto/inc/drv_l2_crypto.h" />
+		<Unit filename="../../driver_l2/crypto/src/drv_l2_crypto.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/csi/inc/drv_l2_csi.h" />
+		<Unit filename="../../driver_l2/csi/src/drv_l2_csi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/inc/drv_l2_display.h" />
+		<Unit filename="../../driver_l2/display/src/drv_l2_display.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_TXDT240C_OTA5182A.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_auo_a027dtn019.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_hdmi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_ili9486l_ck3510s0_i80.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_mipi_320x1280_wt_boe_9707.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_mipi_320x1280_wtl096601g06.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_mipi_480X640_ST7701S.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_mipi_480x1920_WTL096602G02.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_mipi_480x640_hsd_gc9503v.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_mipi_720x1280_st7703_qx550h4001.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_spi_dst_gc9106.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_st7789_i80.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_st7789_i80_240x240.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_t43.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_tp2915.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/display/user/tft_tpo_td025thd1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/dla/inc/BSD_nn_kernel.h" />
+		<Unit filename="../../driver_l2/dla/inc/HW_reg_320X320_BSD.h" />
+		<Unit filename="../../driver_l2/dla/inc/HW_wt_param_320X320_BSD.h" />
+		<Unit filename="../../driver_l2/dla/inc/drv_l2_dla.h" />
+		<Unit filename="../../driver_l2/dla/inc/drv_l2_nn_model.h" />
+		<Unit filename="../../driver_l2/dla/src/drv_l2_dla.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/gsensor/inc/drv_l2_gsensor.h" />
+		<Unit filename="../../driver_l2/gsensor/src/drv_l2_gsensor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/h264/inc/drv_l2_h264_version.h" />
+		<Unit filename="../../driver_l2/h264/inc/drv_l2_h264_version_template.h" />
+		<Unit filename="../../driver_l2/h264/inc/drv_l2_h264dec.h" />
+		<Unit filename="../../driver_l2/h264/inc/drv_l2_h264enc.h" />
+		<Unit filename="../../driver_l2/inc/drv_l2.h" />
+		<Unit filename="../../driver_l2/jpeg/inc/drv_l2_jpeg.h" />
+		<Unit filename="../../driver_l2/jpeg/inc/drv_l2_jpeg_api.h" />
+		<Unit filename="../../driver_l2/jpeg/inc/drv_l2_jpeg_decode.h" />
+		<Unit filename="../../driver_l2/jpeg/inc/drv_l2_jpeg_encode.h" />
+		<Unit filename="../../driver_l2/jpeg/inc/drv_l2_progressive_jpeg_decode.h" />
+		<Unit filename="../../driver_l2/jpeg/src/user/drv_l2_jpeg_api.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/jpeg/src/user/drv_l2_jpeg_header.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/rotator/src/drv_l2_rotator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/scaler/inc/define.h" />
+		<Unit filename="../../driver_l2/scaler/inc/drv_l2_scaler.h" />
+		<Unit filename="../../driver_l2/scaler/src/drv_l2_scaler.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sccb/inc/drv_l2_sccb.h" />
+		<Unit filename="../../driver_l2/sccb/src/drv_l2_sccb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sdc/inc/drv_l2_sdc.h" />
+		<Unit filename="../../driver_l2/sdc/src/drv_l2_sdc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/inc/drv_l2_sensor.h" />
+		<Unit filename="../../driver_l2/sensor/src/drv_l2_sensor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_gc1054_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_gc1064_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_gc2053_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_gc2083_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_gc2145_csi_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_gc4653_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_h42_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_h62_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_imx230_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_pr2000_ahd_cdsp_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_pr2000_ahd_csi_dvp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_pr2000_ahd_csi_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_pr2100_ahd_1mipi_cdsp_csi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_pr2100_ahd_mipi_dvp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_rn6752_ahd_cdsp_dvp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_rn6752_ahd_csi_dvp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_tp9950_ahd_csi_dvp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_tp9951_ahd_csi_dvp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_tp9951_ahd_csi_mipi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/sensor/user/sensor_usb_mjpeg_cam.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/src/drv_l2_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/system/inc/drv_l2_system_timer.h" />
+		<Unit filename="../../driver_l2/system/src/drv_l2_system_timer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbd/inc/cdc/drv_l2_usbd_cdc.h" />
+		<Unit filename="../../driver_l2/usbd/inc/drv_l2_usbd.h" />
+		<Unit filename="../../driver_l2/usbd/inc/drv_l2_usbd_version.h" />
+		<Unit filename="../../driver_l2/usbd/inc/drv_l2_usbd_version_template.h" />
+		<Unit filename="../../driver_l2/usbd/inc/msdc/drv_l2_usbd_msdc.h" />
+		<Unit filename="../../driver_l2/usbd/inc/msdc/drv_l2_usbd_msdc_vendor.h" />
+		<Unit filename="../../driver_l2/usbd/inc/uac/drv_l2_usbd_uac.h" />
+		<Unit filename="../../driver_l2/usbd/inc/uvc/drv_l2_usbd_uvc_jpeg_data.h" />
+		<Unit filename="../../driver_l2/usbd/inc/uvc/drv_l2_usbd_uvc_uc.h" />
+		<Unit filename="../../driver_l2/usbd/src/user/drv_l2_usbd_cdc_desc_tbl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbd/src/user/drv_l2_usbd_msdc_descriptor_tbl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbd/src/user/drv_l2_usbd_msdc_user_vendor_cmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbd/src/user/drv_l2_usbd_user_def.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbd/src/user/drv_l2_usbd_user_uac_tbl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbd/src/user/drv_l2_usbd_uvc_uc_descriptor_tbl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbd/src/user/storage/ramdisk_storage.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbd/src/user/storage/sdcdisk_storage.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/usbh/inc/drv_l2_usbh.h" />
+		<Unit filename="../../driver_l2/usbh/inc/drv_l2_usbh_uvc.h" />
+		<Unit filename="../../driver_l2/usbh/inc/drv_l2_usbh_version.h" />
+		<Unit filename="../../driver_l2/usbh/inc/drv_l2_usbh_version_template.h" />
+		<Unit filename="../../driver_l2/vcm/inc/drv_l2_actuator.h" />
+		<Unit filename="../../driver_l2/vcm/src/drv_l2_actuator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/vcm/user/ad5823.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../driver_l2/vcm/user/dw9714p.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/MultiMediaParser/gplib_AviParser/Src/AviIndex.cpp" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_AviParser/Src/AviIndex.h" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_AviParser/Src/AviIndex_def.h" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_AviParser/Src/AviParser.cpp" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_AviParser/Src/AviParser.h" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_AviParser/Src/AviParser_comm.h" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_MultiMediaParser/Src/MediaParser.h" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_MultiMediaParser/Src/MultiMediaParser.h" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_MultiMediaParser/Src/MultiMediaParser_Task.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/MultiMediaParser/gplib_MultiMediaParser/Src/MultiMediaParser_def.h" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_QtffParser/Src/ParseAud.cpp" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_QtffParser/Src/ParseVid.cpp" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_QtffParser/Src/QtffParser.cpp" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_QtffParser/Src/QtffParser.h" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_QtffParser/Src/QtffParser_BaseModule.cpp" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_QtffParser/Src/QtffParser_comm.cpp" />
+		<Unit filename="../../gplib/MultiMediaParser/gplib_QtffParser/Src/QtffParser_comm.h" />
+		<Unit filename="../../gplib/calendar/inc/gplib_calendar.h" />
+		<Unit filename="../../gplib/calendar/src/gplib_calendar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/dynamic_quality/inc/video_codec_dynamic_quality.h" />
+		<Unit filename="../../gplib/dynamic_quality/src/video_codec_dynamic_quality.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/fs/driver/drv_struct.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/fs/driver/fs_driver.h" />
+		<Unit filename="../../gplib/fs/driver/fs_drv_manager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/fs/driver/ramdisk.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/fs/driver/sd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/fs/driver/spi_flash_disk.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/fs/fs.h" />
+		<Unit filename="../../gplib/fs/include/buffer.h" />
+		<Unit filename="../../gplib/fs/include/cds.h" />
+		<Unit filename="../../gplib/fs/include/date.h" />
+		<Unit filename="../../gplib/fs/include/dcb.h" />
+		<Unit filename="../../gplib/fs/include/device.h" />
+		<Unit filename="../../gplib/fs/include/dirmatch.h" />
+		<Unit filename="../../gplib/fs/include/error.h" />
+		<Unit filename="../../gplib/fs/include/errors32.h" />
+		<Unit filename="../../gplib/fs/include/fat.h" />
+		<Unit filename="../../gplib/fs/include/fat32.h" />
+		<Unit filename="../../gplib/fs/include/file.h" />
+		<Unit filename="../../gplib/fs/include/filesys32.h" />
+		<Unit filename="../../gplib/fs/include/fnode.h" />
+		<Unit filename="../../gplib/fs/include/format.h" />
+		<Unit filename="../../gplib/fs/include/fsystem.h" />
+		<Unit filename="../../gplib/fs/include/globals.h" />
+		<Unit filename="../../gplib/fs/include/portab.h" />
+		<Unit filename="../../gplib/fs/include/proto.h" />
+		<Unit filename="../../gplib/fs/include/speedup.h" />
+		<Unit filename="../../gplib/fs/include/unicode32.h" />
+		<Unit filename="../../gplib/fs/vfs.h" />
+		<Unit filename="../../gplib/gp_paint/inc/gp_paint.h" />
+		<Unit filename="../../gplib/gp_paint/src/gp_paint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/gpzp/inc/gplib_zp_decode.h" />
+		<Unit filename="../../gplib/gpzp/src/gplib_zp_decode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/h264_rate_control/ratecontrol.h" />
+		<Unit filename="../../gplib/inc/console.h" />
+		<Unit filename="../../gplib/inc/gplib.h" />
+		<Unit filename="../../gplib/inc/gplib_fs.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/dhcp/dhcps.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/dhcp/dhcps.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/include/atbm_lwip_port.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports/freertos/include/arch/cc.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports/freertos/include/arch/sys_arch.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports/freertos/sys_arch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/api_lib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/api_msg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/err.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/if_api.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/netbuf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/netdb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/netifapi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/sockets.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/api/tcpip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/altcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/altcp_alloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/altcp_tcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/def.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/dns.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/inet_chksum.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/autoip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/dhcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/etharp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/icmp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/igmp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/inet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/ip4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/ip4_addr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv4/ip4_frag.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/dhcp6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/ethip6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/icmp6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/inet6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/ip6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/ip6_addr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/ip6_frag.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/mld6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/ipv6/nd6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/mem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/memp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/netif.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/pbuf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/raw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/stats.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/sys.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/tcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/tcp_in.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/tcp_out.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/timeouts.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/core/udp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/compat/posix/arpa/inet.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/compat/posix/net/if.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/compat/posix/netdb.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/compat/posix/sys/socket.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/compat/stdc/errno.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/altcp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/altcp_tcp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/altcp_tls.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/api.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/altcp_proxyconnect.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/altcp_tls_mbedtls_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/fs.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/http_client.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/httpd.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/httpd_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/lwiperf.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/mdns.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/mdns_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/mdns_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/mqtt.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/mqtt_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/mqtt_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/netbiosns.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/netbiosns_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/smtp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/smtp_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp_core.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp_mib2.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp_scalar.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp_snmpv2_framework.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp_snmpv2_usm.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp_table.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmp_threadsync.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/snmpv3.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/sntp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/sntp_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/tftp_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/apps/tftp_server.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/arch.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/autoip.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/debug.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/def.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/dhcp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/dhcp6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/dns.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/err.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/errno.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/etharp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ethip6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/icmp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/icmp6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/if_api.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/igmp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/inet.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/inet_chksum.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/init.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip4.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip4_addr.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip4_frag.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip6_addr.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip6_frag.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip6_zone.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/ip_addr.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/mem.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/memp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/mld6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/nd6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/netbuf.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/netdb.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/netif.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/netifapi.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/opt.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/pbuf.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/altcp_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/api_msg.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/mem_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/memp_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/memp_std.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/nd6_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/raw_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/sockets_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/tcp_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/priv/tcpip_priv.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/autoip.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/dhcp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/dhcp6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/dns.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/etharp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/ethernet.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/iana.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/icmp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/icmp6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/ieee.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/igmp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/ip.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/ip4.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/ip6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/mld6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/nd6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/tcp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/prot/udp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/raw.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/sio.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/snmp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/sockets.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/stats.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/sys.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/tcp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/tcpbase.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/tcpip.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/timeouts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip/udp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/bridgeif.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/bridgeif_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/etharp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ethernet.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ieee802154.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/lowpan6.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/lowpan6_ble.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/lowpan6_common.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/lowpan6_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/ccp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/chap-md5.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/chap-new.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/chap_ms.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/eap.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/ecp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/eui64.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/fsm.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/ipcp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/ipv6cp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/lcp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/magic.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/mppe.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/polarssl/arc4.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/polarssl/des.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/polarssl/md4.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/polarssl/md5.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/polarssl/sha1.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/ppp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/ppp_impl.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/ppp_opts.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/pppapi.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/pppcrypt.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/pppdebug.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/pppoe.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/pppol2tp.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/pppos.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/upap.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/ppp/vj.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/slipif.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif/zepif.h" />
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/bridgeif.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/bridgeif_fdb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ethernet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/lowpan6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/lowpan6_ble.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/lowpan6_common.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/auth.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/ccp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/chap-md5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/chap-new.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/chap_ms.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/demand.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/eap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/ecp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/eui64.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/fsm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/ipcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/ipv6cp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/lcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/magic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/mppe.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/multilink.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/polarssl/arc4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/polarssl/des.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/polarssl/md4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/polarssl/md5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/polarssl/sha1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/ppp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/pppapi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/pppcrypt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/pppoe.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/pppol2tp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/pppos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/upap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/ppp/vj.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/slipif.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/netif/zepif.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/liba_wifi_src/atbm/network/port/atbm_lwip_port.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/src/gplib_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/storages/inc/storages.h" />
+		<Unit filename="../../gplib/storages/src/nvram.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gplib/video_frame_manager/inc/gp_vfm.h" />
+		<Unit filename="../../gplib/video_muxer/inc/gp_avcodec.h" />
+		<Unit filename="../../gplib/video_muxer/inc/gp_mux.h" />
+		<Unit filename="../../gplib/video_muxer/src/Bit_operation.h" />
+		<Unit filename="../../gplib/video_muxer/src/dv_used.h" />
+		<Unit filename="../../gplib/video_muxer/src/mem_util.h" />
+		<Unit filename="../../gplib/video_muxer/src/vid_mp4_packer.h" />
+		<Unit filename="../../gplib/wave_kernel/wave_kernel.h" />
+		<Unit filename="../../gplib/wave_kernel/wavehw.h" />
+		<Unit filename="../../gpstdlib/inc/gp_stdlib.h" />
+		<Unit filename="../../gpstdlib/mm/inc/gplib_mm_gplus.h" />
+		<Unit filename="../../gpstdlib/mm/src/gplib_mm_gplus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gpstdlib/print_string/inc/gplib_print_string.h" />
+		<Unit filename="../../gpstdlib/print_string/src/gplib_print_string.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gpstdlib/print_string/src/stdio_retarget.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gpstdlib/sp_mm/mm_gplus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../gpstdlib/sp_mm/mm_gplus.h" />
+		<Unit filename="../../gpstdlib/src/gp_stdlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/CMSIS/Include/cmsis_gcc.h" />
+		<Unit filename="../../os/CORTEXA/Include/core_ca.h" />
+		<Unit filename="../../os/CORTEXA/Include/core_ca7.h" />
+		<Unit filename="../../os/CORTEXA/Include/cortexa_gcc.h" />
+		<Unit filename="../../os/CORTEXA/Include/cortexa_iar.h" />
+		<Unit filename="../../os/cmsis_os.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/devices/ARMCA7/system_ARMCA7.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/devices/ARMCA7/system_ARMCA7.h" />
+		<Unit filename="../../os/freertos_v202012/Source/croutine.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/freertos_v202012/Source/event_groups.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/freertos_v202012/Source/include/FreeRTOS.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/StackMacros.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/atomic.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/croutine.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/deprecated_definitions.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/event_groups.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/list.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/message_buffer.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/mpu_prototypes.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/mpu_wrappers.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/portable.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/projdefs.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/queue.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/semphr.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/stack_macros.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/stream_buffer.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/task.h" />
+		<Unit filename="../../os/freertos_v202012/Source/include/timers.h" />
+		<Unit filename="../../os/freertos_v202012/Source/list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/freertos_v202012/Source/portable/GCC/ARM_CA9/port.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/freertos_v202012/Source/portable/GCC/ARM_CA9/portASM.S" />
+		<Unit filename="../../os/freertos_v202012/Source/portable/GCC/ARM_CA9/portmacro.h" />
+		<Unit filename="../../os/freertos_v202012/Source/portable/MemMang/heap_5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/freertos_v202012/Source/queue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/freertos_v202012/Source/stream_buffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/freertos_v202012/Source/tasks.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../os/freertos_v202012/Source/timers.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../resource/inc/resource.h" />
+		<Unit filename="../../resource/inc/resource_general.h" />
+		<Unit filename="../../resource/src/resource.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../resource/src/resource_GP420.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../resource/src/resource_RGB565.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../resource/src/resource_YUYV.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Include/FreeRTOSConfig.h" />
+		<Unit filename="../Include/bt_audio_task.h" />
+		<Unit filename="../Include/bt_xstack_demo.h" />
+		<Unit filename="../Include/project.h" />
+		<Unit filename="../Include/typedef.h" />
+		<Unit filename="../Setup/GPCV2178_512Mb.ld" />
+		<Unit filename="../Setup/startup_GPCV2178.S" />
+		<Unit filename="../wifi_demo/atbm_wifi_probe_demo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../wifi_demo/bt_audio_task.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../wifi_demo/bt_xstack_demo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../wifi_demo/bt_ui_events.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="inc/application_cfg.h" />
+		<Unit filename="inc/bus_priority_cfg.h" />
+		<Unit filename="inc/customer.h" />
+		<Unit filename="inc/usbh_uvc.h" />
+		<Unit filename="inc/uvc_func_api.h" />
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../application/task_lvgl/inc/state_lvgl.h" />
+		<Unit filename="../../application/task_lvgl/src/state_lvgl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_disp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_event.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_group.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_indev.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_indev_scroll.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_obj.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_obj_class.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_obj_draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_obj_pos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_obj_scroll.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_obj_style.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_obj_style_gen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_obj_tree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_refr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/core/lv_theme.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_arc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_img.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_label.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_layer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_line.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_mask.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_rect.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_transform.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_draw_triangle.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_img_buf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_img_cache.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/lv_img_decoder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_arc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_blend.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_dither.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_gradient.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_img.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_layer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_letter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_line.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_polygon.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_rect.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/draw/sw/lv_draw_sw_transform.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/lv_extra.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/layouts/flex/lv_flex.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/layouts/grid/lv_grid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/themes/basic/lv_theme_basic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/themes/default/lv_theme_default.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/themes/mono/lv_theme_mono.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/animimg/lv_animimg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/calendar/lv_calendar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/calendar/lv_calendar_header_arrow.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/calendar/lv_calendar_header_dropdown.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/chart/lv_chart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/colorwheel/lv_colorwheel.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/imgbtn/lv_imgbtn.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/keyboard/lv_keyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/led/lv_led.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/list/lv_list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/menu/lv_menu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/meter/lv_meter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/msgbox/lv_msgbox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/span/lv_span.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/spinbox/lv_spinbox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/spinner/lv_spinner.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/tabview/lv_tabview.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/tileview/lv_tileview.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/widgets/win/lv_win.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/others/fragment/lv_fragment.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/others/fragment/lv_fragment_manager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/others/gridnav/lv_gridnav.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/others/ime/lv_ime_pinyin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/others/imgfont/lv_imgfont.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/others/monkey/lv_monkey.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/others/msg/lv_msg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/extra/others/snapshot/lv_snapshot.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_fmt_txt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_loader.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_10.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_12.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_12_subpx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_14.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_18.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_20.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_22.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_24.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_26.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_28.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_28_compressed.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_30.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_34.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_36.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_38.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_40.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_42.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_44.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_46.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_montserrat_48.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_unscii_8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_unscii_16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_simsun_16_cjk.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_cn_18.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/font/lv_font_dejavu_16_persian_hebrew.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/hal/lv_hal_disp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/hal/lv_hal_indev.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/hal/lv_hal_tick.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_anim.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_anim_timeline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_area.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_async.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_bidi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_color.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_fs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_gc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_ll.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_log.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_lru.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_math.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_mem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_printf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_style.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_style_gen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_timer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_tlsf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_txt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_txt_ap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/misc/lv_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_arc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_bar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_btn.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_btnmatrix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_canvas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_checkbox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_dropdown.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_img.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_label.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_line.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_roller.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_slider.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_switch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_table.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../LVGL/lvgl/src/widgets/lv_textarea.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<projectwizard TargetDevice="GPA7740A" isCreated="true" />
+			<debugger>
+				<remote_debugging>
+					<options conn_type="0" ip_address="localhost" ip_port="2331" clock_rate="1000" target_device="GPA7740A" remote_server="Other (External tool)" Break_at_Main="0" Break_at_Main_Symbol="main" En_BeforeDownload_Script="0" En_AfterReset_Script="0" En_ReplaceBody_Script="0" En_AfterDownload_Script="0" En_StackOverflowDetection="1" En_Semihosting="0" En_StepMode="0" En_SupportRTOS="0" />
+				</remote_debugging>
+				<remote_debugging target="Debug">
+					<options conn_type="0" serial_baud="115200" ip_address="localhost" ip_port="2331" clock_rate="auto" target_device="GPA7740A" remote_server="Build in GDB Server" Break_at_Main="1" Break_at_Main_Symbol="main" additional_cmds="monitor reset&#x0A;load" En_BeforeDownload_Script="0" En_AfterReset_Script="0" En_ReplaceBody_Script="0" En_AfterDownload_Script="0" En_StackOverflowDetection="0" En_Semihosting="0" En_StepMode="0" En_SupportRTOS="0" />
+				</remote_debugging>
+				<remote_debugging target="Release">
+					<options conn_type="0" serial_baud="115200" ip_address="localhost" ip_port="2331" clock_rate="auto" target_device="GPA7740A" remote_server="Build in GDB Server" Break_at_Main="1" Break_at_Main_Symbol="main" additional_cmds="monitor reset&#x0A;load" En_BeforeDownload_Script="0" En_AfterReset_Script="0" En_ReplaceBody_Script="0" En_AfterDownload_Script="0" En_StackOverflowDetection="0" En_Semihosting="0" En_StepMode="0" En_SupportRTOS="0" />
+				</remote_debugging>
+			</debugger>
+			<code_completion />
+		</Extensions>
+	</Project>
+</emIDE_project_file>

@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<emIDE_project_file>
+	<FileVersion major="1" minor="7" />
+	<Project>
+		<Option title="ATBM_WiFi_Library" />
+		<Option execution_dir="." />
+		<Option pch_mode="2" />
+		<Option compiler="armelfgcc" />
+		<Option DownloadLog="-1" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../../gplib/liba_wifi_src/atbm/atbm6165/wlan_lib/atbm_wifi" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="armelfgcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-g" />
+					<Add option="-mfpu=neon-vfpv4" />
+					<Add option="-mfloat-abi=softfp" />
+					<Add option="-Wall" />
+					<Add option="-DWIFI_DEMO=1" />
+					<Add option="-DWIFI_VENDOR=3" />
+					<Add option="-D__CS_COMPILER__" />
+					<Add option="-DGP_FREERTOS" />
+					<Add option="-fdata-sections" />
+					<Add option="-ffunction-sections" />
+					<Add option="-mcpu=cortex-a7" />
+					<Add directory="../../GPCV2178_Turnkey_SDK/inc" />
+					<Add directory="../../Include" />
+					<Add directory="../../../board_config/inc" />
+					<Add directory="../../../os" />
+					<Add directory="../../../os/freertos_v202012/Source/include" />
+					<Add directory="../../../os/freertos_v202012/Source/portable/GCC/ARM_CA9" />
+					<Add directory="../../../os/CMSIS/Include" />
+					<Add directory="../../../os/CORTEXA/Include" />
+					<Add directory="../../../driver_l1/inc" />
+					<Add directory="../../../driver_l1/common/inc" />
+					<Add directory="../../../driver_l1/cdsp/inc" />
+					<Add directory="../../../driver_l1/crypto/inc" />
+					<Add directory="../../../driver_l1/h264/inc" />
+					<Add directory="../../../driver_l1/jpeg/inc" />
+					<Add directory="../../../driver_l1/ppu/inc" />
+					<Add directory="../../../driver_l1/sdc/inc" />
+					<Add directory="../../../driver_l1/usbd/inc" />
+					<Add directory="../../../driver_l1/usbh/inc" />
+					<Add directory="../../../driver_l2/inc" />
+					<Add directory="../../../driver_l2/ad_key/inc" />
+					<Add directory="../../../driver_l2/ad_keyscan/inc" />
+					<Add directory="../../../driver_l2/cdsp/inc" />
+					<Add directory="../../../driver_l2/crypto/inc" />
+					<Add directory="../../../driver_l2/csi/inc" />
+					<Add directory="../../../driver_l2/display/inc" />
+					<Add directory="../../../driver_l2/h264/inc" />
+					<Add directory="../../../driver_l2/hdmi/inc" />
+					<Add directory="../../../driver_l2/ipu/inc" />
+					<Add directory="../../../driver_l2/jpeg/inc" />
+					<Add directory="../../../driver_l2/power_save/inc" />
+					<Add directory="../../../driver_l2/scaler/inc" />
+					<Add directory="../../../driver_l2/sccb/inc" />
+					<Add directory="../../../driver_l2/sensor/inc" />
+					<Add directory="../../../driver_l2/spi_flash/inc" />
+					<Add directory="../../../driver_l2/sdc/inc" />
+					<Add directory="../../../driver_l2/usbd/inc" />
+					<Add directory="../../../driver_l2/usbd/inc/uvc" />
+					<Add directory="../../../driver_l2/usbd/inc/uac" />
+					<Add directory="../../../driver_l2/usbd/inc/msdc" />
+					<Add directory="../../../driver_l2/usbd/inc/cdc" />
+					<Add directory="../../../driver_l2/usbh/inc" />
+					<Add directory="../../../driver_l2/vcm/inc" />
+					<Add directory="../../../driver_l2/gsensor/inc" />
+					<Add directory="../../../driver_l2/system/inc" />
+					<Add directory="../../../driver_l2/iram/inc" />
+					<Add directory="../../../driver_l2/rotator/inc" />
+					<Add directory="../../../gplib/fs" />
+					<Add directory="../../../gplib/calendar/inc" />
+					<Add directory="../../../gpstdlib/mm/inc" />
+					<Add directory="../../../gpstdlib/sp_mm" />
+					<Add directory="../../../gpstdlib/print_string/inc" />
+					<Add directory="../../../gplib/fs/include" />
+					<Add directory="../../../gplib/inc" />
+					<Add directory="../../../gplib/fs/driver" />
+					<Add directory="../../../gplib/ppu/inc" />
+					<Add directory="../../../gplib/h264_rate_control" />
+					<Add directory="../../../gplib/video_frame_manager/inc" />
+					<Add directory="../../../gplib/gpzp/inc" />
+					<Add directory="../../../gplib/video_muxer/inc" />
+					<Add directory="../../../gplib/dynamic_quality/inc" />
+					<Add directory="../../../gplib/avi_packer" />
+					<Add directory="../../../gplib/MultiMediaParser/gplib_AviParser/Src" />
+					<Add directory="../../../gplib/MultiMediaParser/gplib_MultiMediaParser/Src" />
+					<Add directory="../../../gplib/video_muxer/src" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports/freertos/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/core" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/wlan_lib" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/bt_api" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/api" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/os/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/sdio" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/include/proto" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/include" />
+					<Add directory="../../../gplib/wave_kernel" />
+					<Add directory="../../../gplib/storages/inc" />
+					<Add directory="../../../gplib/gp_paint/inc" />
+					<Add directory="../../../gplib/MultiMediaParser/gplib_QtffParser/Src" />
+					<Add directory="../../../gpstdlib/inc" />
+					<Add directory="../../../application/inc" />
+					<Add directory="../../../application/msg_manager/inc" />
+					<Add directory="../../../application/task_display/inc" />
+					<Add directory="../../../application/task_state_handling/inc" />
+					<Add directory="../../../application/task_state_handling/state_browse/inc" />
+					<Add directory="../../../application/task_state_handling/state_photo_capture/inc" />
+					<Add directory="../../../application/task_state_handling/state_setting/inc" />
+					<Add directory="../../../application/task_state_handling/state_startup/inc" />
+					<Add directory="../../../application/task_state_handling/state_video_record/inc" />
+					<Add directory="../../../application/task_state_handling/state_audio_record/inc" />
+					<Add directory="../../../application/task_encoder/inc" />
+					<Add directory="../../../application/task_storage_service/inc" />
+					<Add directory="../../../application/task_peripheral_handling/inc" />
+					<Add directory="../../../application/task_decoder/inc" />
+					<Add directory="../../../application/task_usb/inc" />
+					<Add directory="../../../application/task_socket_cmd/inc" />
+					<Add directory="../../../application/task_rtsp_service/inc" />
+					<Add directory="../../../application/task_voice_recognition/inc" />
+					<Add directory="../../../resource/inc" />
+					<Add directory="../../../application/task_state_handling/state_wifi/inc" />
+					<Add directory="../../../application/task_bsd/inc" />
+					<Add directory="../../../driver_l2/dla/inc" />
+					<Add directory="../../../driver_l1/dla/inc" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/dhcp" />
+				</Compiler>
+				<Linker />
+				<PostOutput>
+					<ConvertedOutput PostOutputCreate="0" />
+					<ConvertedOutput PostOutputType="HEX" />
+					<ConvertedOutput PostOutputFile="${TARGET_OUTPUT_DIR}${TARGET_OUTPUT_BASENAME}" />
+				</PostOutput>
+			</Target>
+		</Build>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/api/atbm_api.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_ap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_bh.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_etf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_queue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_skbuf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_sta.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_task.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_thread.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_timer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_txrx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_wifi_driver_api.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_wifi_interface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/atbm_wsm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/compress/compress.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/compress/pq.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/sdio/atbm_dcxo_dpll.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/sdio/atbm_sdio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/sdio/atbm_sdio_fwio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/sdio/atbm_sdio_hwio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/smartconfig.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/atbm_agg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/atbm_bridge.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/atbm_connect.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/atbm_key.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/atbm_mgmt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/atbm_ratectrl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/atbm_rc80211_hmac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/atbm_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/aes_core.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/aes-cbc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/base64.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/bignum.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/crypto_internal-modexp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/dh_group5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/dh_groups.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/sha256-internal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/sha256.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/hostapd_main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_build.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_common.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_dev_disc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_go_neg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_group.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_invitation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_parse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_pd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_sd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/p2p_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/wifi_display.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/crypto_mbedlts.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/dragonfly.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/ecp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/ecp_curves.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/pmksa_cache.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/sae.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sha1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wpa_common.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wpa_debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wpa_event.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wpa_main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wpabuf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/eap_common.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/eap_register.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/eap_server_wsc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/ieee802_11_common.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/uuid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_attr_build.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_attr_parse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_attr_process.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_common.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_dev_attr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_enrollee.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_hostapd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_registrar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_sta.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/wps_validate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_api.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_atomic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_mem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_msgQ.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_mutex.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_sdio_gp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_skbuf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_spinlock.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_thread.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/atbm_os_timer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/source/atbm_gp_sdio_card.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/source/atbm_gp_sdio_cis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../gplib/liba_wifi_src/atbm/atbm6165/platform/generalplus/sdio/source/atbm_gp_sdio_l2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<projectwizard TargetDevice="GPA7740A" isCreated="true" />
+			<code_completion />
+		</Extensions>
+	</Project>
+</emIDE_project_file>

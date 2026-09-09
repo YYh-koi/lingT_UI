@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<emIDE_project_file>
+	<FileVersion major="1" minor="7" />
+	<Project>
+		<Option title="BTstack_Library" />
+		<Option execution_dir="." />
+		<Option pch_mode="2" />
+		<Option compiler="armelfgcc" />
+		<Option DownloadLog="-1" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../../gplib/liba_wifi_src/atbm/atbm6165/bt/xstack" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="armelfgcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-g" />
+					<Add option="-mfpu=neon-vfpv4" />
+					<Add option="-mfloat-abi=softfp" />
+					<Add option="-Wall" />
+					<Add option="-DWIFI_DEMO=1" />
+					<Add option="-DWIFI_VENDOR=3" />
+					<Add option="-D__CS_COMPILER__" />
+					<Add option="-DGP_FREERTOS" />
+					<Add option="-fdata-sections" />
+					<Add option="-ffunction-sections" />
+					<Add option="-mcpu=cortex-a7" />
+					<Add option="-DBTSTACK_BUILD_VARIANT_AT=1" />
+					<Add option="-include ../../../btstack/ports/gpcv2178/btstack_gpcv2178_config.h" />
+					<Add directory="../../GPCV2178_Turnkey_SDK/inc" />
+					<Add directory="../../Include" />
+					<Add directory="../../../board_config/inc" />
+					<Add directory="../../../os" />
+					<Add directory="../../../os/freertos_v202012/Source/include" />
+					<Add directory="../../../os/freertos_v202012/Source/portable/GCC/ARM_CA9" />
+					<Add directory="../../../os/CMSIS/Include" />
+					<Add directory="../../../os/CORTEXA/Include" />
+					<Add directory="../../../driver_l1/inc" />
+					<Add directory="../../../driver_l1/common/inc" />
+					<Add directory="../../../driver_l1/cdsp/inc" />
+					<Add directory="../../../driver_l1/crypto/inc" />
+					<Add directory="../../../driver_l1/h264/inc" />
+					<Add directory="../../../driver_l1/jpeg/inc" />
+					<Add directory="../../../driver_l1/ppu/inc" />
+					<Add directory="../../../driver_l1/sdc/inc" />
+					<Add directory="../../../driver_l1/usbd/inc" />
+					<Add directory="../../../driver_l1/usbh/inc" />
+					<Add directory="../../../driver_l2/inc" />
+					<Add directory="../../../driver_l2/ad_key/inc" />
+					<Add directory="../../../driver_l2/ad_keyscan/inc" />
+					<Add directory="../../../driver_l2/cdsp/inc" />
+					<Add directory="../../../driver_l2/crypto/inc" />
+					<Add directory="../../../driver_l2/csi/inc" />
+					<Add directory="../../../driver_l2/display/inc" />
+					<Add directory="../../../driver_l2/h264/inc" />
+					<Add directory="../../../driver_l2/hdmi/inc" />
+					<Add directory="../../../driver_l2/ipu/inc" />
+					<Add directory="../../../driver_l2/jpeg/inc" />
+					<Add directory="../../../driver_l2/power_save/inc" />
+					<Add directory="../../../driver_l2/scaler/inc" />
+					<Add directory="../../../driver_l2/sccb/inc" />
+					<Add directory="../../../driver_l2/sensor/inc" />
+					<Add directory="../../../driver_l2/spi_flash/inc" />
+					<Add directory="../../../driver_l2/sdc/inc" />
+					<Add directory="../../../driver_l2/usbd/inc" />
+					<Add directory="../../../driver_l2/usbd/inc/uvc" />
+					<Add directory="../../../driver_l2/usbd/inc/uac" />
+					<Add directory="../../../driver_l2/usbd/inc/msdc" />
+					<Add directory="../../../driver_l2/usbd/inc/cdc" />
+					<Add directory="../../../driver_l2/usbh/inc" />
+					<Add directory="../../../driver_l2/vcm/inc" />
+					<Add directory="../../../driver_l2/gsensor/inc" />
+					<Add directory="../../../driver_l2/system/inc" />
+					<Add directory="../../../driver_l2/iram/inc" />
+					<Add directory="../../../driver_l2/rotator/inc" />
+					<Add directory="../../../gplib/fs" />
+					<Add directory="../../../gplib/calendar/inc" />
+					<Add directory="../../../gpstdlib/mm/inc" />
+					<Add directory="../../../gpstdlib/sp_mm" />
+					<Add directory="../../../gpstdlib/print_string/inc" />
+					<Add directory="../../../gplib/fs/include" />
+					<Add directory="../../../gplib/inc" />
+					<Add directory="../../../gplib/fs/driver" />
+					<Add directory="../../../gplib/ppu/inc" />
+					<Add directory="../../../gplib/h264_rate_control" />
+					<Add directory="../../../gplib/video_frame_manager/inc" />
+					<Add directory="../../../gplib/gpzp/inc" />
+					<Add directory="../../../gplib/video_muxer/inc" />
+					<Add directory="../../../gplib/dynamic_quality/inc" />
+					<Add directory="../../../gplib/avi_packer" />
+					<Add directory="../../../gplib/MultiMediaParser/gplib_AviParser/Src" />
+					<Add directory="../../../gplib/MultiMediaParser/gplib_MultiMediaParser/Src" />
+					<Add directory="../../../gplib/video_muxer/src" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/lwip" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/src/include/netif" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports/freertos/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/lwip_v2.1.3/ports" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/wlan_lib" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/bt_api" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/api" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/os/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/os/freertos/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/hal/sdio" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/include/proto" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/crypto/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/p2p/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/sae/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/atbm6165/net/wpa/wps/include" />
+					<Add directory="../../../gplib/wave_kernel" />
+					<Add directory="../../../gplib/storages/inc" />
+					<Add directory="../../../gplib/gp_paint/inc" />
+					<Add directory="../../../gplib/MultiMediaParser/gplib_QtffParser/Src" />
+					<Add directory="../../../gpstdlib/inc" />
+					<Add directory="../../../application/inc" />
+					<Add directory="../../../application/msg_manager/inc" />
+					<Add directory="../../../application/task_display/inc" />
+					<Add directory="../../../application/task_state_handling/inc" />
+					<Add directory="../../../application/task_state_handling/state_browse/inc" />
+					<Add directory="../../../application/task_state_handling/state_photo_capture/inc" />
+					<Add directory="../../../application/task_state_handling/state_setting/inc" />
+					<Add directory="../../../application/task_state_handling/state_startup/inc" />
+					<Add directory="../../../application/task_state_handling/state_video_record/inc" />
+					<Add directory="../../../application/task_state_handling/state_audio_record/inc" />
+					<Add directory="../../../application/task_encoder/inc" />
+					<Add directory="../../../application/task_storage_service/inc" />
+					<Add directory="../../../application/task_peripheral_handling/inc" />
+					<Add directory="../../../application/task_decoder/inc" />
+					<Add directory="../../../application/task_usb/inc" />
+					<Add directory="../../../application/task_socket_cmd/inc" />
+					<Add directory="../../../application/task_rtsp_service/inc" />
+					<Add directory="../../../application/task_voice_recognition/inc" />
+					<Add directory="../../../resource/inc" />
+					<Add directory="../../../application/task_state_handling/state_wifi/inc" />
+					<Add directory="../../../application/task_bsd/inc" />
+					<Add directory="../../../driver_l2/dla/inc" />
+					<Add directory="../../../driver_l1/dla/inc" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/include" />
+					<Add directory="../../../gplib/liba_wifi_src/atbm/network/dhcp" />
+					<Add directory="../../../btstack/ports/gpcv2178" />
+					<Add directory="../../../btstack/include" />
+					<Add directory="../../../btstack/src" />
+					<Add directory="../../../btstack/3rd-party/bluedroid/decoder/include" />
+					<Add directory="../../../btstack/3rd-party/md5" />
+					<Add directory="../../../btstack/3rd-party/yxml" />
+					<Add directory="../../../btstack/transport" />
+					<Add directory="../../../btstack/gap" />
+					<Add directory="../../../btstack/core" />
+					<Add directory="../../../btstack/at" />
+					<Add directory="../../../btstack/include/core" />
+					<Add directory="../../../btstack/include/at" />
+				</Compiler>
+				<Linker />
+				<PostOutput>
+					<ConvertedOutput PostOutputCreate="0" />
+					<ConvertedOutput PostOutputType="HEX" />
+					<ConvertedOutput PostOutputFile="${TARGET_OUTPUT_DIR}${TARGET_OUTPUT_BASENAME}" />
+				</PostOutput>
+			</Target>
+		</Build>
+		<Unit filename="../../../btstack/ports/gpcv2178/btstack_gpcv2178_port.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/ports/gpcv2178/btstack_platform_gpcv2178.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/ports/gpcv2178/btstack_rtos_gpcv2178.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/ports/gpcv2178/btstack_run_loop_gpcv2178.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/ports/gpcv2178/btstack_uart_gpcv2178.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/ports/gpcv2178/btstack_control_gpcv2178.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/ports/gpcv2178/btstack_storage_gpcv2178.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/ports/gpcv2178/btstack_hci_dump_gpcv2178.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_profile_manager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_a2dp_sink.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_a2dp_media.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_hfp_hf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_gatt_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_gatt_server.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_hid_device.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_hogp_device.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_avrcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_avrcp_controller.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_avrcp_target.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_pbap_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/profiles/btstack_vcard_parser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/at/btstack_at.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/at/btstack_at_core_adapter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/at/btstack_at_command_table.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/at/btstack_at_dispatch_table.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/at/btstack_at_parser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/at/btstack_at_protocol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/transport/hci_transport_h5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/transport/hci_transport_h4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/transport/btstack_slip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/transport/btstack_uart_slip_wrapper.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_adapter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_call_audio_tx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_core_dispatcher.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_event_mapper.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_platform.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_port_ops.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_property.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_ring.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_runtime.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/core/btstack_event_queue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/gap/btstack_gap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/gap/btstack_gap_classic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/gap/btstack_gap_le.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/gap/btstack_gap_ad_data.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/ble/att_db.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/ble/att_db_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/ble/att_dispatch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/ble/att_server.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/ble/gatt_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/ble/sm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/ble/le_device_db_memory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/btstack_crypto.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/btstack_tlv.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/ad_parser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/btstack_linked_list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/btstack_memory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/btstack_memory_pool.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/btstack_run_loop.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/btstack_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/hci.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/hci_cmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/hci_dump.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/hci_event.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/hci_event_builder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/l2cap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/l2cap_signaling.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/sdp_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/sdp_server.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/sdp_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/sdp_client_rfcomm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/rfcomm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/avdtp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/avdtp_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/avdtp_acceptor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/avdtp_initiator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/avdtp_sink.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/a2dp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/a2dp_sink.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/avrcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/avrcp_controller.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/avrcp_target.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/hfp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/hfp_hf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/pbap_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/goep_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/obex_message_builder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/obex_parser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/obex_iterator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/obex_srm_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/md5/md5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/yxml/yxml.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/btstack_sbc_decoder_bluedroid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/src/classic/btstack_sbc_plc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/alloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/bitalloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/bitalloc-sbc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/bitstream-decode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/decoder-oina.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/decoder-private.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/decoder-sbc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/dequant.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/framing.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/framing-sbc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/oi_codec_version.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/synthesis-sbc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/synthesis-dct8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../btstack/3rd-party/bluedroid/decoder/srce/synthesis-8-generated.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<projectwizard TargetDevice="GPA7740A" isCreated="true" />
+			<code_completion />
+		</Extensions>
+	</Project>
+</emIDE_project_file>

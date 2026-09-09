@@ -1,0 +1,14 @@
+Imported for the GPCV2178 A2DP Sink PCM path.
+
+Upstream: https://github.com/bluekitchen/btstack
+Pinned commit: 3bd65e43040e1e159988711f668c085ea3733b74
+Imported directories:
+  3rd-party/bluedroid/decoder/include
+  3rd-party/bluedroid/decoder/srce
+Imported BTstack wrappers:
+  src/classic/btstack_sbc_decoder_bluedroid.c
+  src/classic/btstack_sbc_plc.c
+
+The OI/Android decoder files retain their Apache-2.0 license notices.
+The BTstack wrapper files retain their original BlueKitchen license notices.
+No decoder arithmetic was modified during import.

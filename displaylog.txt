@@ -1,0 +1,205 @@
+
+[13:58:11.504]收←◆
+io_trap = 0x1D, sys = 72000000, cpu = 216000000 =0x1D ddr=18000000
+1st pwr on
+ICE mode ...
+
+[13:58:38.359]收←◆reliable  = 0x15 
+Ext RTC reliable is OK
+
+[13:58:38.414]收←◆[0] bus num:17 wc:0x30 lowest:1 
+[1] bus num:54 wc:0x30 lowest:1 
+[2] bus num:56 wc:0x60 lowest:1 
+
+clock freq: sys=222000000, cpu=666000000, pll=666000000, ddr=534000000
+set sd[1] bit_mode to 4
+set sd[0] bit_mode to 4
+==SYS_CLK=222000000==
+==SVN:1584:1864==Build Time:2026/06/02 09:02:41==
+==MEM Start:0x3b3bc0==Free:0x3c3c43f==
+==Run:display_task_init==
+==Run:peripheral_handling_task_init==
+==Run:state_handling_task_init==
+==Run:state_app_init==
+==Run:video_encode_state_task_init==
+==Run:audio_encode_state_task_init==
+Aud[0]=0x3b3c00
+Aud[1]=0x3b4c40
+Aud[2]=0x3b5c80
+Aud[3]=0x3b6cc0
+Aud[4]=0x3b7d00
+Aud[5]=0x3b8d40
+Aud[6]=0x3b9d80
+Aud[7]=0x3badc0
+Aud[8]=0x3bbe00
+Aud[9]=0x3bce40
+Aud[10]=0x3bde80
+Aud[11]=0x3beec0
+Aud[12]=0x3bff00
+Aud[13]=0x3c0f40
+Aud[14]=0x3c1f80
+Aud[15]=0x3c2fc0
+Aud[16]=0x3c4000
+Aud[17]=0x3c5040
+Aud[18]=0x3c6080
+Aud[19]=0x3c70c0
+Aud[20]=0x3c8100
+Aud[21]=0x3c9140
+Aud[22]=0x3ca180
+Aud[23]=0x3cb1c0
+Aud[24]=0x3cc200
+Aud[25]=0x3cd240
+Aud[26]=0x3ce280
+Aud[27]=0x3cf2c0
+Aud[28]=0x3d0300
+Aud[29]=0x3d1340
+Aud[30]=0x3d2380
+Aud[31]=0x3d33c0
+Aud[32]=0x3d4400
+Aud[33]=0x3d5440
+Aud[34]=0x3d6480
+Aud[35]=0x3d74c0
+Aud[36]=0x3d8500
+Aud[37]=0x3d9540
+Aud[38]=0x3da580
+Aud[39]=0x3db5c0
+Aud[40]=0x3dc600
+Aud[41]=0x3dd640
+Aud[42]=0x3de680
+Aud[43]=0x3df6c0
+Aud[44]=0x3e0700
+Aud[45]=0x3e1740
+Aud[46]=0x3e2780
+Aud[47]=0x3e37c0
+Aud[48]=0x3e4800
+Aud[49]=0x3e5840
+Aud[50]=0x3e6880
+Aud[51]=0x3e78c0
+Aud[52]=0x3e8900
+Aud[53]=0x3e9940
+Aud[54]=0x3ea980
+==Run:audio_dec_task_init==
+==Run:display_task_entry==
+display_frame(cnt=5) addr = 0x3eba00
+display_frame_pool[1] addr = 0x518200
+display_frame_pool[2] addr = 0x644a00
+display_frame_pool[3] addr = 0x771200
+display_frame_pool[4] addr = 0x89da00
+
+==TP2915-INIT-ENTER==
+Run tft_tp2915_init
+[TP2915] bank write (TFT_1)
+[TP2915] rb_switch ok
+[TP2915] signal_inv ok
+[TP2915] mode ok
+[TP2915] data_mode ok
+[TP2915] clk ok
+[TP2915] pre-en ctrl=0x0000003a
+[TP2915] post-en
+[TP2915] colorbar-fill FBI=0x003eba00
+[TP2915] colorbar-fill cache_flushed
+tft_tp2915_init OK
+audio_dac_task_entry ... 
+audio_task_init ... 
+audio memory = 38024
+decode memory -- 0x299940
+audio_dec_task_entry ... 
+==Run:state_handling_entry==
+state_handling_init ... 
+spifc target rate: 18500000, act rate 18500000
+SPIFC Header Tag is wrong 0x73704750
+load CRC = 63 89 57 02
+expect CRC = 24 ba 41 fa
+crc error
+nv_open retry fail~~~~~~!
+Failed to open resource from NVRAM 
+volume = 19
+state_handling_init OK!
+state_handling_entry ... 
+==Run:state_startup_entry==
+==Run:video_encode_state_task_entry==
+==Run:audio_encode_state_task_entry==
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+state_startup_init ... 
+volume = 19
+nv_open retry fail~~~~~~!
+open POWER_ON_LOGO.JPG fail.
+state_startup_entry ... 
+state_startup_exit ... 
+==Run:state_video_record_entry==
+state_video_record_init ... 
+==[ERR][allocate_and_draw_ascii_string_icon:70]==fail to ap_state_resource_ascii_string_resolution_get
+==STATE_VIDEO_RECORD:4==
+==display:[w:1024,h:600,f:1]==
+==pip:[w:128,h:96]==
+atbm_gp_sdio_init card addr 2a84c0 host addr 2a8560
+size gp_sdio_info:160 gp_sdio_ctrl:136 gp_sdio_host:24 68
+##SDIO CMD0 ok!
+##SDIO CMD5 ok! resp=d0ffff00, spend_ms=0
+##SDIO pwrup stable! spend_ms=0
+##SDIO CMD3 ok! resp=10000
+##SDIO CMD7 ok!
+SDIO_CCCR_IF value=0
+atbm_gp_sdio_init_func atbm_gp_wifi_sdio_func addr 364380
+[atbm_log]:atbm_sdio_module_init
+[atbm_log]:atbm_init_firmware
+[atbm_log]:[Wifi] Enter atbm_sdio_module_init 
+[atbm_log]:SVN_VER=4690,DPLL_CLOCK=24,BUILD_TIME=[===SDIO-ATHENAB==
+[atbm_log]:BRT SVN_VER=20260616_4690_brt_r33069
+[atbm_log]:atbm: Atbmwifi_halEntry() <===
+++WORK_TASK =1 WORK_TASK_PRIO
+++ELOOP_TASK =2ELOOP_TASK_PRIO
+
+[13:58:38.811]收←◆[atbm_log]:atbm_init_chip_priv : chip_id = 31 
+[atbm_log]:atbm_register_bh
+[atbm_log]:atbm_urb_queue_init ==>
+++TX_BH_TASK_ =5TX_BH_TASK_PRIO
+[atbm_log]:Thread Atbm_TX 0 start
+++BH_TASK =4BH_TASK_PRIO
+[atbm_log]:Thread Atbm_RX 100 start
+[atbm_log]:atbm_urb_queue_init <==
+++BH_TASK =4BH_TASK_PRIO
+[atbm_log]:Thread atbm_bh 100000 start
+[atbm_log]:atbm_load_bt_firmware++
+[atbm_log]:start load bt fw 491520
+[atbm_log]:bt load itcm start P:2010000, l:78000
+[atbm_log]:atbm_load_firmware_generic: addr 2010000: len 78000
+
+[13:58:38.942]收←◆[atbm_log]:bt load dtcm start P:2800000, l:18000
+[atbm_log]:atbm_load_firmware_generic: addr 2800000: len 18000
+[atbm_log]:BT TEST FW
+[atbm_log]:atbm_before_load_firmware++
+task_peri[atbm_log]:Tp:Thread atbhread atbm_m_timer 0 sttimer 0 staart
+task_perr
+ipheral_handling_entry ... 
+[a[atbm_log]:atbm_before_load_firmware:read 0x16101004,1cdc2240
+tbm_log]:atbm_before_load_firmware:read 0x16101004,1cdc2240
+[atbm_log]:atbm_before_load_firmware:read 0x16100074,0
+[atbm_log]:atbm_before_load_firmware:read 0xa900000 0
+[atbm_log]:atbm_before_load_firmware:0xa900000 [0]
+[atbm_log]:atbm_start_load_firmware++
+[atbm_log]:atbm_start_load_firmware: START DOWNLOAD ICCM=========
+[atbm_log]:atbm_load_firmware_generic: addr 1060000: len 20000
+[atbm_log]:atbm_start_load_firmware: START DOWNLOAD DCCM=========
+[atbm_log]:atbm_load_firmware_generic: addr 1800000: len 8000
+[atbm_log]:START DOWNLOAD BLE SRAM=========
+[atbm_log]:atbm_load_firmware_generic: addr c00000: len fa0
+[atbm_log]:atbm_start_load_firmware: FIRMWARE DOWNLOAD SUCCESS
+[atbm_log]:atbm_after_load_firmware++
+[DEBUG] atbm_gp_sdio_claim_irq
+atbm_gp_sdio_claim_irq irq_handler aa978
+atbm_gp_sdio_claim_irq reg 0x3
+
+[13:58:39.171]收←◆
+io_trap = 0x1D, sys = 72000000, cpu = 216000000 =0x1D ddr=18000000
+1st pwr on
+ICE mode ...

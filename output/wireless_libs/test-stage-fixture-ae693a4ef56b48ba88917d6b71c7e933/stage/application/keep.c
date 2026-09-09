@@ -1,0 +1,1 @@
+non-wireless source fixture

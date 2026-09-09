@@ -1,0 +1,15 @@
+<emIDE_project_file>
+  <Project>
+    <Build>
+      <Target title="Debug">
+        <Linker>
+          <Add option="-T../Setup/test.ld" />
+          <Add library="../../gplib/liba_wifi_src/atbm/atbm6165/wlan_lib/libatbm_wifi.a" />
+          <Add library="../../gplib/liba_wifi_src/atbm/atbm6165/bt/libxstack.a" />
+        </Linker>
+      </Target>
+    </Build>
+    <Unit filename="../../src/active.c"><Option compilerVar="CC" /></Unit>
+    <!-- <Unit filename="../../btstack/src/hidden.c"><Option compilerVar="CC" /></Unit> -->
+  </Project>
+</emIDE_project_file>

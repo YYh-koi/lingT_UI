@@ -1,0 +1,59 @@
+# XSJ0702IH40RI‑127C 时序参数说明
+
+> ⚠️重要：**这份规格书没有给出官方 HSPW (HW)/HBP/HFP、VSPW (VPW)/VBP/VFP 的官方数值**，手册只写了分辨率 1024×600、RGB24bit、支持 DE+HSYNC+VSYNC，没有给消隐时序表。 下面是**同规格 7 寸 1024×600 IPS RGB‑DPI 屏工业通用参考参数（DE 优先模式）**，GPA7XXXA（和 TP2915 都只认这套 RGB888 DPI 时序），先拿这套调通，再微调。
+
+## 参数名词释义
+
+表格
+
+| 别名                 | 全称                        | 含义                                                         |
+| -------------------- | --------------------------- | ------------------------------------------------------------ |
+| **HPW / HSPW / HSW** | Horizontal Sync Pulse Width | 行同步脉冲宽度（像素时钟周期）                               |
+| **HBP**              | Horizontal Back Porch       | 行后肩：HSYNC 结束→有效图像开始之间的空白时钟                |
+| **HFP**              | Horizontal Front Porch      | 行前肩：一行图像结束→下一个 HSYNC 开始前空白时钟             |
+| **VPW / VSPW / VSW** | Vertical Sync Pulse Width   | 场同步脉冲宽度（行数）                                       |
+| **VBP**              | Vertical Back Porch         | 场后肩：VSYNC 结束→第一行图像的空白行数                      |
+| **VFP**              | Vertical Front Porch        | 场前肩：最后一行图像结束→下一帧 VSYNC 前空白行数             |
+| **DCLK / PCLK**      | Dot Clock / Pixel Clock     | 像素时钟，时序基准，每个时钟送出 1 个像素                    |
+| **HDE / VDE**        | Horizontal DE / Vertical DE | DE 信号，**高电平 = RGB 数据有效**，DE 模式靠这个框出图像区域，不需要严格依赖 HSYNC/VSYNC 消隐；这块屏硬件同时引出 DE、HS、VS，**推荐开启 DE 模式**（TP2915 也需要 DE 信号）CSDN博... |
+
+> 公式： H_total = HSPW + HBP + 1024 + HFP V_total = VSPW + VBP + 600 + VFP DCLK = H_total × V_total × 帧率 (60Hz)
+
+## 参考时序（1024×600@60Hz，DE‑MODE，最常用）
+
+表格
+
+| 参数            | 参考值 | 单位        |
+| --------------- | ------ | ----------- |
+| HACT (有效宽度) | 1024   | 像素        |
+| **HSPW(HPW)**   | 20     | DCLK 周期   |
+| **HBP**         | 140    | DCLK 周期   |
+| **HFP**         | 160    | DCLK 周期   |
+| H_TOTAL         | 1344   | DCLK 周期   |
+| VACT (有效高度) | 600    | 行          |
+| **VSPW(VPW)**   | 3      | 行          |
+| **VBP**         | 40     | 行          |
+| **VFP**         | 12     | 行          |
+| V_TOTAL         | 655    | 行          |
+| **DCLK(PCLK)**  | 51 MHz | MHz（60Hz） |
+
+> 信号极性（这块屏绝大多数同型号模组默认）
+
+- PCLK：**上升沿采样数据**
+- HSYNC：低电平有效
+- VSYNC：低电平有效
+- **DE：高电平有效（HDE/VDE 高 = 数据有效）**
+
+## 两种驱动模式（GPA7XXXA SOC 二选一，优先 DE 模式）
+
+### 模式 A：DE 模式（强烈推荐，同时供给 TP2915）
+
+> DE 模式：**DE 信号框住有效画面，HSYNC/VSYNC 依然输出给 TP2915，屏幕 DE 引脚作为主同步**
+
+1. SOC 配置：输出完整 R0‑R7 G0‑G7 B0‑B7 + PCLK + DE + HSYNC + VSYNC
+2. DE 在 HACT=1024、VACT=600 区域输出高电平，消隐区拉低。
+3. TP2915 芯片必须要：RGB888 + PCLK + DE + HSYNC + VSYNC 整套信号，所以必须打开 DE 模式，不能只用 HV 模式。
+
+### 模式 B：HV（同步）模式（不推荐用于接 TP2915）
+
+只靠 HSYNC、VSYNC+HBP/HFP/VBP/VFP 消隐，DE 可以常高；部分屏可以点亮，但 TP2915 对 DE 信号敏感，容易花屏。

@@ -1,0 +1,1 @@
+#define DEPENDENCY_FIXTURE 1

@@ -1,0 +1,27 @@
+diff --git a/src/classic/pbap_client.c b/src/classic/pbap_client.c
+index a5c1a7c..8cf3651 100644
+--- a/src/classic/pbap_client.c
++++ b/src/classic/pbap_client.c
+@@ -966,6 +966,15 @@ static void pbap_packet_handler_goep(pbap_client_t *client, uint8_t *packet, uin
+                         client->state = PBAP_CLIENT_CONNECTED;
+                         pbap_client_emit_operation_complete_event(client, ERROR_CODE_SUCCESS);
+                         break;
++                    case OBEX_RESP_NOT_FOUND:
++                        client->state = PBAP_CLIENT_CONNECTED;
++                        pbap_client_emit_operation_complete_event(client, OBEX_NOT_FOUND);
++                        break;
++                    case OBEX_RESP_UNAUTHORIZED:
++                    case OBEX_RESP_FORBIDDEN:
++                        client->state = PBAP_CLIENT_CONNECTED;
++                        pbap_client_emit_operation_complete_event(client, ERROR_CODE_AUTHENTICATION_FAILURE);
++                        break;
+                     default:
+                         log_info("unexpected response 0x%02x", packet[0]);
+                         client->state = PBAP_CLIENT_CONNECTED;
+@@ -1451,4 +1460,4 @@ void pbap_client_create_sdp_record(uint8_t *service, uint32_t service_record_han
+     // 0x0100 "Service Name"
+     de_add_number(service,  DE_UINT, DE_SIZE_16, 0x0100);
+     de_add_data(service,  DE_STRING, (uint16_t) strlen(service_name), (uint8_t *) service_name);
+-}
+\ No newline at end of file
++}

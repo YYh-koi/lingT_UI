@@ -1,0 +1,6 @@
+#ifndef L1_USBH_VERSION_H
+#define L1_USBH_VERSION_H
+
+#define L1_USBH_SVN_VERSION				"15623 - 15650 "
+#define L1_USBH_LIB_BUILD_TIME		"2023/03/22 15:10:50"
+#endif  // endif L1_USBH_VERSION_H

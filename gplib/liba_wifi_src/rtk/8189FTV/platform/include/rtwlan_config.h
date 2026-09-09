@@ -1,0 +1,20 @@
+//#define CONFIG_PLATFOMR_CUSTOMER_RTOS
+#define DRV_NAME "RTL8821CS"
+#define DRIVERVERSION "fd99462c5a28d08954670fc78940bfd0991a2983"
+
+#define CONFIG_DEBUG	                    1
+
+#define CONFIG_MP_INCLUDED                  1
+#define CONFIG_MP_NORMAL_IWPRIV_SUPPORT     1
+
+//#define CONFIG_BT_COEXIST		1
+
+#define CONFIG_NO_REFERENCE_FOR_COMPILER   1
+
+#define CONFIG_CONCURRENT_MODE				1
+
+#define MAX_TX_SKB_DATA_NUM   100
+
+#define CONFIG_AUTO_CHNL_SEL_CLM       1
+
+#define CONFIG_P2P_ENABLE        1

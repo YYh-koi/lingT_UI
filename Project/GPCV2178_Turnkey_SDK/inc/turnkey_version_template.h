@@ -1,0 +1,6 @@
+#ifndef TURNKEY_VERSION_H
+#define TURNKEY_VERSION_H
+
+#define TURNKEY_SVN_VERSION				"$WCRANGE$"
+#define TURNKEY_BUILD_TIME				"$WCNOW$"
+#endif  // endif TURNKEY_VERSION_H

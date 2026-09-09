@@ -1,0 +1,166 @@
+#ifndef BTSTACK_CONFIG_H
+#define BTSTACK_CONFIG_H
+
+/* Stack families and Profiles. Integrators may override before inclusion. */
+#ifndef BTSTACK_CORE
+#define BTSTACK_CORE 1
+#endif
+#ifndef BTSTACK_CLASSIC
+#define BTSTACK_CLASSIC 1
+#endif
+#ifndef BTSTACK_LE
+#define BTSTACK_LE 1
+#endif
+
+#ifndef BTSTACK_A2DP_SINK
+#define BTSTACK_A2DP_SINK 1
+#endif
+#ifndef BTSTACK_HFP_HF
+#define BTSTACK_HFP_HF 1
+#endif
+#ifndef BTSTACK_AVRCP_CONTROLLER
+#define BTSTACK_AVRCP_CONTROLLER 1
+#endif
+#ifndef BTSTACK_AVRCP_TARGET
+#define BTSTACK_AVRCP_TARGET 1
+#endif
+#ifndef BTSTACK_AVRCP_COVER_ART
+#define BTSTACK_AVRCP_COVER_ART 1
+#endif
+#ifndef BTSTACK_PBAP_CLIENT
+#define BTSTACK_PBAP_CLIENT 1
+#endif
+#ifndef BTSTACK_HID_DEVICE
+#define BTSTACK_HID_DEVICE 0
+#endif
+
+#ifndef BTSTACK_GATT_CLIENT
+#define BTSTACK_GATT_CLIENT 1
+#endif
+#ifndef BTSTACK_GATT_SERVER
+#define BTSTACK_GATT_SERVER 1
+#endif
+#ifndef BTSTACK_HOGP_DEVICE
+#define BTSTACK_HOGP_DEVICE 0
+#endif
+#ifndef BTSTACK_BONDING
+#define BTSTACK_BONDING 0
+#endif
+
+#if !BTSTACK_LE && (BTSTACK_GATT_CLIENT || BTSTACK_GATT_SERVER || BTSTACK_HOGP_DEVICE)
+#error "LE profiles require BTSTACK_LE"
+#endif
+#if BTSTACK_HOGP_DEVICE && !BTSTACK_GATT_SERVER
+#error "BTSTACK_HOGP_DEVICE requires BTSTACK_GATT_SERVER"
+#endif
+
+/* Upstream BTstack family-presence macros. */
+#if BTSTACK_CLASSIC
+#ifndef ENABLE_CLASSIC
+#define ENABLE_CLASSIC
+#endif
+#endif
+#if BTSTACK_CLASSIC && BTSTACK_AVRCP_CONTROLLER && \
+    BTSTACK_AVRCP_TARGET && BTSTACK_AVRCP_COVER_ART
+#ifndef ENABLE_AVRCP_COVER_ART
+#define ENABLE_AVRCP_COVER_ART
+#endif
+#endif
+#if BTSTACK_LE
+#ifndef ENABLE_BLE
+#define ENABLE_BLE
+#endif
+#ifndef ENABLE_LE_CENTRAL
+#define ENABLE_LE_CENTRAL
+#endif
+#ifndef ENABLE_LE_PERIPHERAL
+#define ENABLE_LE_PERIPHERAL
+#endif
+#endif
+
+#ifndef BTSTACK_EVENT_QUEUE_LEN
+#define BTSTACK_EVENT_QUEUE_LEN 8u
+#endif
+#ifndef BTSTACK_EVENT_DATA_MAX
+#define BTSTACK_EVENT_DATA_MAX 512u
+#endif
+#ifndef BTSTACK_LOCAL_NAME_MAX
+#define BTSTACK_LOCAL_NAME_MAX 32u
+#endif
+#ifndef BTSTACK_BOND_ID_COUNT
+#define BTSTACK_BOND_ID_COUNT 6u
+#endif
+#if BTSTACK_BOND_ID_COUNT > 255u
+#error "BTSTACK_BOND_ID_COUNT must fit in one storage tag byte"
+#endif
+
+#ifndef BTSTACK_ADV_DATA_MAX
+#define BTSTACK_ADV_DATA_MAX 31u
+#endif
+#if BTSTACK_ADV_DATA_MAX < 2u
+#error "BTSTACK_ADV_DATA_MAX must hold at least one AD header"
+#endif
+
+#ifndef BTSTACK_HID_DESCRIPTOR_MAX
+#define BTSTACK_HID_DESCRIPTOR_MAX 512u
+#endif
+#ifndef BTSTACK_HID_PNP_ID_LEN
+#define BTSTACK_HID_PNP_ID_LEN 7u
+#endif
+#ifndef BTSTACK_HID_SDP_STRING_MAX
+#define BTSTACK_HID_SDP_STRING_MAX 64u
+#endif
+#ifndef BTSTACK_HOGP_DESCRIPTOR_MAX
+#define BTSTACK_HOGP_DESCRIPTOR_MAX 512u
+#endif
+#ifndef BTSTACK_HOGP_REPORT_INFO_MAX
+#define BTSTACK_HOGP_REPORT_INFO_MAX 8u
+#endif
+#ifndef BTSTACK_HOGP_REPORT_MAX
+#define BTSTACK_HOGP_REPORT_MAX 48u
+#endif
+#ifndef BTSTACK_LE_CONNECTION_MAX
+#define BTSTACK_LE_CONNECTION_MAX 1u
+#endif
+#if BTSTACK_LE_CONNECTION_MAX != 1u
+#error "The current BLE design supports exactly one LE connection"
+#endif
+#ifndef BTSTACK_GATT_SERVICE_MAX
+#define BTSTACK_GATT_SERVICE_MAX 4u
+#endif
+#ifndef BTSTACK_HFP_SUBSCRIBER_NUMBER_MAX
+#define BTSTACK_HFP_SUBSCRIBER_NUMBER_MAX 32u
+#endif
+#ifndef BTSTACK_GATT_CHARACTERISTIC_MAX
+#define BTSTACK_GATT_CHARACTERISTIC_MAX 16u
+#endif
+#if BTSTACK_GATT_CHARACTERISTIC_MAX > 65535u
+#error "BTSTACK_GATT_CHARACTERISTIC_MAX must fit in one ATT handle range"
+#endif
+#ifndef BTSTACK_GATT_DESCRIPTOR_MAX
+#define BTSTACK_GATT_DESCRIPTOR_MAX 8u
+#endif
+#ifndef BTSTACK_GATT_DB_MAX
+#define BTSTACK_GATT_DB_MAX 1024u
+#endif
+#ifndef MAX_ATT_DB_SIZE
+#define MAX_ATT_DB_SIZE BTSTACK_GATT_DB_MAX
+#endif
+#ifndef BTSTACK_GATT_VALUE_POOL_MAX
+#define BTSTACK_GATT_VALUE_POOL_MAX 1024u
+#endif
+#ifndef BTSTACK_GATT_VALUE_MAX
+#define BTSTACK_GATT_VALUE_MAX 244u
+#endif
+#ifndef BTSTACK_LE_BOND_MAX
+#define BTSTACK_LE_BOND_MAX 4u
+#endif
+#ifndef MAX_NR_LE_DEVICE_DB_ENTRIES
+#define MAX_NR_LE_DEVICE_DB_ENTRIES BTSTACK_LE_BOND_MAX
+#endif
+
+#ifndef HCI_ACL_PAYLOAD_SIZE
+#define HCI_ACL_PAYLOAD_SIZE 1021
+#endif
+
+#endif

@@ -1,0 +1,27 @@
+AVI Parser
+
+FileName = walle.avi
+Total File Size = 75158918 bytes
+Total Tick (word-alignment) = 767 ticks
+Total Tick (half-word-alignment) = 4474 ticks
+Video Read Tick = 714 ticks
+Audio Read Tick = 426 ticks
+
+<Read Speed>
+75158918 / 7.67 = 9.34MB/sec (word-alignment)
+75158918 / 44.74 = 1.602MB/sec (half-word-alignment)
+
+<Video>
+1512 / 25 = 60.48 sec
+8902000 / 8 = 1112750B = 1.06MB/sec
+* 60.48 = 67299120B
+Video read ability : 67299120 / 7.14 = 8.99MB/sec
+CPU Loading = 7.67 / 60.48 = 12.68%
+
+<Audio>
+1024000 / 8 = 128000B/sec
+Total = 1936035 * 2ch * 2byte = 7744140B
+Audio read ability : 7744140 / 4.23 = 1.76MB/sec
+CPU Loading = 4.26 / 60.5 = 7.04%
+
+Total CPU Loading (used stream read) = 19.72%

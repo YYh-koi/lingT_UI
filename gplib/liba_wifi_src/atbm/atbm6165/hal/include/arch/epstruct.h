@@ -1,0 +1,4 @@
+#ifndef ATBM_ARCH_EPSTRUCT_H
+#define ATBM_ARCH_EPSTRUCT_H
+
+#endif

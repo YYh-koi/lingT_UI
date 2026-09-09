@@ -1,0 +1,172 @@
+/**************************************************************************
+ *                                                                        *
+ *         Copyright (c) 2022 by Generalplus Inc.                         *
+ *                                                                        *
+ *  This software is copyrighted by and is the property of Generalplus    *
+ *  Inc. All rights are reserved by Generalplus Inc.                      *
+ *  This software may only be used in accordance with the                 *
+ *  corresponding license agreement. Any unauthorized use, duplication,   *
+ *  distribution, or disclosure of this software is expressly forbidden.  *
+ *                                                                        *
+ *  This Copyright notice MUST not be removed or modified without prior   *
+ *  written consent of Generalplus Technology Co., Ltd.                   *
+ *                                                                        *
+ *  Generalplus Inc. reserves the right to modify this software           *
+ *  without notice.                                                       *
+ *                                                                        *
+ *  Generalplus Inc.                                                      *
+ *  No.19, Industry E. Rd. IV, Hsinchu Science Park                       *
+ *  Hsinchu City 30078, Taiwan, R.O.C.                                    *
+ *                                                                        *
+ **************************************************************************/
+
+/***************************************************************************
+ * Name: gp_mux.h
+ *
+ * Purpose:
+ *
+ * Developer:
+ *     liuliang, 2010-12-20
+ *
+ ***************************************************************************/
+
+#ifndef _GP_MUX_H_
+#define _GP_MUX_H_
+
+/***************************************************************************
+ * Header Files
+ ***************************************************************************/
+
+#include "typedef.h"
+#include "gp_avcodec.h"
+
+#ifdef cplusplus
+extern "C" {
+#endif
+
+/***************************************************************************
+ * Constants
+ ***************************************************************************/
+
+enum muxParam {
+    MUX_MAX_SIZE = 0,
+    MUX_AUD_TYPE,
+    MUX_VID_TYPE,
+    MUX_WIDTH,
+    MUX_HEIGHT,
+    MUX_FRMRATE,
+    MUX_DPEN,
+    MUX_AUDSR,
+    MUX_AUD_CHANNEL,
+    MUX_AUD_BIT,
+    MUX_PATH_TEMP_FILE,
+    MUX_CLUSTER_SIZE,
+    MUX_FILE_TIME,
+    MUX_FILE_HANDLE,
+    MUX_PARAM_END,
+    MUX_GOP
+};
+
+
+#define MUX_RET_OK              0
+#define MUX_RET_ERROR           -1
+#define MUX_MEM_FULL            1
+#define MUX_FILE_SIZE_REACH     2
+#define MUX_FRAME_INVALID       3
+#define SUCCESS         0
+#define FAIL            -1
+
+/* WAVE format wFormatTag IDs */
+#define AUD_FORMAT_UNKNOWN             0x0000 /* Microsoft Corporation */
+#define AUD_FORMAT_PCM                 0x0001 /* Microsoft Corporation */
+#define AUD_FORMAT_ADPCM               0x0002 /* Microsoft Corporation */
+#define AUD_FORMAT_IEEE_FLOAT          0x0003 /* Microsoft Corporation */
+#define AUD_FORMAT_ALAW                0x0006 /* Microsoft Corporation */
+#define AUD_FORMAT_MULAW               0x0007 /* Microsoft Corporation */
+#define AUD_FORMAT_DTS_MS              0x0008 /* Microsoft Corporation */
+#define AUD_FORMAT_IMA_ADPCM           0x0011 /* Intel Corporation */
+#define AUD_FORMAT_GSM610              0x0031 /* Microsoft Corporation */
+#define AUD_FORMAT_MSNAUDIO            0x0032 /* Microsoft Corporation */
+#define AUD_FORMAT_G726                0x0045 /* ITU-T standard  */
+#define AUD_FORMAT_MPEG                0x0050 /* Microsoft Corporation */
+#define AUD_FORMAT_MPEGLAYER3          0x0055 /* ISO/MPEG Layer3 Format Tag */
+#define AUD_FORMAT_DOLBY_AC3_SPDIF     0x0092 /* Sonic Foundry */
+
+#define AUD_FORMAT_A52                 0x2000
+#define AUD_FORMAT_DTS                 0x2001
+#define AUD_FORMAT_WMA1                0x0160
+#define AUD_FORMAT_WMA2                0x0161
+#define AUD_FORMAT_WMA3                0x0162
+#define AUD_FORMAT_DIVIO_AAC           0x4143
+#define AUD_FORMAT_AMR_CBR             0x7A21
+#define AUD_FORMAT_AMR_VBR             0x7A22
+
+/* Need to check these */
+#define AUD_FORMAT_DK3                 0x0061
+#define AUD_FORMAT_DK4                 0x0062
+
+#define AVI_MAX_FILE_SIZE           0x80000000-0xC00000 /*2G*/
+#define MP4_MAX_FILE_SIZE           0x80000000 /*2G*/
+
+#define DISK_MIN_FREE_SPACE         0xC00000   /*12M*/
+
+#define RECOVER_MODE_MP4  0x01
+#define RECOVER_MODE_MOV  0x02
+/***************************************************************************
+ * Macros
+ ***************************************************************************/
+
+
+
+/***************************************************************************
+ * Data Types
+ ***************************************************************************/
+
+typedef struct gpMuxPkt_s
+{
+    INT8U* data;//packet date
+    INT32U size; // packet size
+    INT32U pts; // ms
+    INT32U frameType; // 0 = I, 1 = P,  2 = B for video, 1 = key frame for audio
+    INT32U Dummy_frame_cnt; // for insert dummy frame use
+}gpMuxPkt_t;
+
+typedef struct gpMux_s
+{
+	INT32S (*init)();
+	INT32S (*uninit)(INT32S hd,INT8U flag);//0:front 1:rear
+    INT32S (*open)(INT16S out,INT8U flag);//0:front 1:rear
+    INT32S (*close)(INT32S hd);
+    INT32S (*pack)(INT32S hd, gpMuxPkt_t *pkt, gpEsType_t type);
+    INT32S (*set)(INT32S hd, INT32U param, INT32U value);
+    INT32S (*get)(INT32S hd, INT32U param, INT32U *value);
+}gpMux_t;
+
+typedef INT32S (*MuxEncryptFunc)(INT8U* buf, INT32U size);
+
+/***************************************************************************
+ * Global Data
+ ***************************************************************************/
+extern struct gpMux_s MP4_packer;
+extern struct gpMux_s MOV_packer;
+
+/***************************************************************************
+ * Function Declarations
+ ***************************************************************************/
+INT32S gpMuxLoad(gpMux_t *mux, gpCsType_t ctype);
+extern INT32S muxAviAddInfoStr(INT32S hd, const INT8U* fourcc, const INT8U* str);
+extern INT32S muxMP4SetEncryptFunc(INT32S hd, MuxEncryptFunc func);
+
+/***************************************************************************
+ * Inline Function Definitions
+ ***************************************************************************/
+
+#ifdef cplusplus
+}
+#endif
+
+#endif   /* _GP_MUX_H_  */
+
+/***************************************************************************
+ * The gp_mux.h file end
+ ***************************************************************************/

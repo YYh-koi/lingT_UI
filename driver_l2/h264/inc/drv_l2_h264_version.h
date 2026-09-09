@@ -1,0 +1,6 @@
+#ifndef L2_H264_VERSION_H
+#define L2_H264_VERSION_H
+
+#define L2_H264_SVN_VERSION				"13800 - 13853 "
+#define L2_H264_LIB_BUILD_TIME		"2022/02/17 20:05:25"
+#endif  // endif L2_H264_VERSION_H

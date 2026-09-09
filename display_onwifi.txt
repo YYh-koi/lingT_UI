@@ -1,0 +1,146 @@
+
+[14:06:52.597]收←◆..
+reliable  = 0x15 
+Ext RTC reliable is OK
+
+[14:06:52.651]收←◆[0] bus num:17 wc:0x30 lowest:1 
+[1] bus num:54 wc:0x30 lowest:1 
+[2] bus num:56 wc:0x60 lowest:1 
+
+clock freq: sys=222000000, cpu=666000000, pll=666000000, ddr=534000000
+set sd[1] bit_mode to 4
+set sd[0] bit_mode to 4
+==SYS_CLK=222000000==
+==SVN:1584:1864==Build Time:2026/06/02 09:02:41==
+==MEM Start:0x1bd080==Free:0x3e32f7f==
+==Run:display_task_init==
+==Run:peripheral_handling_task_init==
+==Run:state_handling_task_init==
+==Run:state_app_init==
+==Run:video_encode_state_task_init==
+==Run:audio_encode_state_task_init==
+Aud[0]=0x1bd0c0
+Aud[1]=0x1be100
+Aud[2]=0x1bf140
+Aud[3]=0x1c0180
+Aud[4]=0x1c11c0
+Aud[5]=0x1c2200
+Aud[6]=0x1c3240
+Aud[7]=0x1c4280
+Aud[8]=0x1c52c0
+Aud[9]=0x1c6300
+Aud[10]=0x1c7340
+Aud[11]=0x1c8380
+Aud[12]=0x1c93c0
+Aud[13]=0x1ca400
+Aud[14]=0x1cb440
+Aud[15]=0x1cc480
+Aud[16]=0x1cd4c0
+Aud[17]=0x1ce500
+Aud[18]=0x1cf540
+Aud[19]=0x1d0580
+Aud[20]=0x1d15c0
+Aud[21]=0x1d2600
+Aud[22]=0x1d3640
+Aud[23]=0x1d4680
+Aud[24]=0x1d56c0
+Aud[25]=0x1d6700
+Aud[26]=0x1d7740
+Aud[27]=0x1d8780
+Aud[28]=0x1d97c0
+Aud[29]=0x1da800
+Aud[30]=0x1db840
+Aud[31]=0x1dc880
+Aud[32]=0x1dd8c0
+Aud[33]=0x1de900
+Aud[34]=0x1df940
+Aud[35]=0x1e0980
+Aud[36]=0x1e19c0
+Aud[37]=0x1e2a00
+Aud[38]=0x1e3a40
+Aud[39]=0x1e4a80
+Aud[40]=0x1e5ac0
+Aud[41]=0x1e6b00
+Aud[42]=0x1e7b40
+Aud[43]=0x1e8b80
+Aud[44]=0x1e9bc0
+Aud[45]=0x1eac00
+Aud[46]=0x1ebc40
+Aud[47]=0x1ecc80
+Aud[48]=0x1edcc0
+Aud[49]=0x1eed00
+Aud[50]=0x1efd40
+Aud[51]=0x1f0d80
+Aud[52]=0x1f1dc0
+Aud[53]=0x1f2e00
+Aud[54]=0x1f3e40
+==Run:audio_dec_task_init==
+==Run:display_task_entry==
+display_frame(cnt=5) addr = 0x1f4ec0
+display_frame_pool[1] addr = 0x3216c0
+display_frame_pool[2] addr = 0x44dec0
+display_frame_pool[3] addr = 0x57a6c0
+display_frame_pool[4] addr = 0x6a6ec0
+
+==TP2915-INIT-ENTER==
+Run tft_tp2915_init
+[TP2915] bank write (TFT_1)
+[TP2915] rb_switch ok
+[TP2915] signal_inv ok
+[TP2915] mode ok
+[TP2915] data_mode ok
+[TP2915] clk ok
+[TP2915] pre-en ctrl=0x0000003a
+[TP2915] post-en
+[TP2915] colorbar-fill FBI=0x001f4ec0
+[TP2915] colorbar-fill cache_flushed
+tft_tp2915_init OK
+audio_dac_task_entry ... 
+audio_task_init ... 
+audio memory = 38024
+decode memory -- 0xf9940
+audio_dec_task_entry ... 
+==Run:state_handling_entry==
+state_handling_init ... 
+spifc target rate: 18500000, act rate 18500000
+SPIFC Header Tag is wrong 0x73704750
+load CRC = 63 89 57 02
+expect CRC = 24 ba 41 fa
+crc error
+nv_open retry fail~~~~~~!
+Failed to open resource from NVRAM 
+volume = 19
+state_handling_init OK!
+state_handling_entry ... 
+==Run:state_startup_entry==
+==Run:video_encode_state_task_entry==
+==Run:audio_encode_state_task_entry==
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+nv_open retry fail~~~~~~!
+state_startup_init ... 
+volume = 19
+nv_open retry fail~~~~~~!
+open POWER_ON_LOGO.JPG fail.
+state_startup_entry ... 
+state_startup_exit ... 
+==Run:state_video_record_entry==
+state_video_record_init ... 
+==[ERR][allocate_and_draw_ascii_string_icon:70]==fail to ap_state_resource_ascii_string_resolution_get
+==STATE_VIDEO_RECORD:4==
+==display:[w:1024,h:600,f:1]==
+==pip:[w:128,h:96]==
+task_peripheral_handling_init ... 
+task_peripheral_handling_entry ... 
+
+[14:06:53.958]收←◆state_video_record_entry ... 
+
+[14:06:57.985]收←◆store CRC = c7 50 e8 11
+verify failed, store again

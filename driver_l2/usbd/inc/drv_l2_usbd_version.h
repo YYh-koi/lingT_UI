@@ -1,0 +1,6 @@
+#ifndef L2_USBD_VERSION_H
+#define L2_USBD_VERSION_H
+
+#define L2_USBD_SVN_VERSION				"13904 - 13932 "
+#define L2_USBD_LIB_BUILD_TIME		"2022/02/23 10:58:57"
+#endif  // endif L2_USBD_VERSION_H

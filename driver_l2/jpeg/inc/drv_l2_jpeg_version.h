@@ -1,0 +1,6 @@
+#ifndef L2_JPEG_VERSION_H
+#define L2_JPEG_VERSION_H
+
+#define L2_JPEG_SVN_VERSION				"13864 - 14020 "
+#define L2_JPEG_LIB_BUILD_TIME		"2022/02/25 18:32:59"
+#endif  // endif L2_JPEG_VERSION_H

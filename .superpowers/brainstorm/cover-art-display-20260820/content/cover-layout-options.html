@@ -1,0 +1,54 @@
+<div id="cover-layout-options">
+  <style>
+    #cover-layout-options .layout-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+    #cover-layout-options .screen { aspect-ratio:4/3; overflow:hidden; background:var(--foreground); color:var(--background); display:flex; position:relative; }
+    #cover-layout-options .art { background:linear-gradient(135deg,var(--viz-series-1),var(--viz-series-3)); display:flex; align-items:center; justify-content:center; color:var(--background); }
+    #cover-layout-options .disc { width:42%; aspect-ratio:1; border-radius:50%; background:var(--viz-series-5); display:grid; place-items:center; }
+    #cover-layout-options .disc::after { content:""; width:28%; aspect-ratio:1; border-radius:50%; background:var(--foreground); }
+    #cover-layout-options .fit { align-items:center; justify-content:center; }
+    #cover-layout-options .fit .art { width:68%; aspect-ratio:1; }
+    #cover-layout-options .fill .art { width:100%; height:100%; }
+    #cover-layout-options .player { flex-direction:column; background:var(--card); color:var(--card-foreground); padding:8%; gap:7%; }
+    #cover-layout-options .player .art { width:54%; aspect-ratio:1; align-self:center; }
+    #cover-layout-options .track { display:flex; flex-direction:column; gap:5px; }
+    #cover-layout-options .title-line { height:10px; width:70%; background:var(--card-foreground); opacity:.85; }
+    #cover-layout-options .artist-line { height:7px; width:48%; background:var(--muted-foreground); }
+    #cover-layout-options .progress-line { height:4px; width:100%; background:var(--muted); position:relative; }
+    #cover-layout-options .progress-line::after { content:""; position:absolute; inset:0 46% 0 0; background:var(--viz-series-1); }
+    #cover-layout-options .note { margin-top:7px; color:var(--muted-foreground); }
+    @media (max-width:700px) { #cover-layout-options .layout-grid { grid-template-columns:1fr; } }
+  </style>
+  <h2>封面在 CN1 屏幕上的显示方式</h2>
+  <p class="subtitle">点击选择一种。三种都会保持显示任务异步刷新，不在蓝牙回调中直接操作屏幕。</p>
+  <div class="cards layout-grid">
+    <div class="card" data-choice="fit" onclick="toggleSelect(this)">
+      <div class="card-image screen fit" role="img" aria-label="完整封面居中显示，四周可能留边">
+        <div class="art"><div class="disc"></div></div>
+      </div>
+      <div class="card-body">
+        <h3>A · 完整居中（推荐）</h3>
+        <p>等比缩放，完整显示封面；非方屏四周留边，不裁内容。</p>
+      </div>
+    </div>
+    <div class="card" data-choice="fill" onclick="toggleSelect(this)">
+      <div class="card-image screen fill" role="img" aria-label="封面铺满屏幕，边缘可能被裁剪">
+        <div class="art"><div class="disc"></div></div>
+      </div>
+      <div class="card-body">
+        <h3>B · 铺满裁剪</h3>
+        <p>封面覆盖整个屏幕；画面更饱满，但方形封面边缘会被裁掉。</p>
+      </div>
+    </div>
+    <div class="card" data-choice="player" onclick="toggleSelect(this)">
+      <div class="card-image screen player" role="img" aria-label="播放器布局，上方封面，下方歌曲信息和进度">
+        <div class="art"><div class="disc"></div></div>
+        <div class="track"><div class="title-line"></div><div class="artist-line"></div></div>
+        <div class="progress-line"></div>
+      </div>
+      <div class="card-body">
+        <h3>C · 播放器界面</h3>
+        <p>封面占主要区域，保留歌曲名、歌手和进度区；改动范围更大。</p>
+      </div>
+    </div>
+  </div>
+</div>

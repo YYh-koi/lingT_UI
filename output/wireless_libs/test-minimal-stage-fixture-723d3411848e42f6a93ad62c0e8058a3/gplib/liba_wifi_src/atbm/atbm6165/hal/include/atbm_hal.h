@@ -1,0 +1,1 @@
+#define ATBM_PRIVATE_API 1

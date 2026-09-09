@@ -1,0 +1,1 @@
+#define ATBM_INTERNAL_TYPES 1
