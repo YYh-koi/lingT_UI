@@ -22,6 +22,8 @@
 #include "bt_ui_events.h"        /* 蓝牙事件适配层 */
 #include "bt_xstack_audio.h"     /* AVRCP 控制 */
 #include "gp_stdlib.h"          /* gp_malloc_align / gp_free */
+#include "gplib_fs.h"           /* FS_NAND_APP / fs_read */
+#include "proto.h"              /* fs_lfnopen / fs_fseek / fs_fclose */
 #include "turnkey_drv_msg.h"    /* MSG_DISPLAY_TASK_LVGL_DRAW / MSG_LVGL_1SEC */
 #include "ap_display_func.h"    /* DISPLAY_PATH_LVGL / 显示路径切换 */
 #include "drv_l1_arm_cp15.h"    /* cache_invalid_range */
@@ -37,6 +39,8 @@
 #define LVGL_BT_EVENT_QUEUE_LEN 8u
 #define LVGL_COVER_JPEG_MAX_BYTES (64u * 1024u)
 #define LVGL_COVER_SIZE       240u
+#define LVGL_NAND_FS_LETTER   'U'
+#define LVGL_NAND_PATH_MAX    96u
 
 /**************************************************************************
  *                         G L O B A L    D A T A                         *
@@ -73,11 +77,180 @@ static volatile uint8_t s_cover_ready;
 static volatile uint8_t s_cover_decoding;
 static lv_img_dsc_t s_cover_img;
 
+/* U: is a read-only LVGL file-system drive backed by the NAND application
+ * area.  Resource files are converted LVGL v8 binary images, e.g.
+ * "U:/001.bin".  No image data is linked into the firmware. */
+typedef struct {
+    INT16S fd;
+    INT32U position;
+} lvgl_nand_file_t;
+
+static lv_fs_drv_t s_nand_fs_drv;
+static INT8U s_nand_fs_mounted;
+
 extern INT32S jpeg_buffer_decode_and_scale(
     IMAGE_DECODE_STRUCT *img_decode_struct,
     INT32U clip_xy,
     INT32U clip_size);
 extern INT32S cache_drain_range(INT32U buffer, INT32U size);
+
+static BOOLEAN lvgl_nand_fs_select(void)
+{
+    if (s_nand_fs_mounted == 0u) {
+        if (fs_mount(FS_NAND_APP) < 0) {
+            return FALSE;
+        }
+        s_nand_fs_mounted = 1u;
+    }
+
+    return (fs_changedisk(FS_NAND_APP) >= 0) ? TRUE : FALSE;
+}
+
+static BOOLEAN lvgl_nand_path_copy(const char *src, CHAR *dst)
+{
+    INT32U index = 0u;
+
+    while ((*src == '/') || (*src == '\\')) {
+        src++;
+    }
+    while ((*src != '\0') && (index < (LVGL_NAND_PATH_MAX - 1u))) {
+        dst[index++] = (*src == '/') ? '\\' : *src;
+        src++;
+    }
+    dst[index] = '\0';
+    return (index > 0u) && (*src == '\0');
+}
+
+static bool lvgl_nand_ready_cb(lv_fs_drv_t *drv)
+{
+    (void)drv;
+    return lvgl_nand_fs_select() ? true : false;
+}
+
+static void *lvgl_nand_open_cb(lv_fs_drv_t *drv, const char *path, lv_fs_mode_t mode)
+{
+    CHAR nand_path[LVGL_NAND_PATH_MAX];
+    INT32S fd;
+    lvgl_nand_file_t *file;
+
+    (void)drv;
+    if ((mode != LV_FS_MODE_RD) || !lvgl_nand_fs_select() ||
+        !lvgl_nand_path_copy(path, nand_path)) {
+        return NULL;
+    }
+
+    fd = fs_lfnopen(nand_path, O_RDONLY, D_NORMAL);
+    if (fd < 0) {
+        return NULL;
+    }
+
+    file = lv_mem_alloc(sizeof(*file));
+    if (file == NULL) {
+        fs_fclose((INT16S)fd);
+        return NULL;
+    }
+    file->fd = (INT16S)fd;
+    file->position = 0u;
+    return file;
+}
+
+static lv_fs_res_t lvgl_nand_close_cb(lv_fs_drv_t *drv, void *file_p)
+{
+    lvgl_nand_file_t *file = (lvgl_nand_file_t *)file_p;
+    INT16S result;
+
+    (void)drv;
+    if (file == NULL) {
+        return LV_FS_RES_INV_PARAM;
+    }
+    if (!lvgl_nand_fs_select()) {
+        return LV_FS_RES_HW_ERR;
+    }
+    result = fs_fclose(file->fd);
+    lv_mem_free(file);
+    return (result < 0) ? LV_FS_RES_FS_ERR : LV_FS_RES_OK;
+}
+
+static lv_fs_res_t lvgl_nand_read_cb(lv_fs_drv_t *drv, void *file_p,
+                                     void *buf, uint32_t btr, uint32_t *br)
+{
+    lvgl_nand_file_t *file = (lvgl_nand_file_t *)file_p;
+    INT32S bytes;
+
+    (void)drv;
+    if ((file == NULL) || (buf == NULL) || !lvgl_nand_fs_select()) {
+        return LV_FS_RES_HW_ERR;
+    }
+    bytes = fs_read(file->fd, (INT32U)buf, btr);
+    if (bytes < 0) {
+        return LV_FS_RES_FS_ERR;
+    }
+    file->position += (INT32U)bytes;
+    if (br != NULL) {
+        *br = (uint32_t)bytes;
+    }
+    return LV_FS_RES_OK;
+}
+
+static lv_fs_res_t lvgl_nand_seek_cb(lv_fs_drv_t *drv, void *file_p,
+                                     uint32_t pos, lv_fs_whence_t whence)
+{
+    lvgl_nand_file_t *file = (lvgl_nand_file_t *)file_p;
+    INT16S origin;
+    INT64S result;
+
+    (void)drv;
+    if ((file == NULL) || !lvgl_nand_fs_select()) {
+        return LV_FS_RES_HW_ERR;
+    }
+    if (whence == LV_FS_SEEK_SET) {
+        origin = SEEK_SET;
+    } else if (whence == LV_FS_SEEK_CUR) {
+        origin = SEEK_CUR;
+    } else if (whence == LV_FS_SEEK_END) {
+        origin = SEEK_END;
+    } else {
+        return LV_FS_RES_INV_PARAM;
+    }
+
+    result = fs_fseek(file->fd, (INT64S)pos, origin);
+    if (result < 0) {
+        return LV_FS_RES_FS_ERR;
+    }
+    if (whence == LV_FS_SEEK_SET) {
+        file->position = pos;
+    } else if (whence == LV_FS_SEEK_CUR) {
+        file->position += pos;
+    } else {
+        file->position = (INT32U)result;
+    }
+    return LV_FS_RES_OK;
+}
+
+static lv_fs_res_t lvgl_nand_tell_cb(lv_fs_drv_t *drv, void *file_p, uint32_t *pos_p)
+{
+    lvgl_nand_file_t *file = (lvgl_nand_file_t *)file_p;
+
+    (void)drv;
+    if ((file == NULL) || (pos_p == NULL)) {
+        return LV_FS_RES_INV_PARAM;
+    }
+    *pos_p = file->position;
+    return LV_FS_RES_OK;
+}
+
+static void lvgl_nand_fs_register(void)
+{
+    lv_fs_drv_init(&s_nand_fs_drv);
+    s_nand_fs_drv.letter = LVGL_NAND_FS_LETTER;
+    s_nand_fs_drv.open_cb = lvgl_nand_open_cb;
+    s_nand_fs_drv.close_cb = lvgl_nand_close_cb;
+    s_nand_fs_drv.read_cb = lvgl_nand_read_cb;
+    s_nand_fs_drv.seek_cb = lvgl_nand_seek_cb;
+    s_nand_fs_drv.tell_cb = lvgl_nand_tell_cb;
+    s_nand_fs_drv.ready_cb = lvgl_nand_ready_cb;
+    lv_fs_drv_register(&s_nand_fs_drv);
+}
 
 /* xstack 回调只将事件复制进该短队列；LVGL 任务轮询并完成实际绘制。 */
 static bt_ui_event_t s_bt_event_queue[LVGL_BT_EVENT_QUEUE_LEN];
@@ -652,6 +825,8 @@ void state_lvgl_entry(void const *arg)
 
     /* 1. LVGL 核心初始化 */
     lv_init();
+    lvgl_nand_fs_register();
+    DBG_PRINT("[LVGL] NAND resource drive U: registered\r\n");
 
     /* 2. 分配显示缓冲（DDR） */
     fb_size = LVGL_H_RES * LVGL_V_RES * sizeof(lv_color_t);

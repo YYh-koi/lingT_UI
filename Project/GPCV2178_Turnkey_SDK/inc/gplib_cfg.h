@@ -102,7 +102,7 @@
 #define MSC_EN                          0
 #define SD_EN                           1
 #define CFC_EN                          0
-#define NAND_APP_EN		                0 // To enable nand app area, and read only access through FS and MSDC interface
+#define NAND_APP_EN		                1 // UI .bin resources: enable read-only NAND application area
 #define NAND_APP_WRITE_EN               0 // To enable nand app area allow write access through FS and MSDC interface.
                                           // This should 0 when nandrom.
 #define NAND1_EN                        0
