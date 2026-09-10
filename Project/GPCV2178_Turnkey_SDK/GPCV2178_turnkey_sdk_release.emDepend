@@ -451,7 +451,7 @@
 	"gplib_calendar.h"
 	"gplib_zp_decode.h"
 
-1735196496 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\inc\gplib_cfg.h
+1789027658 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\inc\gplib_cfg.h
 
 1695178362 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\inc\gplib_wav.h
 
@@ -610,7 +610,7 @@
 
 1695178342 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\msg_manager\inc\msg_manager.h
 
-1787194430 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\inc\turnkey_drv_msg.h
+1789026641 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\inc\turnkey_drv_msg.h
 	"customer.h"
 
 1787194430 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\inc\turnkey_sys_msg.h
@@ -647,7 +647,7 @@
 
 1695178342 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\inc\task_peripheral_handling.h
 
-1785857844 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\inc\ap_peripheral_handling.h
+1789025436 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\inc\ap_peripheral_handling.h
 
 1695178342 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_storage_service\inc\task_storage_service.h
 
@@ -718,7 +718,7 @@
 
 1695178344 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_rtsp_service\inc\rtp.h
 
-1788140009 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\inc\state_lvgl.h
+1789026662 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\inc\state_lvgl.h
 
 1695178342 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_state_handling\state_audio_record\inc\state_audio_record.h
 	"task_state_handling.h"
@@ -915,7 +915,7 @@
 1780457218 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_encoder\src\task_encoder_video.c
 	"application.h"
 
-1788920377 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\src\state_lvgl.c
+1789034612 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\src\state_lvgl.c
 	"customer.h"
 	"state_lvgl.h"
 	"lvgl.h"
@@ -923,9 +923,12 @@
 	"bt_ui_events.h"
 	"bt_xstack_audio.h"
 	"gp_stdlib.h"
+	"gplib_fs.h"
+	"proto.h"
 	"turnkey_drv_msg.h"
 	"ap_display_func.h"
 	"drv_l1_arm_cp15.h"
+	"drv_l1_spifc.h"
 	"board_config.h"
 	"task.h"
 
@@ -984,7 +987,7 @@
 	<nuttx/config.h>
 	<lv_rt_thread_conf.h>
 
-1788917696 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lv_conf.h
+1789023572 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lv_conf.h
 	<stdint.h>
 
 1787909436 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lvgl\src\misc\lv_types.h
@@ -1561,10 +1564,11 @@
 1787909434 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lvgl\src\extra\widgets\span\lv_span.h
 	"../../../lvgl.h"
 
-1787238072 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\src\ap_peripheral_handling.c
+1789034609 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\src\ap_peripheral_handling.c
 	"application.h"
+	"state_lvgl.h"
 
-1780453142 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\src\task_peripheral_handling.c
+1789028253 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\src\task_peripheral_handling.c
 	"application.h"
 
 1780023912 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_rtsp_service\src\iframes_dragon.c
@@ -5340,7 +5344,7 @@
 1786554204 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_audio_task.h
 	<stdint.h>
 
-1788917697 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\wifi_demo\bt_xstack_demo.c
+1789004020 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\wifi_demo\bt_xstack_demo.c
 	<string.h>
 	"application.h"
 	"bt_audio_task.h"
@@ -5351,7 +5355,7 @@
 
 1785613722 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_xstack_demo.h
 
-1788917696 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\src\main.c
+1789027578 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\src\main.c
 	"application.h"
 	"project.h"
 	"turnkey_version.h"
@@ -5360,13 +5364,13 @@
 
 1780362162 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\inc\turnkey_version.h
 
-1788917697 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\wifi_demo\bt_ui_events.c
+1789004020 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\wifi_demo\bt_ui_events.c
 	<string.h>
 	"FreeRTOS.h"
 	"task.h"
 	"bt_ui_events.h"
 
-1788917696 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_ui_events.h
+1789004020 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_ui_events.h
 	<stdint.h>
 	"bt_xstack_types.h"
 	"bt_xstack_phonebook.h"

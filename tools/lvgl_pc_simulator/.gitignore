@@ -1,1 +1,13 @@
 build/
+
+# The extracted SDL archive includes documentation and x86 libraries.  The
+# simulator tracks only include/ and lib/x64/, which are all it needs.
+third_party/SDL2-2.32.10/.git-hash
+third_party/SDL2-2.32.10/BUGS.txt
+third_party/SDL2-2.32.10/LICENSE.txt
+third_party/SDL2-2.32.10/README-SDL.txt
+third_party/SDL2-2.32.10/README.md
+third_party/SDL2-2.32.10/WhatsNew.txt
+third_party/SDL2-2.32.10/cmake/
+third_party/SDL2-2.32.10/docs/
+third_party/SDL2-2.32.10/lib/x86/

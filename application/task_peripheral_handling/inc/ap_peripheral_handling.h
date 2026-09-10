@@ -17,9 +17,9 @@ typedef INT8U (*ap_peripheral_call_key_handler_t)(
 
 typedef enum
 {
-	AP_PERIPHERAL_MEDIA_KEY_PREVIOUS = 0,
-	AP_PERIPHERAL_MEDIA_KEY_PLAY_PAUSE,
-	AP_PERIPHERAL_MEDIA_KEY_NEXT
+	AP_PERIPHERAL_MEDIA_KEY_PREVIOUS = 0, /* KEY1: previous track */
+	AP_PERIPHERAL_MEDIA_KEY_PLAY_PAUSE,   /* KEY2: play / pause */
+	AP_PERIPHERAL_MEDIA_KEY_NEXT          /* KEY3: next track */
 } ap_peripheral_media_key_action_t;
 
 typedef INT8U (*ap_peripheral_media_key_handler_t)(

@@ -548,6 +548,8 @@ typedef enum
 typedef enum
 {
 	MSG_LVGL_1SEC			= 0x40000B00,
+	MSG_LVGL_SHOW_DASHBOARD,
+	MSG_LVGL_SHOW_MUSIC
 } TASK_LVGL_ENUM;
 #endif
 #endif //__TURNKEY_DRV_MSG_H__

@@ -421,8 +421,9 @@ void InitTask()
 
 	/* DEBUG 实验：wifi/BT init 窗口已过，放行 LVGL 任务（见 state_lvgl.c 启动门） */
 	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
-	extern INT32U g_lvgl_start_ok;
+	extern volatile INT32U g_lvgl_start_ok;
 	g_lvgl_start_ok = 1;
+	DBG_PRINT("[MAIN] LVGL start released\r\n");
 	#endif
 
 

@@ -21,6 +21,10 @@
  **************************************************************************/
 #include "application.h"
 
+#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+#include "state_lvgl.h"
+#endif
+
 #define BACK_SENSOR_STABLE_THRESHOLD	4
 #define BACK_A_CAR_STABLE_THRESHOLD     4
 
@@ -236,13 +240,17 @@ void ap_peripheral_ad_detect_init(INT8U adc_channel, void (*ad_detect_isr) (INT1
 	bat_ck_cnt = 0;
 #endif
 
-#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT == 0)
+	/* ADKEY1..6 use the board's ADC_LINE_0 resistor ladder.  Do not
+	 * disable this when LVGL is selected: LVGL consumes the resulting key
+	 * actions through the normal peripheral handlers. */
+#if ADKEY_NUM
 	//ad_value_cnt = 0;
 	drv_l1_adc_init(0,0);
 	drv_l1_adc_vref_enable_set(TRUE);
 	drv_l1_adc_conv_time_sel(4);
 	drv_l1_adc_manual_ch_set(adc_channel);
 	drv_l1_adc_manual_callback_set(ad_detect_isr);
+	DBG_PRINT("[KEY] ADKEY1-6 scan enabled on ADC%d\r\n", adc_channel);
 #endif
 	if(ad_detect_timerid == 0xFF)
 	{
@@ -323,6 +331,31 @@ INT8U adc_key_judge(INT32U adc_value)
 	return candidate_key;
 }
 #endif // #if ADKEY_NUM
+
+#if ADKEY_NUM
+/* Dispatch on the first valid ADC sample.  The resistor ladder already
+ * identifies the key range here, and the per-press flag suppresses repeats
+ * until it is released. */
+static void ap_peripheral_ad_key_press_dispatch(void)
+{
+	INT8U pressed_key;
+
+	if (normal_key_exec_flag || fast_key_exec_flag || long_key_exec_flag ||
+		(adc_key_value == 0u))
+	{
+		return;
+	}
+
+	pressed_key = adc_key_judge(adc_key_value);
+	if ((pressed_key < ad_key_num) &&
+		(ad_key_map[pressed_key].key_function != NULL))
+	{
+		ad_key_map[pressed_key].key_cnt = 1u;
+		ad_key_map[pressed_key].key_function(&(ad_key_map[pressed_key].key_cnt));
+		normal_key_exec_flag = 1u;
+	}
+}
+#endif
 
 void ap_peripheral_ad_key_judge(void)
 {
@@ -503,7 +536,8 @@ void ap_peripheral_ad_key_judge(void)
 			if(adc_key_value)
 			{
 				// Key released
-				if(!fast_key_exec_flag && !long_key_exec_flag && key_pressed_cnt >= C_KEY_STABLE_THRESHOLD)
+				if(!fast_key_exec_flag && !normal_key_exec_flag &&
+					!long_key_exec_flag && key_pressed_cnt >= C_KEY_STABLE_THRESHOLD)
 				{
 					INT8U pressed_key;
 
@@ -571,6 +605,25 @@ void ap_peripheral_ad_key_judge(void)
 			{
 				key_pressed_cnt++;
 
+				/* ADKEY1..6 are UI/media controls.  Dispatch once after two
+				 * stable ADC samples instead of waiting for release, so a held
+				 * button cannot accidentally become a long-press-only action. */
+				if (!normal_key_exec_flag && !fast_key_exec_flag &&
+					!long_key_exec_flag &&
+					(key_pressed_cnt >= C_KEY_STABLE_THRESHOLD))
+				{
+					INT8U pressed_key = adc_key_judge(adc_key_value);
+
+					if ((pressed_key < ad_key_num) &&
+						(ad_key_map[pressed_key].key_function != NULL))
+					{
+						ad_key_map[pressed_key].key_cnt = (INT16U)key_pressed_cnt;
+						ad_key_map[pressed_key].key_function(
+							&(ad_key_map[pressed_key].key_cnt));
+						normal_key_exec_flag = 1;
+					}
+				}
+
 				// TBD: Handle zoom function
 				//if (zoom_key_flag && ad_key_cnt>2 && (adkey_lvl == ADKEY_PREV_L || adkey_lvl == ADKEY_NEXT_L)) {
 
@@ -591,7 +644,7 @@ void ap_peripheral_ad_key_judge(void)
 
 				//DBG_PRINT("key_pressed_cnt = %d  \r\n",key_pressed_cnt);
 				//long key
-				if(key_pressed_cnt == 28)
+				if((key_pressed_cnt == 28) && !normal_key_exec_flag)
 				{
 					INT8U pressed_key;
 
@@ -616,26 +669,11 @@ void ap_peripheral_ad_key_judge(void)
 			}
 			else
 			{
-				if(adc_key_value && !fast_key_exec_flag && !normal_key_exec_flag && !long_key_exec_flag && key_pressed_cnt >= C_KEY_STABLE_THRESHOLD)
-				{
-					INT8U pressed_key;
-
-					pressed_key = adc_key_judge(adc_key_value);
-					if(pressed_key < ad_key_num && ad_key_map[pressed_key].key_function)
-					{
-						//ad_key_map[pressed_key].key_function(&(ad_key_map[pressed_key].key_cnt));
-						normal_key_exec_flag = 1;
-
-						//DBG_PRINT("key_function 2\r\n");
-					}
-				}
-
 				if(!fast_key_exec_flag && !normal_key_exec_flag)
 				{
 					adc_key_value = adc_current_value;
-					//key_pressed_cnt = 1; //long key exec only once
-
-					//fast_key_exec_flag = 0;
+					key_pressed_cnt = 1u;
+					ap_peripheral_ad_key_press_dispatch();
 				}
 			}
 		}
@@ -1293,6 +1331,14 @@ void ap_peripheral_mode_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
+		/* KEY3 (MODE_KEY): when AVRCP is connected it advances the track.
+		 * If Bluetooth does not claim the key, preserve the original page
+		 * switching behaviour below. */
+		if (ap_peripheral_media_key_dispatch(
+			AP_PERIPHERAL_MEDIA_KEY_NEXT))
+		{
+			return;
+		}
 		app_msg_send(MSG_APQ_AUDIO_EFFECT_MODE, NULL, 0, MSG_PRI_NORMAL);
 
         #if C_SCREEN_SAVER
@@ -1392,6 +1438,7 @@ void ap_peripheral_prev_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
+		/* KEY1 (PRE_KEY): previous Bluetooth track when AVRCP is available. */
 		if (ap_peripheral_media_key_dispatch(
 			AP_PERIPHERAL_MEDIA_KEY_PREVIOUS))
 		{
@@ -1444,6 +1491,7 @@ void ap_peripheral_ok_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
+		/* KEY2 (OK_KEY): Bluetooth play / pause when AVRCP is available. */
 		if (ap_peripheral_media_key_dispatch(
 			AP_PERIPHERAL_MEDIA_KEY_PLAY_PAUSE))
 		{
@@ -1469,6 +1517,14 @@ void ap_peripheral_sos_key_exe(INT16U *tick_cnt_ptr)
 	INT16U tick_cnt = *tick_cnt_ptr;
 
 	*tick_cnt_ptr = 0;
+
+	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	/* ADKEY6: move right from the dashboard to the music page. */
+	if ((tick_cnt <= 24u) && lvgl_page_show_music())
+	{
+		return;
+	}
+	#endif
 
 	if (ap_peripheral_call_key_dispatch(
 		AP_PERIPHERAL_CALL_KEY_HANGUP))
@@ -1539,6 +1595,14 @@ void ap_peripheral_menu_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
+		#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+		/* ADKEY5: move left from the music page back to the dashboard. */
+		if (lvgl_page_show_dashboard())
+		{
+			return;
+		}
+		#endif
+
 		if (ap_peripheral_call_key_dispatch(
 			AP_PERIPHERAL_CALL_KEY_ANSWER))
 		{
@@ -1802,14 +1866,16 @@ void ap_peripheral_key_register(INT8U type)
 			#endif
 
 #if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+			/* Keep GPIO controls in the same user-visible order as the
+			 * resistor-key board: KEY1 previous, KEY2 play/pause, KEY3 next. */
 			#if defined(OK_KEY)
 			io_key_map[io_key_num].key_val_L = OK_KEY;
-			io_key_map[io_key_num++].key_function = ap_peripheral_ok_key_exe;
+			io_key_map[io_key_num++].key_function = ap_peripheral_prev_key_exe;
             #endif
 
    			#if defined(PRE_KEY)
 			io_key_map[io_key_num].key_val_L = PRE_KEY;
-			io_key_map[io_key_num++].key_function = ap_peripheral_prev_key_exe;
+			io_key_map[io_key_num++].key_function = ap_peripheral_ok_key_exe;
             #endif
 
             #if defined(MODE_KEY)
@@ -1820,14 +1886,16 @@ void ap_peripheral_key_register(INT8U type)
 
 			#if (defined(ADKEY_OK_L) && defined(ADKEY_OK_H))
 			ap_adkey_action_register(
-				ap_peripheral_ok_key_exe
+				/* ADKEY1: previous track */
+				ap_peripheral_prev_key_exe
 				, ADKEY_OK_L
 				, ADKEY_OK_H
 			);
 			#endif
 			#if (defined(ADKEY_PREV_L) && defined(ADKEY_PREV_H))
 			ap_adkey_action_register(
-				ap_peripheral_prev_key_exe
+				/* ADKEY2: play/pause */
+				ap_peripheral_ok_key_exe
 				, ADKEY_PREV_L
 				, ADKEY_PREV_H
 			);

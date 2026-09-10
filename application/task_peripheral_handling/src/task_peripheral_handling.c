@@ -224,8 +224,9 @@ task_peripheral_handling_entry(
             tick_last_32hz = tick_current;
 
 			ap_peripheral_key_judge();
-			#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT == 0)
-			/* ADC line0/1 as IO key */
+			#if ADKEY_NUM
+			/* The six resistor keys are on ADC_LINE_0.  They remain the
+			 * physical input for LVGL as well as for the legacy OSD path. */
 			ap_peripheral_ad_key_judge();
 			#endif
 			ap_peripheral_config_store();

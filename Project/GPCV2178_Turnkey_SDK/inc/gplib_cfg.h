@@ -105,6 +105,18 @@
 #define NAND_APP_EN		                1 // UI .bin resources: enable read-only NAND application area
 #define NAND_APP_WRITE_EN               0 // To enable nand app area allow write access through FS and MSDC interface.
                                           // This should 0 when nandrom.
+/* Read-only U3 SPI-NOR capacity/partition probe. Set to 0 after collecting
+ * the UART log; it does not erase or program flash. */
+#define LVGL_UI_SPIFC_PROBE                0
+/* One-time, read-only scan of every U3 4KiB erase sector. It identifies the
+ * longest physically blank candidate region for the UI package. */
+#define LVGL_UI_SPIFC_SCAN                 0
+/* One-time SD:/UI/u3_ui.bin -> U3 raw UI partition installer. This erases
+ * only 0x001B0000..0x006AFFFF, the blank region verified by the scan. */
+#define LVGL_UI_SPIFC_INSTALLER            0
+/* Set to 1 only while diagnosing LVGL rendering/resource loading.  Errors
+ * remain visible regardless of this switch. */
+#define LVGL_RUNTIME_LOG_EN                 1   //LVGL runtime log enable
 #define NAND1_EN                        0
 #define NAND2_EN                        0
 #define NAND3_EN                        0

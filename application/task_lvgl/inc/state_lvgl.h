@@ -17,5 +17,8 @@
  **************************************************************************/
 extern void lvgl_state_task_init(void);
 extern void state_lvgl_entry(void const *arg);
+/* Request a page switch; actual LVGL calls remain in the LVGL task. */
+extern int lvgl_page_show_dashboard(void);
+extern int lvgl_page_show_music(void);
 
 #endif //__STATE_LVGL_H__
