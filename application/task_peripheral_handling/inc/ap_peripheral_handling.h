@@ -49,6 +49,7 @@ extern void ap_peripheral_mode_key_exe(INT16U *tick_cnt_ptr);
 extern void ap_peripheral_ok_key_exe(INT16U *tick_cnt_ptr);
 extern void ap_peripheral_pw_key_exe(INT16U *tick_cnt_ptr);
 extern void ap_peripheral_sos_key_exe(INT16U *tick_cnt_ptr);
+extern void ap_peripheral_music_key_exe(INT16U *tick_cnt_ptr);
 extern void ap_peripheral_menu_key_exe(INT16U *tick_cnt_ptr);
 extern void ap_peripheral_prev_key_exe(INT16U *tick_cnt_ptr);
 extern void ap_peripheral_next_key_exe(INT16U *tick_cnt_ptr);

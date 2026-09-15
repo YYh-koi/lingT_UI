@@ -119,10 +119,10 @@ if (-not (Test-Path -LiteralPath $InputDirectory -PathType Container)) {
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
 
 $pngs = @(Get-ChildItem -LiteralPath $InputDirectory -File -Filter '*.png' | Sort-Object Name)
-$results = foreach ($png in $pngs) {
+$results = @(foreach ($png in $pngs) {
     $destination = Join-Path $OutputDirectory ($png.BaseName + '.bin')
     Convert-LvglPng -SourceFile $png -Output $destination
-}
+})
 
 $results | Format-Table -AutoSize
 $total = ($results | Measure-Object -Property Bytes -Sum).Sum

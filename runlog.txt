@@ -1,13 +1,8 @@
 
-[17:56:33.483]收←◆
-io_trap = 0x1D, sys = 72000000, cpu = 216000000 =0x1D ddr=18000000
-1st pwr on
-ICE mode ...
+[11:35:17.562]收←◆reliable  = 0x0 
+Ext RTC reliable is wrong=0x00, set again
 
-[17:57:23.423]收←◆reliable  = 0x15 
-Ext RTC reliable is OK
-
-[17:57:23.478]收←◆[0] bus num:17 wc:0x30 lowest:1 
+[11:35:17.617]收←◆[0] bus num:17 wc:0x30 lowest:1 
 [1] bus num:54 wc:0x30 lowest:1 
 [2] bus num:56 wc:0x60 lowest:1 
 
@@ -16,76 +11,76 @@ set sd[1] bit_mode to 4
 set sd[0] bit_mode to 4
 ==SYS_CLK=222000000==
 ==SVN:1584:1864==Build Time:2026/06/02 09:02:41==
-==MEM Start:0x704f40==Free:0x38eb0bf==
+==MEM Start:0x710c40==Free:0x38df3bf==
 ==Run:display_task_init==
 ==Run:peripheral_handling_task_init==
 ==Run:state_handling_task_init==
 ==Run:state_app_init==
 ==Run:video_encode_state_task_init==
 ==Run:audio_encode_state_task_init==
-Aud[0]=0x708f40
-Aud[1]=0x709f80
-Aud[2]=0x70afc0
-Aud[3]=0x70c000
-Aud[4]=0x70d040
-Aud[5]=0x70e080
-Aud[6]=0x70f0c0
-Aud[7]=0x710100
-Aud[8]=0x711140
-Aud[9]=0x712180
-Aud[10]=0x7131c0
-Aud[11]=0x714200
-Aud[12]=0x715240
-Aud[13]=0x716280
-Aud[14]=0x7172c0
-Aud[15]=0x718300
-Aud[16]=0x719340
-Aud[17]=0x71a380
-Aud[18]=0x71b3c0
-Aud[19]=0x71c400
-Aud[20]=0x71d440
-Aud[21]=0x71e480
-Aud[22]=0x71f4c0
-Aud[23]=0x720500
-Aud[24]=0x721540
-Aud[25]=0x722580
-Aud[26]=0x7235c0
-Aud[27]=0x724600
-Aud[28]=0x725640
-Aud[29]=0x726680
-Aud[30]=0x7276c0
-Aud[31]=0x728700
-Aud[32]=0x729740
-Aud[33]=0x72a780
-Aud[34]=0x72b7c0
-Aud[35]=0x72c800
-Aud[36]=0x72d840
-Aud[37]=0x72e880
-Aud[38]=0x72f8c0
-Aud[39]=0x730900
-Aud[40]=0x731940
-Aud[41]=0x732980
-Aud[42]=0x7339c0
-Aud[43]=0x734a00
-Aud[44]=0x735a40
-Aud[45]=0x736a80
-Aud[46]=0x737ac0
-Aud[47]=0x738b00
-Aud[48]=0x739b40
-Aud[49]=0x73ab80
-Aud[50]=0x73bbc0
-Aud[51]=0x73cc00
-Aud[52]=0x73dc40
-Aud[53]=0x73ec80
-Aud[54]=0x73fcc0
+Aud[0]=0x714c40
+Aud[1]=0x715c80
+Aud[2]=0x716cc0
+Aud[3]=0x717d00
+Aud[4]=0x718d40
+Aud[5]=0x719d80
+Aud[6]=0x71adc0
+Aud[7]=0x71be00
+Aud[8]=0x71ce40
+Aud[9]=0x71de80
+Aud[10]=0x71eec0
+Aud[11]=0x71ff00
+Aud[12]=0x720f40
+Aud[13]=0x721f80
+Aud[14]=0x722fc0
+Aud[15]=0x724000
+Aud[16]=0x725040
+Aud[17]=0x726080
+Aud[18]=0x7270c0
+Aud[19]=0x728100
+Aud[20]=0x729140
+Aud[21]=0x72a180
+Aud[22]=0x72b1c0
+Aud[23]=0x72c200
+Aud[24]=0x72d240
+Aud[25]=0x72e280
+Aud[26]=0x72f2c0
+Aud[27]=0x730300
+Aud[28]=0x731340
+Aud[29]=0x732380
+Aud[30]=0x7333c0
+Aud[31]=0x734400
+Aud[32]=0x735440
+Aud[33]=0x736480
+Aud[34]=0x7374c0
+Aud[35]=0x738500
+Aud[36]=0x739540
+Aud[37]=0x73a580
+Aud[38]=0x73b5c0
+Aud[39]=0x73c600
+Aud[40]=0x73d640
+Aud[41]=0x73e680
+Aud[42]=0x73f6c0
+Aud[43]=0x740700
+Aud[44]=0x741740
+Aud[45]=0x742780
+Aud[46]=0x7437c0
+Aud[47]=0x744800
+Aud[48]=0x745840
+Aud[49]=0x746880
+Aud[50]=0x7478c0
+Aud[51]=0x748900
+Aud[52]=0x749940
+Aud[53]=0x74a980
+Aud[54]=0x74b9c0
 ==Run:audio_dec_task_init==
 ==Run:lvgl_state_task_init==
 ==Run:display_task_entry==
-display_frame(cnt=5) addr = 0x742b40
-display_frame_pool[1] addr = 0x86f340
-display_frame_pool[2] addr = 0x99bb40
-display_frame_pool[3] addr = 0xac8340
-display_frame_pool[4] addr = 0xbf4b40
+display_frame(cnt=5) addr = 0x74e840
+display_frame_pool[1] addr = 0x87b040
+display_frame_pool[2] addr = 0x9a7840
+display_frame_pool[3] addr = 0xad4040
+display_frame_pool[4] addr = 0xc00840
 
 ==TP2915-INIT-ENTER==
 Run tft_tp2915_init
@@ -102,7 +97,7 @@ tft_tp2915_init OK
 audio_dac_task_entry ... 
 audio_task_init ... 
 audio memory = 38024
-decode memory -- 0x4dd940
+decode memory -- 0x4e1940
 audio_dec_task_entry ... 
 ==Run:state_handling_entry==
 state_handling_init ... 
@@ -142,15 +137,15 @@ state_video_record_init ...
 ==STATE_VIDEO_RECORD:4==
 ==display:[w:1024,h:600,f:1]==
 ==pip:[w:128,h:96]==
-atbm_gp_sdio_init card addr 5f9624 host addr 5f96c4
+atbm_gp_sdio_init card addr 605330 host addr 6053d0
 size gp_sdio_info:160 gp_sdio_ctrl:136 gp_sdio_host:24 68
 ##SDIO CMD0 ok!
 ##SDIO CMD5 ok! resp=d0ffff00, spend_ms=0
 ##SDIO pwrup stable! spend_ms=0
-##SDIO CMD3 ok! resp=20000
+##SDIO CMD3 ok! resp=10000
 ##SDIO CMD7 ok!
-SDIO_CCCR_IF value=2
-atbm_gp_sdio_init_func atbm_gp_wifi_sdio_func addr d29040
+SDIO_CCCR_IF value=0
+atbm_gp_sdio_init_func atbm_gp_wifi_sdio_func addr d34d40
 [atbm_log]:atbm_sdio_module_init
 [atbm_log]:atbm_init_firmware
 [atbm_log]:[Wifi] Enter atbm_sdio_module_init 
@@ -160,7 +155,7 @@ atbm_gp_sdio_init_func atbm_gp_wifi_sdio_func addr d29040
 ++WORK_TASK =1 WORK_TASK_PRIO
 ++ELOOP_TASK =2ELOOP_TASK_PRIO
 
-[17:57:23.881]收←◆[atbm_log]:atbm_init_chip_priv : chip_id = 31 
+[11:35:18.021]收←◆[atbm_log]:atbm_init_chip_priv : chip_id = 31 
 [atbm_log]:atbm_register_bh
 [atbm_log]:atbm_urb_queue_init ==>
 ++TX_BH_TASK_ =5TX_BH_TASK_PRIO
@@ -175,36 +170,35 @@ atbm_gp_sdio_init_func atbm_gp_wifi_sdio_func addr d29040
 [atbm_log]:bt load itcm start P:2010000, l:78000
 [atbm_log]:atbm_load_firmware_generic: addr 2010000: len 78000
 
-[17:57:24.011]收←◆[atbm_log]:bt load dtcm start P:2800000, l:18000
+[11:35:18.152]收←◆[atbm_log]:bt load dtcm start P:2800000, l:18000
 [atbm_log]:atbm_load_firmware_generic: addr 2800000: len 18000
 [atbm_log]:BT TEST FW
 [atbm_log]:atbm_before_load_firmware++
-task_periphe[atbm_log]:rread atbm_tThread atbmimer 0 start_timer 0 st
-[KEY] ADKEYa1
-1-6 scan enabled on ADC1
-task[atbm_log]:atbm_before_load_firmware:read 0x16101004,3cdc2240
-__log]:atbm_before_load_firmware:read 0x16101004,3cdc2240
+task_perip[atbm_log]:hThread atbmThread atbm_timer 0 sta_timer 0 strt
+[KEY] ADKa1
+EY1-8 scan enabled on ADC1
+ta[atbm_log]:atbm_before_load_firmware:read 0x16101004,1cdc2240
+sbm_log]:atbm_before_load_firmware:read 0x16101004,1cdc2240
 [atbm_log]:Thread atbm_work 10000 start
-[atbm_log]:atbm_before_load_firmware:read 0x16100074,1
+[atbm_log]:atbm_before_load_firmware:read 0x16100074,0
 [atbm_log]:atbm_before_load_firmware:read 0xa900000 0
 [atbm_log]:atbm_before_load_firmware:0xa900000 [0]
 [atbm_log]:atbm_start_load_firmware++
 [atbm_log]:atbm_start_load_firmware: START DOWNLOAD ICCM=========
 [atbm_log]:atbm_load_firmware_generic: addr 1060000: len 20000
-
-[17:57:24.117]收←◆[atbm_log]:atbm_start_load_firmware: START DOWNLOAD DCCM=========
+[atbm_log]:atbm_start_load_firmware: START DOWNLOAD DCCM=========
 [atbm_log]:atbm_load_firmware_generic: addr 1800000: len 8000
 [atbm_log]:START DOWNLOAD BLE SRAM=========
 [atbm_log]:atbm_load_firmware_generic: addr c00000: len fa0
 [atbm_log]:atbm_start_load_firmware: FIRMWARE DOWNLOAD SUCCESS
 [atbm_log]:atbm_after_load_firmware++
 [DEBUG] atbm_gp_sdio_claim_irq
-atbm_gp_sdio_claim_irq irq_handler ebf48
+atbm_gp_sdio_claim_irq irq_handler ee340
 atbm_gp_sdio_claim_irq reg 0x3
 
-[17:57:24.446]收←◆[atbm_log]:firmwareCap f1c9
+[11:35:18.573]收←◆[atbm_log]:firmwareCap f1c9
 [atbm_log]:firmwareCap2 1204
-[atbm_log]:wsm_startup_indication : resv[64873] 
+[atbm_log]:wsm_startup_indication : resv[36789] 
 [atbm_log]:wsm_caps.firmwareCap 1204f1c9 
 [atbm_log]:apollo wifi WSM init done.
    Input buffers: 18 x 1632 bytes
@@ -243,28 +237,27 @@ atbm_gp_sdio_claim_irq reg 0x3
 [atbm_log]:atbmwifi_queue_init,cap(64)
 [atbm_log]:atbmwifi_queue_init,cap(64)
 [atbm_log]:atbmwifi_queue_init,cap(64)
-[atbm_log]:MAC Addr[0]:[30:4a:c4:c4:2d:5d]
-[atbm_log]:efuse data is [0x3,0x3b,0x1,0x1,0x0,0x21,0x0,0x0,0x30:0x4a:0xc4:0xc4:0x2d:0x5d]
+[atbm_log]:MAC Addr[0]:[14:d7:25:b6:53:45]
+[atbm_log]:efuse data is [0x3,0x26,0x6,0x6,0x6,0x20,0x0,0x0,0x14:0xd7:0x25:0xb6:0x53:0x45]
 [atbm_log]:atbmwifi_netstack_init
 [atbm_log]:__wpa_event_init
 ++HIF_TASK =3HIF_TASK_PRIO
-[atbm_log]:[atbm_log]:ahread atbm_Thread atbmhif 100000 s_hif 100000tart
-[atbm_l v(0xd70f00og]:atbm_all),nif(0xd7coc_netdev,ne180),priv(0tdev(0xd70f0xd70f14)
-0),nif(0xd7c180),priv(0xd70f14)
+[atbm_log[atbm_log]:T]:Thread athread atbm_hbm_hif 1000if 100000 st00 start
+[aaxd7cc00),nitbm_log]:atf(0xd87e80),bm_alloc_nepriv(0xd7cc1tdev,netdev4)
+(0xd7cc00),nif(0xd87e80),priv(0xd7cc14)
 [atbm_log]:wsm_generic_confirm status 2 
 [atbm_log]:<WARNING> wsm_write_mib fail !!! mibId=4105
-if[0] MAC addr :30:4a:c4:c4:2d:5d
-[atbm_log]:atbm_alloc_netdev,netdev(0xd7f380),nif(0xd8a600),priv(0xd7f394)
+if[0] MAC addr :14:d7:25:b6:53:45
+[atbm_log]:atbm_alloc_netdev,netdev(0xd8b080),nif(0xd96300),priv(0xd8b094)
 [atbm_log]:wsm_generic_confirm status 2 
 [atbm_log]:<WARNING> wsm_write_mib fail !!! mibId=4105
-if[1] MAC addr :32:4a:c4:c4:2d:5d
+if[1] MAC addr :16:d7:25:b6:53:45
 ++BH_TASK =4BH_TASK_PRIO
 [atbm_log]:Thread p2p_main 0 start
 cryptoexp:1 =0ms
 
-[17:57:24.791]收←◆state_video_record_entry ... 
-
-[17:57:24.822]收←◆cryptoexp:2 =152ms
+[11:35:18.932]收←◆state_video_record_entry ... 
+cryptoexp:2 =151ms
 wps_ctx->dev.device_name device_name:DIRECT-GP-ATBM6165
 wpas_deinit_wps 
 [atbm_log]:tx drop ret=-2 
@@ -276,12 +269,12 @@ wpas_deinit_wps
 [atbm_log]:wpa_deauthen
 [atbm_log]:atbm_reorder_func_reset.
 
-[17:57:24.953]收←◆wps ap ssid:GP-ATBM6165, channel:36
+[11:35:19.079]收←◆wps ap ssid:GP-ATBM6165, channel:36
 
 [atbm_log]:atbmwifi_start_ap++
 [atbm_log]:hostapd key_mgmt(2) wpa(2)
 
-[17:57:25.056]收←◆
+[11:35:19.183]收←◆
 75 50 b7 fe e8 c4 55 24 1e 0b 6d 1e 5b 7e 53 0c 
 53 9b f3 ac 71 bf e8 34 d9 f1 f5 bd 95 bb ad c4 
 [atbm_log]:wpa_comm_init_extra_ie len (22),proto(ATBM_WPA_PROTO_RSN)
@@ -306,79 +299,198 @@ gp cmd: server socket 0x0
 [MAIN] TFT output enabled after-wifi (L95 deferred)
 [MAIN] LVGL start released
 btstack uart0 init baud=921600
-btstack h5: open baud=921[LVGL] task 600
-btstacs open rx_dmk uart0 opea=1 tx_dma=0n rx_dma=1  native_h5_dtx_dma=0 nama=1
-[LVGL]tbtstack h5  h5: tx syn: tx sync #c #1 state=01 state=0 a actions=0x0ctions=0x0
+btstack h5: open baud=921600
+bt[LVGL] tasksGL] task st started
+[arce drive ULVGL] U3 re: registeredsource driv
+btstack h5etate=0 act: tx sync #1ions=0x0
+ state=0 actions=0x0
+[LVGL] fb=0xdb4d00(1200KBbtstack h5:)ed
+[LVGL]  ay path ->display path LVGL
+btst g #1 state=ack h5: tx 1 dic=0
+config #1 state=1 dic=0
+[LVGL] dynamic layout H=(360,452) V=(515,540)
+[LVGL] dynamic source=C arrays, alpha boosted, flush cache=drain
+[LVGL] dashboard: 1 flattened U3 image + 4 dynamic C images
+xstack debtstack h5: tx sync response state=1
+m: tx sybtstack h5: tx config response state=1
 
-[LVGL] fb=0xda9000(1200KB) drawbbtstack h5: uf=0xed5040link initial(1200KB)
-i[LVGL] displzL
-btstackax config #1 h5: tx con state=1 dicfig #1 stat=0
-e=1 dic=0
-btstack h5: tx sync response state=1
-btstack h5: tx config response state=1
-
-[17:57:25.428]收←◆[LVGL] simulator dashboard: 44 U3 images
-xstack demo service event: DEVICE_STATE(0) vcnt=1 v=
-[17:57:25.474]收←◆btstack h5: tx config #2 state=1 dic=0
+[11:35:19.593]收←◆btstack h5: tx config #2 state=1 dic=0
 btstack h5: link activated dic=1
 
-[17:57:26.156]收←◆btstack: AFH channel assessment status=0x00
+[11:35:20.173]收←◆nctivated dic=1
+ v=[2,0,0]
 
-[17:57:29.197]收←◆[ack: AFH channel assessment status=0x00
+[11:35:20.277]收←◆btstack: AFH channel assessment status=0x00
 
-xstack demo service 
-[17:57:29.409]收←◆event: POWER_STATE(1) vcnt=1 v=[1,0,0]
-xstack d
-[17:57:29.620]收←◆emo name status=0
-xstack demo service event: DEVICE_S
-[17:57:29.830]收←◆TATE(0) vcnt=1 v=[3,0,0]
+[11:35:20.373]收←◆xstack demo service event: POWER_STATE(1) vcnt=1 v=[1,0,0]
+xstack demo name status=0
+xstack demo service event: DEVICE_STATE(0) vcnt=1 v=[3,0,0]
 
-[17:57:38.127]收←◆
-Key 6[LVGL] KEY6 -> music page
-
-[17:57:40.444]收←◆
-Key 5
-[17:57:40.691]收←◆[LVGL] simulator dashboard: 44 U3 images
-
-[17:57:43.958]收←◆[LVGL] KEY5 -> dashboard page
-
-[17:57:49.629]收←◆
-Key 6[LVGL] KEY6 -> music page
-
-[17:57:51.046]收←◆
-Key 5
-[17:57:51.293]收←◆[LVGL] simulator dashboard: 44 U3 images
-
-[17:57:54.560]收←◆[LVGL] KEY5 -> dashboard page
-
-[17:57:55.140]收←◆
-FPS_tft(vblank,update,ispEof,front,rear,Wifi,jpeg,fdumy)=(30, 0, 0, 0, 0, 0, 0, 0)
-free heap size: 0x2fc1e80
-
-[17:58:01.014]收←◆
-Key 6[LVGL] KEY6 -> music page
-
-[17:58:02.731]收←◆
-Key 5
-[17:58:02.976]收←◆[LVGL] simulator dashboard: 44 U3 images
-
-[17:58:06.245]收←◆[LVGL] KEY5 -> dashboard page
-
-[17:58:11.920]收←◆
-Key 6[LVGL] KEY6 -> music page
-
-[17:58:14.037]收←◆
-Key 5
-[17:58:14.281]收←◆[LVGL] simulator dashboard: 44 U3 images
-
-[17:58:17.548]收←◆[LVGL] KEY5 -> dashboard page
-
-[17:58:20.239]收←◆store CRC = c7 50 e8 11
+[11:35:22.941]收←◆
+Key 4
+[11:35:25.097]收←◆
+Key 4
+[11:35:26.253]收←◆store CRC = c7 50 e8 11
 verify failed, store again
 
-[17:58:23.482]收←◆
-Key 6[LVGL] KEY6 -> music page
-
-[17:58:25.150]收←◆
+[11:35:27.409]收←◆
+Key 4
+[11:35:49.267]收←◆
 FPS_tft(vblank,update,ispEof,front,rear,Wifi,jpeg,fdumy)=(30, 0, 0, 0, 0, 0, 0, 0)
-free heap size: 0x2fc26c0
+free heap size: 0x2fb69c0
+
+[11:36:12.434]收←◆
+Key 4
+[11:36:13.090]收←◆
+Key 4
+[11:36:14.872]收←◆
+Key 2
+[11:36:19.275]收←◆
+FPS_tft(vblank,update,ispEof,front,rear,Wifi,jpeg,fdumy)=(30, 0, 0, 0, 0, 0, 0, 0)
+free heap size: 0x2fb6180
+
+[11:36:23.099]收←◆hfp hci: CONN_REQ link=1
+hfp hci: CMD_STATUS opcode=0x0409
+
+[11:36:24.957]收←◆xstack demo service event: PAIRED(5) vcnt=1 v=[0,0,0]
+
+[11:36:25.001]收←◆btstack l2cap: incoming request psm=0x0001 source_cid=0x006f handle=0x0001 sig=4
+btstack sdp: incoming cid=0x0041 psm=0x0001
+btstack sdp: opened cid=0x0041 status=0x00
+btstack sdp: data cid=0x0041 pdu=6 tx=0 param_len=15 size=20 mtu=1017
+btstack sdp: search uuid16=0x1200
+btstack sdp: response cid=0x0041 size=11
+btstack sdp: can send cid=0x0041 size=11
+btstack sdp: closed cid=0x0041
+btstack l2cap: incoming request psm=0x0001 source_cid=0x006a handle=0x0001 sig=7
+btstack sdp: incoming cid=0x0042 psm=0x0001
+
+[11:36:25.115]收←◆btstack sdp: opened cid=0x0042 status=0x00
+btstack sdp: data cid=0x0042 pdu=6 tx=0 param_len=15 size=20 mtu=1017
+btstack sdp: search uuid16=0x0100
+btstack sdp: response cid=0x0042 size=424
+btstack sdp: can send cid=0x0042 size=424
+
+[11:36:25.169]收←◆btstack sdp: data cid=0x0042 pdu=6 tx=0 param_len=15 size=20 mtu=1017
+btstack sdp: search uuid16=0x112e
+btstack sdp: response cid=0x0042 size=11
+btstack sdp: can send cid=0x0042 size=11
+btstack sdp: data cid=0x0042 pdu=6 tx=0 param_len=22 size=27 mtu=1017
+btstack sdp: search uuid16=0x111e
+btstack sdp: response cid=0x0042 size=67
+btstack sdp: can send cid=0x0042 size=67
+btstack sdp: closed cid=0x0042
+btstack l2cap: incoming request psm=0x0003 source_cid=0x0071 handle=0x0001 sig=10
+hfp hci: CMD_STATUS opcode=0x041b
+hfp hci: CMD_STATUS opcode=0x0000
+hfp hci: CMD_STATUS opcode=0x041c
+hfp hci: CMD_STATUS opcode=0x0000
+btstack l2cap: data #1 psm=0x0003 local=0x0043 remote=0x0071 len=4 p=03 3f 01 1c 00 00 00 00
+btstack l2cap: data #2 psm=0x0003 local=0x0043 remote=0x0071 len=14 p=03 ef 15 83 11 02 f0 00
+hfp_hf run blocked by HCI (state=4 skip=1)
+btstack l2cap: data #3 psm=0x0003 local=0x0043 remote=0x0071 len=4 p=0b 3f 01 59 00 00 00 00
+btstack l2cap: data #4 psm=0x0003 local=0x0043 remote=0x0071 len=8 p=03 ef 09 e3 05 0b 8d 70
+btstack l2cap: data #5 psm=0x0003 local=0x0043 remote=0x0071 len=8 p=03 ef 09 e1 05 0b 8d 70
+btstack hfp slc: tx BRSF state=6 rfcomm=0x0001 ok=0 ag_features=0x00000000 indicators=0
+btstack l2cap: data #6 psm=0x0003 local=0x0043 remote=0x0071 len=5 p=0b ff 01 04 86 00 00 00
+btstack l2cap: data #7 psm=0x0003 local=0x0043 remote=0x0071 len=19 p=0b ef 1f 0d 0a 2b 42 52
+btstack rfcomm: data #1 cid=0x0001 dlci=2 len=15 credits_in=9 credits_out=10 p=0d 0a 2b 42 52 53 46 3a
+btstack l2cap: data #8 psm=0x0003 local=0x0043 remote=0x0071 len=10 p=0b ef 0d 0d 0a 4f 4b 0d
+btstack rfcomm: data #2 cid=0x0001 dlci=2 len=6 credits_in=8 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack hfp slc: ok status=0 state=6->9 rfcomm=0x0001 ag_features=0x00000f6f indicators=0
+btstack hfp slc: tx CIND=? state=10 rfcomm=0x0001 ok=0 ag_features=0x00000f6f indicators=0
+
+[11:36:25.491]收←◆btstack l2cap: data #9 psm=0x0003 local=0x0043 remote=0x0071 len=138 p=0b ff 08 01 01 0d 0a 2b
+btstack rfcomm: data #3 cid=0x0001 dlci=2 len=132 credits_in=7 credits_out=10 p=0d 0a 2b 43 49 4e 44 3a
+btstack l2cap: data #10 psm=0x0003 local=0x0043 remote=0x0071 len=10 p=0b ef 0d 0d 0a 4f 4b 0d
+btstack rfcomm: data #4 cid=0x0001 dlci=2 len=6 credits_in=6 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack hfp slc: ok status=0 state=10->11 rfcomm=0x0001 ag_features=0x00000f6f indicators=7
+btstack hfp slc: tx CIND? state=12 rfcomm=0x0001 ok=0 ag_features=0x00000f6f indicators=7
+
+[11:36:25.573]收←◆btstack l2cap: data #11 psm=0x0003 local=0x0043 remote=0x0071 len=29 p=0b ff 31 01 0d 0a 2b 43
+btstack rfcomm: data #5 cid=0x0001 dlci=2 len=24 credits_in=5 credits_out=10 p=0d 0a 2b 43 49 4e 44 3a
+btstack l2cap: data #12 psm=0x0003 local=0x0043 remote=0x0071 len=10 p=0b ef 0d 0d 0a 4f 4b 0d
+btstack rfcomm: data #6 cid=0x0001 dlci=2 len=6 credits_in=4 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack hfp slc: ok status=0 state=12->13 rfcomm=0x0001 ag_features=0x00000f6f indicators=7
+btstack hfp slc: tx CMER state=14 rfcomm=0x0001 ok=0 ag_features=0x00000f6f indicators=7
+btstack l2cap: data #13 psm=0x0003 local=0x0043 remote=0x0071 len=11 p=0b ff 0d 01 0d 0a 4f 4b
+btstack rfcomm: data #7 cid=0x0001 dlci=2 len=6 credits_in=13 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack hfp slc: ok status=0 state=14->23 rfcomm=0x0001 ag_features=0x00000f6f indicators=7
+xstack demo cobtstack l2cap: incoming request psm=0x0001 source_cid=0x0073 handle=0x0001 sig=12
+btstack sdp: incoming cid=0x0044 psm=0x0001
+ncoming cid=0x0044 psm=0x0001
+xstack demo phone event: 
+[11:36:25.742]收←◆btstack l2cap: data #14 psm=0x0003 local=0x0043 remote=0x0071 len=15 p=0b ef 17 0d 0a 2b 56 47
+btstack rfcomm: data #8 cid=0x0001 dlci=2 len=11 credits_in=12 credits_out=9 p=0d 0a 2b 56 47 53 3a 20
+btstack l2cap: data #15 psm=0x0003 local=0x0043 remote=0x0071 len=16 p=0b ef 19 0d 0a 2b 42 53
+btstack rfcomm: data #9 cid=0x0001 dlci=2 len=12 credits_in=11 credits_out=9 p=0d 0a 2b 42 53 49 52 3a
+btstack l2cap: data #16 psm=0x0003 local=0x0043 remote=0x0071 len=11 p=0b ff 0d 01 0d 0a 4f 4b
+btstack rfcomm: data #10 cid=0x0001 dlci=2 len=6 credits_in=10 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack sdp: opened cid=0x0044 status=0x00
+btstack l2cap: data #17 psm=0x0003 local=0x0043 remote=0x0071 len=11 p=0b ff 0d 01 0d 0a 4f 4b
+btstack rfcomm: data #11 cid=0x0001 dlci=2 len=6 credits_in=9 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack sdp: data cid=0x0044 pdu=6 tx=0 param_len=19 size=24 mtu=1017
+btstack sdp: search uuid16=0x110b
+btstack sdp: response cid=0x0044 size=62
+btstack sdp: can send cid=0x0044 size=62
+btstack l2cap: data #18 psm=0x0003 local=0x0043 remote=0x0071 len=34 p=0b ff 3b 01 0d 0a 2b 43
+btstack rfcomm: data #12 cid=0x0001 dlci=2 len=29 credits_in=8 credits_out=10 p=0d 0a 2b 43 4f 50 53 3a
+btstack l2cap: data #19 psm=0x0003 local=0x0043 remote=0x0071 len=10 p=0b ef 0d 0d 0a 4f 4b 0d
+btstack rfcomm: data #13 cid=0x0001 dlci=2 len=6 credits_in=7 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack sdp: closed cid=0x0044
+btstack l2cap: data #20 psm=0x0003 local=0x0043 remote=0x0071 len=11 p=0b ff 0d 01 0d 0a 4f 4b
+btstack rfcomm: data #14 cid=0x0001 dlci=2 len=6 credits_in=6 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack l2cap: incoming request psm=0x0019 source_cid=0x0074 handle=0x0001 sig=15
+btstack l2cap: data #21 psm=0x0003 local=0x0043 remote=0x0071 len=11 p=0b ff 0d 01 0d 0a 4f 4b
+btstack rfcomm: data #15 cid=0x0001 dlci=2 len=6 credits_in=5 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack l2cap: data #22 psm=0x0003 local=0x0043 remote=0x0071 len=11 p=0b ff 0d 01 0d 0a 4f 4b
+btstack rfcomm: data #16 cid=0x0001 dlci=2 len=6 credits_in=4 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack l2cap: data #23 psm=0x0003 local=0x0043 remote=0x0071 len=11 p=0b ff 0d 01 0d 0a 4f 4b
+btstack rfcomm: data #17 cid=0x0001 dlci=2 len=6 credits_in=13 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack l2cap: data #24 psm=0x0003 local=0x0043 remote=0x0071 len=26 p=0b ff 2b 01 0d 0a 2b 43
+btstack rfcomm: data #18 cid=0x0001 dlci=2 len=21 credits_in=12 credits_out=10 p=0d 0a 2b 43 4e 55 4d 3a
+btstack l2cap: data #25 psm=0x0003 local=0x0043 remote=0x0071 len=10 p=0b ef 0d 0d 0a 4f 4b 0d
+btstack rfcomm: data #19 cid=0x0001 dlci=2 len=6 credits_in=11 credits_out=10 p=0d 0a 4f 4b 0d 0a 00 00
+btstack avrcp: sdp status=0x00 target_features=0x0111 target_cover_art=1 cover_art_psm=0x1005 psm_available=1 cover_art=1
+btstack l2cap: incoming request psm=0x0019 source_cid=0x0077 handle=0x0001 sig=18
+
+[11:36:26.208]收←◆btstack l2cap: incoming request psm=0x0001 source_cid=0x007a handle=0x0001 sig=21
+btstack sdp: incoming cid=0x004a psm=0x0001
+hfp_hf run blocked by HCI (state=23 skip=51)
+btstack sdp: opened cid=0x004a status=0x00
+btstack sdp: data cid=0x004a pdu=6 tx=0 param_len=19 size=24 mtu=1017
+btstack sdp: search uuid16=0x110e
+btstack sdp: response cid=0x004a size=80
+btstack sdp: can send cid=0x004a size=80
+S0x004a size=80
+ v=[3,0]btstack avrcp: register tx event=1 status=0btstack sdp: data cid=0x004a pdu=6 tx=0 param_len=19 size=24 mtu=1017
+btstack sdp: search uuid16=0x110b
+btstack sdp: response cid=0x004a size=44
+btstack sdp: can send cid=0x004a size=44
+
+stack sdp: can send cid=0x004a size=44
+xsbtstack sdp: closed cid=0x004a
+
+[11:36:26.483]收←◆btstack avrcp: register tx event=2 status=0
+[11:36:26.780]收←◆ttack avrcp: register tx event=2 status=0
+xstack demo phonebook sync status=0
+xstack demo conn event: HFP_HF(1) CONNECTED(2) loss=0 addr=00:9c:c0:c3:08:64
+xstack demo phone event: STATE(0) vcnt=1 v=[3,0]
+xstack demo conn event: HFP_HF(1) CONNECTED(2) loss=0 addr=00:9c:c0:c3:08:64
+xstack demo phone event: STATE(0) vcnt=1 v=[3,0]
+xstack demo p
+[11:36:26.923]收←◆btstack l2cap: data #26 psm=0x0003 local=0x0043 remote=0x0071 len=14 p=03 ef 15 81 11 0b e0 00
+btstack l2cap: data #27 psm=0x0003 local=0x0043 remote=0x0071 len=4 p=2d 73 01 e4 00 00 00 00
+
+[11:36:26.994]收←◆hfp_hf run blocked by HCI (state=23 skip=101)
+btstack l2cap: data #28 psm=0x0003 local=0x0043 remote=0x0071 len=8 p=03 ef 09 e1 05 2f 8d 70
+btstack l2cap: data #29 psm=0x0003 local=0x0043 remote=0x0071 len=8 p=03 ef 09 e3 05 2f 8d 70
+
+[11:36:27.047]收←◆btstack l2cap: data #30 psm=0x0003 local=0x0043 remote=0x0071 len=5 p=2f ff 01 04 d9 00 00 00
+btstack l2cap: data #31 psm=0x0003 local=0x0043 remote=0x0071 len=35 p=2f ef 3f a0 00 1f 10 00
+btstack rfcomm: data #20 cid=0x0002 dlci=11 len=31 credits_in=9 credits_out=10 p=a0 00 1f 10 00 03 de cb
+
+[11:36:27.221]收←◆btstack l2cap: data #32 psm=0x0003 local=0x0043 remote=0x0071 len=995 p=2f ef bc 07 90 03 de cb
+btstack rfcomm: data #21 cid=0x0002 dlci=11 len=990 credits_in=8 credits_out=9 p=90 03 de cb 00 00 00 01
+
+[11:36:27.316]收←◆h: data #21 cid=0x0002 dlci=11 len=990 credits_in=8

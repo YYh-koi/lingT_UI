@@ -240,7 +240,7 @@ void ap_peripheral_ad_detect_init(INT8U adc_channel, void (*ad_detect_isr) (INT1
 	bat_ck_cnt = 0;
 #endif
 
-	/* ADKEY1..6 use the board's ADC_LINE_0 resistor ladder.  Do not
+	/* ADKEY1..8 use the board's ADC_LINE_0 resistor ladder.  Do not
 	 * disable this when LVGL is selected: LVGL consumes the resulting key
 	 * actions through the normal peripheral handlers. */
 #if ADKEY_NUM
@@ -250,7 +250,8 @@ void ap_peripheral_ad_detect_init(INT8U adc_channel, void (*ad_detect_isr) (INT1
 	drv_l1_adc_conv_time_sel(4);
 	drv_l1_adc_manual_ch_set(adc_channel);
 	drv_l1_adc_manual_callback_set(ad_detect_isr);
-	DBG_PRINT("[KEY] ADKEY1-6 scan enabled on ADC%d\r\n", adc_channel);
+	DBG_PRINT("[KEY] ADKEY1-%u scan enabled on ADC%d\r\n",
+		(unsigned int)ADKEY_NUM, adc_channel);
 #endif
 	if(ad_detect_timerid == 0xFF)
 	{
@@ -1322,8 +1323,18 @@ void ap_peripheral_mode_key_exe(INT16U *tick_cnt_ptr)
 	INT16U tick_cnt = *tick_cnt_ptr;
 
 	*tick_cnt_ptr = 0;
+	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	if ((tick_cnt <= 24u) && lvgl_phone_key_send(LVGL_PHONE_KEY_RIGHT))
+	{
+		return;
+	}
+	#endif
 
 	DBG_PRINT("mode_Key\r\n");
+	if (ap_peripheral_media_key_dispatch(AP_PERIPHERAL_MEDIA_KEY_NEXT))
+	{
+		return;
+	}
 
 	if(tick_cnt > 24)
 	{
@@ -1331,14 +1342,6 @@ void ap_peripheral_mode_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
-		/* KEY3 (MODE_KEY): when AVRCP is connected it advances the track.
-		 * If Bluetooth does not claim the key, preserve the original page
-		 * switching behaviour below. */
-		if (ap_peripheral_media_key_dispatch(
-			AP_PERIPHERAL_MEDIA_KEY_NEXT))
-		{
-			return;
-		}
 		app_msg_send(MSG_APQ_AUDIO_EFFECT_MODE, NULL, 0, MSG_PRI_NORMAL);
 
         #if C_SCREEN_SAVER
@@ -1363,6 +1366,16 @@ void ap_peripheral_next_key_exe(INT16U *tick_cnt_ptr)
 	INT8U	data = 0;
 
 	*tick_cnt_ptr = 0;
+	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	if ((tick_cnt <= 24u) && lvgl_phone_key_send(LVGL_PHONE_KEY_DOWN))
+	{
+		return;
+	}
+	#endif
+	if (ap_peripheral_media_key_dispatch(AP_PERIPHERAL_MEDIA_KEY_NEXT))
+	{
+		return;
+	}
 
 	if(tick_cnt > 24)
 	{
@@ -1384,11 +1397,7 @@ void ap_peripheral_next_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
-		if (ap_peripheral_media_key_dispatch(
-			AP_PERIPHERAL_MEDIA_KEY_NEXT))
-		{
-			return;
-		}        app_msg_send(MSG_APQ_AUDIO_EFFECT_DOWN, NULL, 0, MSG_PRI_NORMAL);
+		app_msg_send(MSG_APQ_AUDIO_EFFECT_DOWN, NULL, 0, MSG_PRI_NORMAL);
 
         #if C_SCREEN_SAVER
         if(screen_saver_enable)
@@ -1410,6 +1419,16 @@ void ap_peripheral_prev_key_exe(INT16U *tick_cnt_ptr)
 
 	*tick_cnt_ptr = 0;
     DBG_PRINT("ap_peripheral_prev_key_exe\r\n");
+	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	if ((tick_cnt <= 24u) && lvgl_phone_key_send(LVGL_PHONE_KEY_SELECT))
+	{
+		return;
+	}
+	#endif
+	if (ap_peripheral_media_key_dispatch(AP_PERIPHERAL_MEDIA_KEY_PREVIOUS))
+	{
+		return;
+	}
 	if(tick_cnt > 24)
 	{
 		#if C_WIFI_ON_OFF_KEY
@@ -1438,12 +1457,6 @@ void ap_peripheral_prev_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
-		/* KEY1 (PRE_KEY): previous Bluetooth track when AVRCP is available. */
-		if (ap_peripheral_media_key_dispatch(
-			AP_PERIPHERAL_MEDIA_KEY_PREVIOUS))
-		{
-			return;
-		}
         app_msg_send(MSG_APQ_AUDIO_EFFECT_UP, NULL, 0, MSG_PRI_NORMAL);
 
         #if C_SCREEN_SAVER
@@ -1474,6 +1487,16 @@ void ap_peripheral_ok_key_exe(INT16U *tick_cnt_ptr)
 	INT16U tick_cnt = *tick_cnt_ptr;
 
 	*tick_cnt_ptr = 0;
+	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	if ((tick_cnt <= 24u) && lvgl_phone_key_send(LVGL_PHONE_KEY_LEFT))
+	{
+		return;
+	}
+	#endif
+	if (ap_peripheral_media_key_dispatch(AP_PERIPHERAL_MEDIA_KEY_PLAY_PAUSE))
+	{
+		return;
+	}
 
 	if(tick_cnt > 24)
 	{
@@ -1491,12 +1514,6 @@ void ap_peripheral_ok_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
-		/* KEY2 (OK_KEY): Bluetooth play / pause when AVRCP is available. */
-		if (ap_peripheral_media_key_dispatch(
-			AP_PERIPHERAL_MEDIA_KEY_PLAY_PAUSE))
-		{
-			return;
-		}
         app_msg_send(MSG_APQ_AUDIO_EFFECT_OK, NULL, 0, MSG_PRI_NORMAL);
 
         #if C_SCREEN_SAVER
@@ -1519,9 +1536,10 @@ void ap_peripheral_sos_key_exe(INT16U *tick_cnt_ptr)
 	*tick_cnt_ptr = 0;
 
 	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
-	/* ADKEY6: move right from the dashboard to the music page. */
-	if ((tick_cnt <= 24u) && lvgl_page_show_music())
-	{
+	/* Key6 is next-track inside the embedded music page.  It never changes
+	 * pages; all page selection belongs to the bottom navigation strip. */
+	if (tick_cnt <= 24u) {
+		(void)lvgl_music_key_send(LVGL_MUSIC_KEY_NEXT);
 		return;
 	}
 	#endif
@@ -1548,6 +1566,36 @@ void ap_peripheral_sos_key_exe(INT16U *tick_cnt_ptr)
 	{
 		app_msg_send(MSG_APQ_SOS_KEY_ACTIVE, NULL, 0, MSG_PRI_NORMAL);
 	}
+}
+
+/* ADKEY7 remains Up inside the dialer.  It does not open the music page. */
+void ap_peripheral_music_key_exe(INT16U *tick_cnt_ptr)
+{
+	INT16U tick_cnt = *tick_cnt_ptr;
+
+	*tick_cnt_ptr = 0;
+	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	if (tick_cnt <= 24u) {
+		if (lvgl_phone_key_send(LVGL_PHONE_KEY_UP)) {
+			return;
+		}
+		return;
+	}
+	#endif
+}
+
+/* ADKEY8 is play/pause inside the embedded music page. */
+static void ap_peripheral_key8_exe(INT16U *tick_cnt_ptr)
+{
+	INT16U tick_cnt = *tick_cnt_ptr;
+
+	*tick_cnt_ptr = 0;
+	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	if (tick_cnt <= 24u) {
+		(void)lvgl_music_key_send(LVGL_MUSIC_KEY_PLAY_PAUSE);
+		return;
+	}
+	#endif
 }
 
 void ap_peripheral_pw_key_exe(INT16U *tick_cnt_ptr)
@@ -1587,6 +1635,14 @@ void ap_peripheral_menu_key_exe(INT16U *tick_cnt_ptr)
 
 	*tick_cnt_ptr = 0;
 
+	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	/* Key5 is previous-track inside the embedded music page. */
+	if (tick_cnt <= 24u) {
+		(void)lvgl_music_key_send(LVGL_MUSIC_KEY_PREVIOUS);
+		return;
+	}
+	#endif
+
 	if(tick_cnt > 24)
 	{
 		#if C_SUPORT_GET_JPG_BUF
@@ -1595,14 +1651,6 @@ void ap_peripheral_menu_key_exe(INT16U *tick_cnt_ptr)
 	}
 	else
 	{
-		#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
-		/* ADKEY5: move left from the music page back to the dashboard. */
-		if (lvgl_page_show_dashboard())
-		{
-			return;
-		}
-		#endif
-
 		if (ap_peripheral_call_key_dispatch(
 			AP_PERIPHERAL_CALL_KEY_ANSWER))
 		{
@@ -1926,6 +1974,21 @@ void ap_peripheral_key_register(INT8U type)
 				ap_peripheral_sos_key_exe
 				, ADKEY_SOS_L
 				, ADKEY_SOS_H
+			);
+			#endif
+			#if (defined(ADKEY_KEY7_L) && defined(ADKEY_KEY7_H))
+			ap_adkey_action_register(
+				/* ADKEY7: fixed entry to the music page. */
+				ap_peripheral_music_key_exe
+				, ADKEY_KEY7_L
+				, ADKEY_KEY7_H
+			);
+			#endif
+			#if (defined(ADKEY_KEY8_L) && defined(ADKEY_KEY8_H))
+			ap_adkey_action_register(
+				ap_peripheral_key8_exe
+				, ADKEY_KEY8_L
+				, ADKEY_KEY8_H
 			);
 			#endif
 		}

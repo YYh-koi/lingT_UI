@@ -94,7 +94,14 @@ typedef enum
 #define WIFI_DOWNLOAD_STATE_STACK_SIZE			4096
 #define VOICE_RECG_TASK_STACK_SIZE				2048
 #define BSD_TASK_STACK_SIZE     				2048
+/* The normal LVGL screen needs 8 KiB.  The one-time U3 installer also runs
+ * FAT/exFAT mount code on this task; give that temporary image a separate
+ * stack budget so the mount path cannot corrupt the task stack. */
+#if defined(LVGL_UI_SPIFC_INSTALLER) && (LVGL_UI_SPIFC_INSTALLER == 1)
+#define LVGL_TASK_STACK_SIZE					16384
+#else
 #define LVGL_TASK_STACK_SIZE					8192
+#endif
 
 /**************************************************************************
  *                      T A S K   P R I O R I T I E S	                  *

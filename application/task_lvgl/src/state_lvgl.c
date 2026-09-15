@@ -17,10 +17,13 @@
 #include "state_lvgl.h"
 
 #include "lvgl.h"
+#include "dashboard_dynamic_assets.h"
 
 #include "application.h"        /* pTurnkeyArgs / LVGLTaskQ / DBG_PRINT */
 #include "bt_ui_events.h"        /* 蓝牙事件适配层 */
 #include "bt_xstack_audio.h"     /* AVRCP 控制 */
+#include "bt_xstack_phone.h"     /* HFP 拨号 */
+#include "bt_xstack_demo.h"      /* PBAP re-sync for phone page entry */
 #include "gp_stdlib.h"          /* gp_malloc_align / gp_free */
 #include "gplib_fs.h"           /* FS_NAND_APP / fs_read */
 #include "proto.h"              /* fs_fread / fs_fwrite / fs_fseek */
@@ -38,9 +41,84 @@
 #define LVGL_V_RES          600
 #define LVGL_DRAW_BUF_DIV   1       /* One complete frame: avoids 10 serial flushes on a page change. */
 #define LVGL_FLUSH_TRACE_EN 0       /* Keep UART free while measuring render performance. */
-#define LVGL_BT_EVENT_QUEUE_LEN 8u
+#define LVGL_BT_EVENT_QUEUE_LEN 64u
+/* Never drain an unbounded Bluetooth burst before giving LVGL a render turn.
+ * PBAP can enqueue dozens of records; four messages per pass keeps key focus
+ * and AVRCP state visually responsive while that sync is in progress. */
+#define LVGL_BT_EVENTS_PER_FRAME 4u
 #define LVGL_COVER_JPEG_MAX_BYTES (64u * 1024u)
-#define LVGL_COVER_SIZE       240u
+/* The scaler accepts this source/output size reliably. The LVGL object keeps
+ * this real size, then centres its 150px visual result with a 160/256 zoom. */
+#define LVGL_COVER_SIZE         240u
+#define LVGL_COVER_DISPLAY_SIZE 150u
+#define LVGL_COVER_ZOOM         ((LVGL_COVER_DISPLAY_SIZE * 256u) / LVGL_COVER_SIZE)
+#define LVGL_PHONE_CONTACT_MAX 32u
+#define LVGL_PHONE_CALL_MAX    48u
+#define LVGL_PHONE_VISIBLE_ROWS 5u
+#define LVGL_PHONE_NUMBER_MAX  BT_XSTACK_PHONEBOOK_NUMBER_MAX
+#define LVGL_PHONE_TAB_DIAL    0u
+#define LVGL_PHONE_TAB_RECENT  1u
+#define LVGL_PHONE_TAB_CONTACT 2u
+#define LVGL_PHONE_TAB_COUNT   3u
+#define LVGL_PHONE_DIAL_KEY_COUNT 14u
+/* The large dashboard is one opaque U3 image. Only the speed arc, headlight
+ * and voice state below are redrawn, so board preview animation stays local. */
+#define LVGL_DASHBOARD_DEMO_ANIMATION      1u
+/* The demo-only large arc previously invalidated a sizeable part of the
+ * dashboard five times per second.  Keep all existing visual states, but
+ * update the demo once per second; real vehicle/voice events can still update
+ * these states later. */
+#define LVGL_DASHBOARD_HEADLIGHT_SIM_BLINK 1u
+#define LVGL_DASHBOARD_VOICE_SIM_BLINK     1u
+#define LVGL_DASHBOARD_TICK_MS             1000u
+/* dashboard.bin is the red-frame crop of the former 1024x600 material,
+ * enlarged to fill the panel.  Every separately drawn dashboard object uses
+ * these conversions so it stays aligned with that new background. */
+#define LVGL_DASHBOARD_CROP_X              24u
+#define LVGL_DASHBOARD_CROP_Y              41u
+#define LVGL_DASHBOARD_CROP_W              970u
+#define LVGL_DASHBOARD_CROP_H              516u
+#define LVGL_DASHBOARD_MAP_X(value) \
+    ((lv_coord_t)(((((INT32U)(value) - LVGL_DASHBOARD_CROP_X) * LVGL_H_RES) + \
+                   (LVGL_DASHBOARD_CROP_W / 2u)) / LVGL_DASHBOARD_CROP_W))
+#define LVGL_DASHBOARD_MAP_Y(value) \
+    ((lv_coord_t)(((((INT32U)(value) - LVGL_DASHBOARD_CROP_Y) * LVGL_V_RES) + \
+                   (LVGL_DASHBOARD_CROP_H / 2u)) / LVGL_DASHBOARD_CROP_H))
+#define LVGL_DASHBOARD_MAP_W(value) \
+    ((lv_coord_t)((((INT32U)(value) * LVGL_H_RES) + \
+                   (LVGL_DASHBOARD_CROP_W / 2u)) / LVGL_DASHBOARD_CROP_W))
+#define LVGL_DASHBOARD_MAP_H(value) \
+    ((lv_coord_t)((((INT32U)(value) * LVGL_V_RES) + \
+                   (LVGL_DASHBOARD_CROP_H / 2u)) / LVGL_DASHBOARD_CROP_H))
+#define LVGL_DASHBOARD_VOICE_WAVE_BARS     3u
+#define LVGL_DASHBOARD_VOICE_WAVE_BAR_W    LVGL_DASHBOARD_MAP_W(4u)
+#define LVGL_DASHBOARD_VOICE_WAVE_GAP      LVGL_DASHBOARD_MAP_W(3u)
+#define LVGL_DASHBOARD_VOICE_WAVE_ICON_HALF LVGL_DASHBOARD_MAP_W(12u)
+#define LVGL_DASHBOARD_VOICE_WAVE_MIN_H    LVGL_DASHBOARD_MAP_H(6u)
+#define LVGL_DASHBOARD_VOICE_WAVE_MAX_H    LVGL_DASHBOARD_MAP_H(26u)
+/* 009_plane is the immutable page frame in the original artwork.  Its
+ * interior, not the whole 1024x600 root screen, is the switchable area. */
+#define LVGL_CONTENT_X       LVGL_DASHBOARD_MAP_X(70u)
+#define LVGL_CONTENT_Y       LVGL_DASHBOARD_MAP_Y(126u)
+#define LVGL_CONTENT_W       LVGL_DASHBOARD_MAP_W(882u)
+#define LVGL_CONTENT_H       LVGL_DASHBOARD_MAP_H(318u)
+#define LVGL_PAGE_DASHBOARD  0u
+#define LVGL_PAGE_LOCATION   1u
+#define LVGL_PAGE_PHONE      2u
+#define LVGL_PAGE_MUSIC      3u
+#define LVGL_PAGE_SPEED      4u
+#define LVGL_PAGE_COUNT      5u
+/* 033_location remains in the fixed bottom navigation strip.  The dynamic
+ * headlight and voice indicators use the two free slots called out in the
+ * approved layout, so none of the icon layers overlap. */
+#define LVGL_DASHBOARD_HEADLIGHT_X         LVGL_DASHBOARD_MAP_X(365u)
+#define LVGL_DASHBOARD_HEADLIGHT_Y         LVGL_DASHBOARD_MAP_Y(430u)
+/* The voice indicator occupies the clear lower area, centred horizontally
+ * in that space so it never intersects the fixed navigation strip. */
+#define LVGL_DASHBOARD_VOICE_X             LVGL_DASHBOARD_MAP_X(512u)
+#define LVGL_DASHBOARD_VOICE_Y             LVGL_DASHBOARD_MAP_Y(505u)
+#define LVGL_DASHBOARD_VOICE_WAVE_CENTER_X LVGL_DASHBOARD_MAP_X(524u)
+#define LVGL_DASHBOARD_VOICE_WAVE_CENTER_Y LVGL_DASHBOARD_MAP_Y(518u)
 #define LVGL_NAND_FS_LETTER   'U'
 #define LVGL_NAND_PATH_MAX    96u
 #define LVGL_UI_INSTALL_PATH_MAX 96u
@@ -83,9 +161,8 @@ static lv_obj_t *s_btn_play;    /* 播放/暂停 */
 static lv_obj_t *s_btn_prev;
 static lv_obj_t *s_btn_next;
 static lv_obj_t *s_ui_cover;
-static INT8U     s_playing = 0;
-static lv_color_t *s_dashboard_snapshot;
-static INT8U     s_dashboard_snapshot_valid;
+static lv_obj_t *s_ui_cover_loading;
+static volatile INT8U s_playing = 0;
 
 /* Cover Art 数据只在 xstack 回调内拷贝；JPEG 解码及 lv_img 更新均在 LVGL 任务内完成。 */
 static uint8_t *s_cover_jpeg;
@@ -94,11 +171,11 @@ static uint32_t s_cover_jpeg_size;
 static volatile uint8_t s_cover_receiving;
 static volatile uint8_t s_cover_ready;
 static volatile uint8_t s_cover_decoding;
+static volatile uint8_t s_cover_cached;
 static lv_img_dsc_t s_cover_img;
 
-/* Board port of tools/lvgl_pc_simulator/src/ui_dashboard.c.  All static
- * visual layers stay as supplied materials in U3; LVGL only supplies the
- * same speed arc, number and warning animation used by the PC simulator. */
+/* Board port of tools/lvgl_pc_simulator/src/ui_dashboard.c. The large,
+ * static material is flattened in U3; small state materials remain separate. */
 typedef struct {
     const char *file;
     lv_coord_t x;
@@ -107,16 +184,73 @@ typedef struct {
 
 static lv_obj_t *s_dashboard_speed_label;
 static lv_obj_t *s_dashboard_main_arc;
-static lv_obj_t *s_dashboard_warning;
+static lv_obj_t *s_dashboard_background;
+static lv_obj_t *s_dashboard_headlight;
+static lv_obj_t *s_dashboard_voice;
+static lv_img_dsc_t s_dashboard_headlight_off_img;
+static lv_img_dsc_t s_dashboard_headlight_on_img;
+static lv_img_dsc_t s_dashboard_voice_idle_img;
+static lv_img_dsc_t s_dashboard_voice_active_img;
+static lv_obj_t *s_dashboard_voice_wave[LVGL_DASHBOARD_VOICE_WAVE_BARS * 2u];
 static INT32S s_dashboard_speed_tenths = 1080;
 static INT32S s_dashboard_speed_direction = 1;
-static INT16U s_dashboard_warning_elapsed;
+static INT16U s_dashboard_headlight_elapsed;
+static INT16U s_dashboard_voice_elapsed;
+static INT16U s_dashboard_voice_wave_phase;
+static INT8U s_dashboard_headlight_is_on;
+static INT8U s_dashboard_voice_is_active;
 static volatile INT8U s_dashboard_active;
 static volatile INT8U s_page_switch_pending;
 static lv_timer_t *s_dashboard_timer;
+static volatile INT8U s_active_page = LVGL_PAGE_DASHBOARD;
+static lv_obj_t *s_content_panel;
+static INT8U s_nav_focus = LVGL_PAGE_DASHBOARD;
+static lv_obj_t *s_nav_marker;
 static char s_music_title[BT_UI_TEXT_MAX] = "No Track";
 static char s_music_artist[BT_UI_TEXT_MAX] = "Bluetooth device";
 static char s_music_album[BT_UI_TEXT_MAX];
+
+typedef struct {
+    char name[BT_XSTACK_PHONEBOOK_NAME_MAX + 1u];
+    char number[BT_XSTACK_PHONEBOOK_NUMBER_MAX + 1u];
+} lvgl_phone_contact_t;
+
+typedef struct {
+    char name[BT_XSTACK_PHONEBOOK_NAME_MAX + 1u];
+    char number[BT_XSTACK_PHONEBOOK_NUMBER_MAX + 1u];
+    char timestamp[BT_XSTACK_PHONEBOOK_TIMESTAMP_MAX + 1u];
+    uint8_t direction;
+} lvgl_phone_call_t;
+
+/* Phone page model.  It is fed exclusively from bt_ui_event_t and rendered
+ * only by the LVGL task. */
+static volatile INT8U s_phone_active;
+/* Set after the dialer cursor moves down from its last row into the fixed
+ * dashboard navigation strip. */
+static INT8U s_phone_nav_active;
+static INT8U s_phone_tab;
+static INT8U s_phone_cursor;
+static INT8U s_phone_list_offset[LVGL_PHONE_TAB_COUNT];
+static INT8U s_phone_sync_active;
+static INT8U s_phone_contact_count;
+static INT8U s_phone_call_count;
+static char s_phone_dial[LVGL_PHONE_NUMBER_MAX + 1u];
+static char s_phone_status[BT_UI_TEXT_MAX] = "等待手机连接";
+static char s_phone_remote_number[BT_UI_TEXT_MAX];
+static lvgl_phone_contact_t s_phone_contacts[LVGL_PHONE_CONTACT_MAX];
+static lvgl_phone_call_t s_phone_calls[LVGL_PHONE_CALL_MAX];
+static lv_obj_t *s_phone_status_label;
+static lv_obj_t *s_phone_number_label;
+static lv_obj_t *s_phone_tab_btn[LVGL_PHONE_TAB_COUNT];
+static lv_obj_t *s_phone_panel[LVGL_PHONE_TAB_COUNT];
+static lv_obj_t *s_phone_dial_btn[LVGL_PHONE_DIAL_KEY_COUNT];
+static lv_obj_t *s_phone_recent_btn[LVGL_PHONE_VISIBLE_ROWS];
+static lv_obj_t *s_phone_recent_label[LVGL_PHONE_VISIBLE_ROWS];
+static lv_obj_t *s_phone_contact_btn[LVGL_PHONE_VISIBLE_ROWS];
+static lv_obj_t *s_phone_contact_label[LVGL_PHONE_VISIBLE_ROWS];
+
+static void lvgl_phone_refresh(void);
+static void lvgl_phone_activate(void);
 
 /* U: is a read-only LVGL file-system drive backed by the raw U3 SPI-NOR
  * partition. Resource files are converted LVGL v8 binary images, e.g.
@@ -480,22 +614,22 @@ static BOOLEAN lvgl_spui_sd_select(void)
     INT32S result;
 
     if (s_ui_sd_mounted == 0u) {
-        DBG_PRINT("[U3 install] initialise SD\r\n");
-        FS_OS_LOCK();
-        result = drvl2_sd_init(STORAGE_SD_DEV);
-        FS_OS_UNLOCK();
-        if (result < 0) {
-            ERR_PRINT("[U3 install] SD init failed (%d)\r\n", result);
-            return FALSE;
-        }
+        /* _devicemount() owns both SD1's controller initialisation and FAT
+         * mount. Calling drvl2_sd_init() before it makes _devicemount()
+         * initialise the live card a second time; the latest board log shows
+         * that second initialisation stalls after the successful first one. */
+        DBG_PRINT("[U3 install] mount/init FS%d\r\n", FS_SD1);
         result = _devicemount(FS_SD1);
+        DBG_PRINT("[U3 install] SD mount result=%d\r\n", result);
         if (result < 0) {
             ERR_PRINT("[U3 install] SD mount failed (%d)\r\n", result);
             return FALSE;
         }
         s_ui_sd_mounted = 1u;
     }
-    return (fs_changedisk(FS_SD1) >= 0) ? TRUE : FALSE;
+    result = fs_changedisk(FS_SD1);
+    DBG_PRINT("[U3 install] select FS%d result=%d\r\n", FS_SD1, result);
+    return (result >= 0) ? TRUE : FALSE;
 }
 
 static BOOLEAN lvgl_spui_valid_header(const lvgl_spui_header_t *header)
@@ -1010,8 +1144,8 @@ static void lvgl_disp_flush_cb(lv_disp_drv_t *drv, const lv_area_t *area, lv_col
        刷整行而非仅 x 区间是安全的超集：本区间外的脏行此前已各自刷过，且 LVGL 单任务
        串行写-刷，刷回时不存在未刷的脏数据（多刷到的干净行 clean 为空操作）。
        相比整屏 1.2MB 的 clean+invalidate，cache/总线压力大幅下降。 */
-    cache_invalid_range(s_lvgl_fb + area->y1 * LVGL_H_RES * sizeof(lv_color_t),
-                        area_h * LVGL_H_RES * sizeof(lv_color_t));
+    cache_drain_range(s_lvgl_fb + area->y1 * LVGL_H_RES * sizeof(lv_color_t),
+                      area_h * LVGL_H_RES * sizeof(lv_color_t));
 
     lv_disp_flush_ready(drv);
 }
@@ -1041,30 +1175,48 @@ static void lvgl_indev_key_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data)
 }
 
 /* ── 音乐播放器 UI ─────────────────────────────────────────────────── */
-/* 首期占位：媒体控制后续接入 bt_xstack_demo 的 AVRCP 通路 */
-static void lvgl_bt_music_btn_cb(lv_event_t *e)
+static void lvgl_bt_music_control(lvgl_music_key_t key)
 {
-    lv_obj_t *btn = lv_event_get_target(e);
     bt_xstack_result_t status;
 
-    if (btn == s_btn_play) {
-        /* 先更新本地视觉状态；手机 AVRCP 回调抵达后会再以真实状态校正。 */
-        s_playing = s_playing ? 0u : 1u;
-        lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
-                          s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
-        status = bt_xstack_avrcp_play_pause();
-        LVGL_RUNTIME_LOG("[LVGL] AVRCP play/pause status=%d\r\n", status);
-        if (status != BT_XSTACK_OK) {
-            s_playing = s_playing ? 0u : 1u;
+    if (key == LVGL_MUSIC_KEY_PLAY_PAUSE) {
+        INT8U was_playing = s_playing;
+
+        /* Use explicit Play/Pause.  This remains reliable after an A2DP
+         * stream was stopped by a previous Pause command. */
+        s_playing = was_playing ? 0u : 1u;
+        if (s_btn_play != NULL) {
             lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
                               s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
         }
-    } else if (btn == s_btn_prev) {
+        status = was_playing ? bt_xstack_avrcp_pause() : bt_xstack_avrcp_play();
+        LVGL_RUNTIME_LOG("[LVGL] AVRCP play/pause status=%d\r\n", status);
+        if (status != BT_XSTACK_OK) {
+            s_playing = was_playing;
+            if (s_btn_play != NULL) {
+                lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
+                                  s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
+            }
+        }
+    } else if (key == LVGL_MUSIC_KEY_PREVIOUS) {
         status = bt_xstack_avrcp_previous();
         LVGL_RUNTIME_LOG("[LVGL] AVRCP previous status=%d\r\n", status);
-    } else if (btn == s_btn_next) {
+    } else {
         status = bt_xstack_avrcp_next();
         LVGL_RUNTIME_LOG("[LVGL] AVRCP next status=%d\r\n", status);
+    }
+}
+
+static void lvgl_bt_music_btn_cb(lv_event_t *e)
+{
+    lv_obj_t *btn = lv_event_get_target(e);
+
+    if (btn == s_btn_play) {
+        lvgl_bt_music_control(LVGL_MUSIC_KEY_PLAY_PAUSE);
+    } else if (btn == s_btn_prev) {
+        lvgl_bt_music_control(LVGL_MUSIC_KEY_PREVIOUS);
+    } else if (btn == s_btn_next) {
+        lvgl_bt_music_control(LVGL_MUSIC_KEY_NEXT);
     }
 }
 
@@ -1086,6 +1238,13 @@ static void lvgl_bt_cover_receive_event(const bt_ui_event_t *event)
             s_cover_jpeg_size = 0u;
             s_cover_ready = 0u;
             s_cover_receiving = 1u;
+            /* Lyrics may update TRACK_INFO many times per second.  Only the
+             * first byte of a new Cover Art transfer is authoritative for
+             * changing the displayed cover. */
+            /* This callback runs in the Bluetooth task.  It only copies
+             * bytes: all LVGL object updates stay in the LVGL task, avoiding
+             * concurrent redraws while a new cover is received.  A cached
+             * cover remains on screen until a whole replacement decodes. */
         }
         received_size = s_cover_jpeg_size;
         if ((!s_cover_receiving) || (event->data_offset != received_size) ||
@@ -1111,8 +1270,8 @@ static void lvgl_bt_cover_decode_if_ready(void)
     IMAGE_DECODE_STRUCT image;
     uint32_t jpeg_size;
 
-    if (s_dashboard_active || (!s_cover_ready) || (s_cover_jpeg == NULL) ||
-        (s_cover_rgb565 == NULL)) {
+    if ((s_active_page != LVGL_PAGE_MUSIC) || (!s_cover_ready) || (s_cover_jpeg == NULL) ||
+        (s_cover_rgb565 == NULL) || (s_ui_cover == NULL)) {
         return;
     }
 
@@ -1153,97 +1312,119 @@ static void lvgl_bt_cover_decode_if_ready(void)
     s_cover_img.data_size = LVGL_COVER_SIZE * LVGL_COVER_SIZE * sizeof(lv_color_t);
     s_cover_img.data = (const uint8_t *)s_cover_rgb565;
     lv_img_set_src(s_ui_cover, &s_cover_img);
+    /* lv_img_set_src adopts the source's real dimensions. Re-apply the
+     * display dimensions and centre after that call, otherwise a larger JPEG
+     * source expands toward the lower right of the frame. */
+    lv_img_set_zoom(s_ui_cover, LVGL_COVER_ZOOM);
+    lv_img_set_pivot(s_ui_cover, LVGL_COVER_SIZE / 2u,
+                     LVGL_COVER_SIZE / 2u);
+    lv_obj_set_size(s_ui_cover, LVGL_COVER_SIZE, LVGL_COVER_SIZE);
+    lv_obj_center(s_ui_cover);
+    lv_obj_clear_flag(s_ui_cover, LV_OBJ_FLAG_HIDDEN);
+    if (s_ui_cover_loading != NULL) {
+        lv_obj_add_flag(s_ui_cover_loading, LV_OBJ_FLAG_HIDDEN);
+    }
+    s_cover_cached = 1u;
     LVGL_RUNTIME_LOG("[LVGL] cover displayed %ux%u\r\n",
                      (unsigned int)LVGL_COVER_SIZE,
                      (unsigned int)LVGL_COVER_SIZE);
     s_cover_decoding = 0u;
 }
 
-/* Keep this list byte-for-byte aligned with the PC simulator's static
- * material list.  The only difference is the U: raw SPI-NOR file system
- * prefix and the converted LVGL-v8 .bin extension. */
+/* One opaque background comes from U3.  The four small dynamic assets are
+ * added explicitly below and retain the original PC simulator coordinates. */
 static const lvgl_dashboard_asset_t s_dashboard_static_assets[] = {
-    { "U:/001.bin", 0, 12 },
-    { "U:/003.bin", 46, 87 },
-    { "U:/015.bin", 46, 233 },
-    { "U:/021.bin", 734, 431 },
-    { "U:/t40.bin", 345, 278 },
-    { "U:/t41.bin", 346, 169 },
-    { "U:/t42.bin", 268, 170 },
-    { "U:/t46.bin", 418, 437 },
-    { "U:/t47.bin", 420, 446 },
-    { "U:/t48.bin", 305, 272 },
-    { "U:/w51.bin", 743, 139 },
-    { "U:/052.bin", 139, 139 },
-    { "U:/m60.bin", 361, 151 },
-    { "U:/m61.bin", 405, 310 },
-    { "U:/m62.bin", 404, 55 },
-    { "U:/m64.bin", 546, 158 },
-    { "U:/067.bin", 481, 200 },
-    { "U:/070.bin", 574, 99 },
-    { "U:/075.bin", 364, 98 },
-    { "U:/b80.bin", 611, 171 },
-    { "U:/b81.bin", 610, 217 },
-    { "U:/b82.bin", 677, 227 },
-    { "U:/b84.bin", 669, 211 },
-    { "U:/b85.bin", 601, 443 },
-    { "U:/b86.bin", 603, 446 },
-    { "U:/b87.bin", 683, 207 },
-    { "U:/088.bin", 714, 250 },
-    { "U:/095.bin", 436, 225 },
-    { "U:/m65.bin", 478, 395 },
-    { "U:/m66.bin", 526, 395 },
-    { "U:/s99.bin", 496, 325 },
-    { "U:/100.bin", 463, 94 },
-    { "U:/105.bin", 747, 192 },
-    { "U:/i35.bin", 375, 472 },
-    { "U:/i33.bin", 421, 472 },
-    { "U:/i37.bin", 466, 472 },
-    { "U:/i36.bin", 557, 472 },
-    { "U:/i34.bin", 603, 473 },
-    { "U:/i38.bin", 650, 472 }
+    { "U:/dashboard.bin", 0, 0 }
 };
 
-static lv_obj_t *lvgl_dashboard_add_image(lv_obj_t *parent, const char *file,
+static void lvgl_dashboard_background_set(const char *file)
+{
+    if ((s_dashboard_background != NULL) && (file != NULL)) {
+        lv_img_set_src(s_dashboard_background, file);
+        lv_obj_invalidate(s_dashboard_background);
+    }
+}
+
+static lv_obj_t *lvgl_dashboard_add_image(lv_obj_t *parent, const void *source,
                                           lv_coord_t x, lv_coord_t y)
 {
     lv_obj_t *image = lv_img_create(parent);
 
-    lv_img_set_src(image, file);
+    lv_img_set_src(image, source);
     lv_obj_set_pos(image, x, y);
     return image;
 }
 
-/* The supplied battery material remains an image.  Its transparent parent is
- * only a crop window, exactly as in the PC simulation. */
-static lv_obj_t *lvgl_dashboard_add_progress_image(lv_obj_t *parent, const char *file,
-                                                    lv_coord_t x, lv_coord_t y,
-                                                    lv_coord_t width, lv_coord_t height,
-                                                    INT8U percent)
+static void lvgl_dashboard_memory_image_init(lv_img_dsc_t *image,
+                                             const unsigned short *data,
+                                             INT16U width, INT16U height,
+                                             INT32U size)
 {
-    lv_coord_t visible_height = (lv_coord_t)((height * percent + 99u) / 100u);
-    lv_obj_t *clip = lv_obj_create(parent);
-    lv_obj_t *image;
+    image->header.always_zero = 0u;
+    image->header.cf = LV_IMG_CF_TRUE_COLOR;
+    image->header.w = width;
+    image->header.h = height;
+    image->data_size = size;
+    image->data = (const uint8_t *)data;
+}
 
-    lv_obj_set_pos(clip, x, y);
-    lv_obj_set_size(clip, width, visible_height);
-    lv_obj_set_style_bg_opa(clip, LV_OPA_TRANSP, LV_PART_MAIN);
-    lv_obj_set_style_border_width(clip, 0, LV_PART_MAIN);
-    lv_obj_set_style_pad_all(clip, 0, LV_PART_MAIN);
-    lv_obj_clear_flag(clip, LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_CLICKABLE);
+static void lvgl_dashboard_memory_images_init(void)
+{
+    lvgl_dashboard_memory_image_init(&s_dashboard_headlight_off_img,
+                                     lvgl_dashboard_headlight_off_map,
+                                     LVGL_DASHBOARD_HEADLIGHT_OFF_W,
+                                     LVGL_DASHBOARD_HEADLIGHT_OFF_H,
+                                     sizeof(lvgl_dashboard_headlight_off_map));
+    lvgl_dashboard_memory_image_init(&s_dashboard_headlight_on_img,
+                                     lvgl_dashboard_headlight_on_map,
+                                     LVGL_DASHBOARD_HEADLIGHT_ON_W,
+                                     LVGL_DASHBOARD_HEADLIGHT_ON_H,
+                                     sizeof(lvgl_dashboard_headlight_on_map));
+    lvgl_dashboard_memory_image_init(&s_dashboard_voice_idle_img,
+                                     lvgl_dashboard_voice_idle_map,
+                                     LVGL_DASHBOARD_VOICE_IDLE_W,
+                                     LVGL_DASHBOARD_VOICE_IDLE_H,
+                                     sizeof(lvgl_dashboard_voice_idle_map));
+    lvgl_dashboard_memory_image_init(&s_dashboard_voice_active_img,
+                                     lvgl_dashboard_voice_active_map,
+                                     LVGL_DASHBOARD_VOICE_ACTIVE_W,
+                                     LVGL_DASHBOARD_VOICE_ACTIVE_H,
+                                     sizeof(lvgl_dashboard_voice_active_map));
+}
 
-    image = lv_img_create(clip);
-    lv_img_set_src(image, file);
-    lv_obj_set_pos(image, 0, 0);
-    return image;
+static const INT8U s_dashboard_voice_wave_table[16] = {
+    2u, 5u, 9u, 13u, 15u, 13u, 9u, 5u,
+    3u, 6u, 10u, 13u, 10u, 7u, 4u, 2u
+};
+
+static lv_obj_t *lvgl_dashboard_add_voice_wave(lv_obj_t *parent, lv_coord_t x)
+{
+    lv_obj_t *bar = lv_obj_create(parent);
+
+    lv_obj_set_style_bg_color(bar, lv_color_hex(0x19FA29), LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(bar, LV_OPA_COVER, LV_PART_MAIN);
+    lv_obj_set_style_border_width(bar, 0, LV_PART_MAIN);
+    lv_obj_set_style_radius(bar, LVGL_DASHBOARD_VOICE_WAVE_BAR_W / 2u, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(bar, 0, LV_PART_MAIN);
+    lv_obj_clear_flag(bar, LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_set_size(bar, LVGL_DASHBOARD_VOICE_WAVE_BAR_W,
+                    LVGL_DASHBOARD_VOICE_WAVE_MIN_H);
+    lv_obj_set_pos(bar, x, LVGL_DASHBOARD_VOICE_WAVE_CENTER_Y -
+                   LVGL_DASHBOARD_VOICE_WAVE_MIN_H / 2u);
+    return bar;
 }
 
 static void lvgl_dashboard_tick(lv_timer_t *timer)
 {
+#if (LVGL_DASHBOARD_DEMO_ANIMATION == 0)
+    (void)timer;
+    return;
+#else
     INT32S displayed_speed;
+    INT8U i;
 
     (void)timer;
-    if (!s_dashboard_active) {
+    if (!s_dashboard_active || (s_active_page != LVGL_PAGE_DASHBOARD)) {
         return;
     }
     s_dashboard_speed_tenths += 5 * s_dashboard_speed_direction;
@@ -1258,45 +1439,158 @@ static void lvgl_dashboard_tick(lv_timer_t *timer)
     displayed_speed = s_dashboard_speed_tenths / 10;
     lv_label_set_text_fmt(s_dashboard_speed_label, "%d", displayed_speed);
 
-    s_dashboard_warning_elapsed = (INT16U)(s_dashboard_warning_elapsed + 16u);
-    if (s_dashboard_warning_elapsed >= 120u) {
-        s_dashboard_warning_elapsed = 0u;
-        if (lv_obj_has_flag(s_dashboard_warning, LV_OBJ_FLAG_HIDDEN)) {
-            lv_obj_clear_flag(s_dashboard_warning, LV_OBJ_FLAG_HIDDEN);
-        } else {
-            lv_obj_add_flag(s_dashboard_warning, LV_OBJ_FLAG_HIDDEN);
+#if LVGL_DASHBOARD_HEADLIGHT_SIM_BLINK
+    s_dashboard_headlight_elapsed =
+        (INT16U)(s_dashboard_headlight_elapsed + LVGL_DASHBOARD_TICK_MS);
+    if (s_dashboard_headlight_elapsed >= 1000u) {
+        s_dashboard_headlight_elapsed = 0u;
+        s_dashboard_headlight_is_on = (INT8U)!s_dashboard_headlight_is_on;
+        lv_img_set_src(s_dashboard_headlight,
+                       s_dashboard_headlight_is_on ? &s_dashboard_headlight_on_img :
+                                                     &s_dashboard_headlight_off_img);
+    }
+#endif
+
+#if LVGL_DASHBOARD_VOICE_SIM_BLINK
+    s_dashboard_voice_elapsed =
+        (INT16U)(s_dashboard_voice_elapsed + LVGL_DASHBOARD_TICK_MS);
+    if (s_dashboard_voice_elapsed >= 1000u) {
+        s_dashboard_voice_elapsed = 0u;
+        s_dashboard_voice_is_active = (INT8U)!s_dashboard_voice_is_active;
+        lv_img_set_src(s_dashboard_voice,
+                       s_dashboard_voice_is_active ? &s_dashboard_voice_active_img :
+                                                     &s_dashboard_voice_idle_img);
+    }
+#endif
+
+    s_dashboard_voice_wave_phase = (INT16U)(s_dashboard_voice_wave_phase + 1u);
+    for (i = 0u; i < LVGL_DASHBOARD_VOICE_WAVE_BARS * 2u; i++) {
+        lv_obj_t *bar = s_dashboard_voice_wave[i];
+        INT8U amplitude;
+        lv_coord_t height;
+
+        if (!s_dashboard_voice_is_active) {
+            lv_obj_add_flag(bar, LV_OBJ_FLAG_HIDDEN);
+            continue;
         }
+        lv_obj_clear_flag(bar, LV_OBJ_FLAG_HIDDEN);
+        amplitude = s_dashboard_voice_wave_table[
+            (s_dashboard_voice_wave_phase / 3u + i * 3u) % 16u];
+        height = (lv_coord_t)(LVGL_DASHBOARD_VOICE_WAVE_MIN_H +
+                 (amplitude * (LVGL_DASHBOARD_VOICE_WAVE_MAX_H -
+                 LVGL_DASHBOARD_VOICE_WAVE_MIN_H)) / 15u);
+        lv_obj_set_size(bar, LVGL_DASHBOARD_VOICE_WAVE_BAR_W, height);
+        lv_obj_set_y(bar, LVGL_DASHBOARD_VOICE_WAVE_CENTER_Y - height / 2u);
     }
 
+#endif
+}
+
+static void lvgl_dashboard_content_set_visible(INT8U visible)
+{
+    INT32U i;
+
+    if (s_dashboard_main_arc != NULL) {
+        if (visible) lv_obj_clear_flag(s_dashboard_main_arc, LV_OBJ_FLAG_HIDDEN);
+        else lv_obj_add_flag(s_dashboard_main_arc, LV_OBJ_FLAG_HIDDEN);
+    }
+    if (s_dashboard_speed_label != NULL) {
+        if (visible) lv_obj_clear_flag(s_dashboard_speed_label, LV_OBJ_FLAG_HIDDEN);
+        else lv_obj_add_flag(s_dashboard_speed_label, LV_OBJ_FLAG_HIDDEN);
+    }
+    if (s_dashboard_headlight != NULL) {
+        if (visible) lv_obj_clear_flag(s_dashboard_headlight, LV_OBJ_FLAG_HIDDEN);
+        else lv_obj_add_flag(s_dashboard_headlight, LV_OBJ_FLAG_HIDDEN);
+    }
+    if (s_dashboard_voice != NULL) {
+        if (visible) lv_obj_clear_flag(s_dashboard_voice, LV_OBJ_FLAG_HIDDEN);
+        else lv_obj_add_flag(s_dashboard_voice, LV_OBJ_FLAG_HIDDEN);
+    }
+    for (i = 0u; i < LVGL_DASHBOARD_VOICE_WAVE_BARS * 2u; i++) {
+        if (s_dashboard_voice_wave[i] != NULL) {
+            lv_obj_add_flag(s_dashboard_voice_wave[i], LV_OBJ_FLAG_HIDDEN);
+        }
+    }
+}
+
+static lv_obj_t *lvgl_content_frame_create(void)
+{
+    lv_obj_t *frame = lv_obj_create(lv_scr_act());
+
+    /* The shell already contains the complete 009_plane.  This object is
+     * only an uncluttered drawing coordinate system on that plane, never a
+     * card, dialog, border or shadow of its own. */
+    lv_obj_set_pos(frame, LVGL_CONTENT_X, LVGL_CONTENT_Y);
+    lv_obj_set_size(frame, LVGL_CONTENT_W, LVGL_CONTENT_H);
+    lv_obj_set_style_bg_opa(frame, LV_OPA_TRANSP, LV_PART_MAIN);
+    lv_obj_set_style_border_width(frame, 0, LV_PART_MAIN);
+    lv_obj_set_style_radius(frame, 0, LV_PART_MAIN);
+    lv_obj_set_style_shadow_width(frame, 0, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(frame, 0, LV_PART_MAIN);
+    lv_obj_clear_flag(frame, LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_CLICKABLE);
+    return frame;
+}
+
+static void lvgl_nav_marker_refresh(void)
+{
+    static const lv_coord_t nav_center_x[LVGL_PAGE_COUNT] = {
+        LVGL_DASHBOARD_MAP_X(519u), /* 032_car */
+        LVGL_DASHBOARD_MAP_X(427u), /* 033_location */
+        LVGL_DASHBOARD_MAP_X(610u), /* 034_call */
+        LVGL_DASHBOARD_MAP_X(565u), /* 036_music */
+        LVGL_DASHBOARD_MAP_X(473u)  /* 037_speed */
+    };
+
+    if ((s_nav_marker == NULL) || (s_nav_focus >= LVGL_PAGE_COUNT)) return;
+    lv_obj_set_x(s_nav_marker, nav_center_x[s_nav_focus] - 18);
+    lv_obj_set_style_bg_color(s_nav_marker, lv_color_hex(0x18DDE7), LV_PART_MAIN);
 }
 
 static void lvgl_dashboard_ui_create(lv_obj_t *screen)
 {
     INT32U i;
 
+    if (s_dashboard_timer != NULL) {
+        lv_timer_del(s_dashboard_timer);
+        s_dashboard_timer = NULL;
+    }
     s_dashboard_active = 1u;
+    s_active_page = LVGL_PAGE_DASHBOARD;
+    s_phone_active = 0u;
+    s_dashboard_headlight_elapsed = 0u;
+    s_dashboard_voice_elapsed = 0u;
+    s_dashboard_voice_wave_phase = 0u;
+    s_dashboard_headlight_is_on = 0u;
+    s_dashboard_voice_is_active = 0u;
+    lvgl_dashboard_memory_images_init();
     lv_group_remove_all_objs(s_group);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x000811), LV_PART_MAIN);
     lv_obj_set_style_bg_opa(screen, LV_OPA_COVER, LV_PART_MAIN);
     for (i = 0u; i < (sizeof(s_dashboard_static_assets) /
                        sizeof(s_dashboard_static_assets[0])); i++) {
-        lvgl_dashboard_add_image(screen, s_dashboard_static_assets[i].file,
-                                 s_dashboard_static_assets[i].x,
-                                 s_dashboard_static_assets[i].y);
+        s_dashboard_background = lvgl_dashboard_add_image(screen,
+                                                           s_dashboard_static_assets[i].file,
+                                                           s_dashboard_static_assets[i].x,
+                                                           s_dashboard_static_assets[i].y);
     }
-
-    lvgl_dashboard_add_image(screen, "U:/t43.bin", 271, 322);
-    lvgl_dashboard_add_image(screen, "U:/t45.bin", 330, 274);
-    lvgl_dashboard_add_progress_image(screen, "U:/b83.bin", 677, 289, 20, 86, 83u);
-    s_dashboard_warning = lvgl_dashboard_add_image(screen, "U:/w50.bin", 729, 137);
+    s_nav_marker = lv_obj_create(screen);
+    lv_obj_set_size(s_nav_marker, 36, 3);
+    lv_obj_set_y(s_nav_marker, LVGL_DASHBOARD_MAP_Y(492u));
+    lv_obj_set_style_border_width(s_nav_marker, 0, LV_PART_MAIN);
+    lv_obj_set_style_radius(s_nav_marker, 2, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(s_nav_marker, 0, LV_PART_MAIN);
+    lv_obj_clear_flag(s_nav_marker, LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_CLICKABLE);
+    lvgl_nav_marker_refresh();
 
     s_dashboard_main_arc = lv_arc_create(screen);
-    lv_obj_set_size(s_dashboard_main_arc, 282, 282);
-    lv_obj_set_pos(s_dashboard_main_arc, 370, 161);
+    lv_obj_set_size(s_dashboard_main_arc, LVGL_DASHBOARD_MAP_W(282u),
+                    LVGL_DASHBOARD_MAP_H(282u));
+    lv_obj_set_pos(s_dashboard_main_arc, LVGL_DASHBOARD_MAP_X(370u),
+                   LVGL_DASHBOARD_MAP_Y(161u));
     lv_obj_set_style_bg_opa(s_dashboard_main_arc, LV_OPA_TRANSP, LV_PART_MAIN);
-    lv_obj_set_style_arc_width(s_dashboard_main_arc, 14, LV_PART_MAIN);
+    lv_obj_set_style_arc_width(s_dashboard_main_arc, LVGL_DASHBOARD_MAP_W(14u), LV_PART_MAIN);
     lv_obj_set_style_arc_color(s_dashboard_main_arc, lv_color_hex(0x1A3241), LV_PART_MAIN);
-    lv_obj_set_style_arc_width(s_dashboard_main_arc, 14, LV_PART_INDICATOR);
+    lv_obj_set_style_arc_width(s_dashboard_main_arc, LVGL_DASHBOARD_MAP_W(14u), LV_PART_INDICATOR);
     lv_obj_set_style_arc_color(s_dashboard_main_arc, lv_color_hex(0x10DDE5), LV_PART_INDICATOR);
     lv_obj_set_style_arc_rounded(s_dashboard_main_arc, true, LV_PART_INDICATOR);
     lv_obj_set_style_bg_opa(s_dashboard_main_arc, LV_OPA_TRANSP, LV_PART_KNOB);
@@ -1311,17 +1605,45 @@ static void lvgl_dashboard_ui_create(lv_obj_t *screen)
     lv_label_set_text(s_dashboard_speed_label, "108");
     lv_obj_set_style_text_font(s_dashboard_speed_label, &lv_font_montserrat_48, LV_PART_MAIN);
     lv_obj_set_style_text_color(s_dashboard_speed_label, lv_color_white(), LV_PART_MAIN);
-    lv_obj_set_pos(s_dashboard_speed_label, 466, 265);
-    lvgl_dashboard_add_image(screen, "U:/i32.bin", 500, 473);
+    lv_obj_set_pos(s_dashboard_speed_label, LVGL_DASHBOARD_MAP_X(466u),
+                   LVGL_DASHBOARD_MAP_Y(265u));
 
-    if (s_dashboard_timer == NULL) {
-        /* Dashboard motion is decorative.  A 100 ms cadence leaves CPU time
-         * for physical key scanning and page creation. */
-        s_dashboard_timer = lv_timer_create(lvgl_dashboard_tick, 100, NULL);
+    s_dashboard_headlight = lvgl_dashboard_add_image(screen,
+                                                      &s_dashboard_headlight_off_img,
+                                                      LVGL_DASHBOARD_HEADLIGHT_X,
+                                                      LVGL_DASHBOARD_HEADLIGHT_Y);
+    s_dashboard_voice = lvgl_dashboard_add_image(screen,
+                                                 &s_dashboard_voice_idle_img,
+                                                 LVGL_DASHBOARD_VOICE_X,
+                                                 LVGL_DASHBOARD_VOICE_Y);
+    for (i = 0u; i < LVGL_DASHBOARD_VOICE_WAVE_BARS; i++) {
+        lv_coord_t step = LVGL_DASHBOARD_VOICE_WAVE_BAR_W +
+                          LVGL_DASHBOARD_VOICE_WAVE_GAP;
+        lv_coord_t left_x = LVGL_DASHBOARD_VOICE_WAVE_CENTER_X -
+                            LVGL_DASHBOARD_VOICE_WAVE_ICON_HALF -
+                            LVGL_DASHBOARD_VOICE_WAVE_GAP -
+                            LVGL_DASHBOARD_VOICE_WAVE_BAR_W - (lv_coord_t)i * step;
+        lv_coord_t right_x = LVGL_DASHBOARD_VOICE_WAVE_CENTER_X +
+                             LVGL_DASHBOARD_VOICE_WAVE_ICON_HALF +
+                             LVGL_DASHBOARD_VOICE_WAVE_GAP + (lv_coord_t)i * step;
+        s_dashboard_voice_wave[i] = lvgl_dashboard_add_voice_wave(screen, left_x);
+        s_dashboard_voice_wave[LVGL_DASHBOARD_VOICE_WAVE_BARS + i] =
+            lvgl_dashboard_add_voice_wave(screen, right_x);
+        lv_obj_add_flag(s_dashboard_voice_wave[i], LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(s_dashboard_voice_wave[LVGL_DASHBOARD_VOICE_WAVE_BARS + i],
+                        LV_OBJ_FLAG_HIDDEN);
     }
-    LVGL_RUNTIME_LOG("[LVGL] simulator dashboard: %d U3 images\r\n",
+    s_dashboard_timer = lv_timer_create(lvgl_dashboard_tick,
+                                        LVGL_DASHBOARD_TICK_MS, NULL);
+    LVGL_RUNTIME_LOG("[LVGL] dynamic layout H=(%u,%u) V=(%u,%u)\r\n",
+                     (INT32U)LVGL_DASHBOARD_HEADLIGHT_X,
+                     (INT32U)LVGL_DASHBOARD_HEADLIGHT_Y,
+                     (INT32U)LVGL_DASHBOARD_VOICE_X,
+                     (INT32U)LVGL_DASHBOARD_VOICE_Y);
+    LVGL_RUNTIME_LOG("[LVGL] dynamic source=C arrays, alpha boosted, flush cache=drain\r\n");
+    LVGL_RUNTIME_LOG("[LVGL] dashboard: %d flattened U3 image + 4 dynamic C images\r\n",
                      (INT32U)(sizeof(s_dashboard_static_assets) /
-                              sizeof(s_dashboard_static_assets[0])) + 5u);
+                              sizeof(s_dashboard_static_assets[0])));
 }
 
 static void lvgl_bt_music_ui_create(lv_obj_t *scr)
@@ -1329,93 +1651,124 @@ static void lvgl_bt_music_ui_create(lv_obj_t *scr)
     lv_obj_t *lbl;
     lv_obj_t *cover_frame;
 
-    /* 保留网易云深色与品牌红，但只呈现播放器本身。 */
-    s_dashboard_active = 0u;
+    /* The player is a flat instrument-panel view inside the fixed frame. */
     lv_group_remove_all_objs(s_group);
-    lv_obj_set_style_bg_color(scr, lv_color_hex(0x171719), 0);
-    lv_obj_set_style_bg_grad_color(scr, lv_color_hex(0x2A171A), 0);
-    lv_obj_set_style_bg_grad_dir(scr, LV_GRAD_DIR_VER, 0);
-    lv_obj_set_style_bg_opa(scr, LV_OPA_COVER, 0);
 
     cover_frame = lv_obj_create(scr);
-    lv_obj_set_size(cover_frame, 300, 300);
-    lv_obj_set_style_bg_color(cover_frame, lv_color_hex(0x2C2527), 0);
+    lv_obj_set_size(cover_frame, 170, 170);
+    lv_obj_set_style_bg_color(cover_frame, lv_color_hex(0x0B2632), 0);
     lv_obj_set_style_bg_opa(cover_frame, LV_OPA_COVER, 0);
-    lv_obj_set_style_border_color(cover_frame, lv_color_hex(0xEC4141), 0);
-    lv_obj_set_style_border_width(cover_frame, 1, 0);
-    lv_obj_set_style_radius(cover_frame, 18, 0);
+    lv_obj_set_style_border_color(cover_frame, lv_color_hex(0x1BB8C9), 0);
+    lv_obj_set_style_border_width(cover_frame, 2, 0);
+    lv_obj_set_style_radius(cover_frame, 12, 0);
     lv_obj_set_style_shadow_color(cover_frame, lv_color_hex(0x000000), 0);
-    lv_obj_set_style_shadow_width(cover_frame, 14, 0);
-    lv_obj_set_style_shadow_opa(cover_frame, LV_OPA_40, 0);
+    lv_obj_set_style_shadow_width(cover_frame, 10, 0);
+    lv_obj_set_style_shadow_opa(cover_frame, LV_OPA_70, 0);
     lv_obj_clear_flag(cover_frame, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_align(cover_frame, LV_ALIGN_TOP_MID, 0, 56);
+    lv_obj_set_pos(cover_frame, 96, 62);
 
-    /* 曲目名 */
+    lbl = lv_label_create(scr);
+    lv_label_set_text(lbl, LV_SYMBOL_AUDIO "  BLUETOOTH MUSIC");
+    lv_obj_set_style_text_font(lbl, &lv_font_cn_18, 0);
+    lv_obj_set_style_text_color(lbl, lv_color_hex(0x1ADBE5), 0);
+    lv_obj_set_pos(lbl, 50, 20);
+
+    /* Cover and metadata share one horizontal information row. */
     s_ui_title = lv_label_create(scr);
     lv_label_set_text(s_ui_title, s_music_title);
     lv_obj_set_style_text_font(s_ui_title, &lv_font_cn_18, 0);
-    lv_obj_set_style_text_color(s_ui_title, lv_color_white(), 0);
-    lv_obj_set_width(s_ui_title, 640);
+    lv_obj_set_style_text_color(s_ui_title, lv_color_hex(0xE7FBFF), 0);
+    lv_obj_set_width(s_ui_title, 560);
     lv_label_set_long_mode(s_ui_title, LV_LABEL_LONG_DOT);
-    lv_obj_set_style_text_align(s_ui_title, LV_TEXT_ALIGN_CENTER, 0);
-    lv_obj_align(s_ui_title, LV_ALIGN_TOP_MID, 0, 382);
+    lv_obj_set_style_text_align(s_ui_title, LV_TEXT_ALIGN_LEFT, 0);
+    lv_obj_set_pos(s_ui_title, 350, 112);
 
-    /* 艺术家 */
     s_ui_artist = lv_label_create(scr);
     lv_label_set_text(s_ui_artist, s_music_artist);
     lv_obj_set_style_text_font(s_ui_artist, &lv_font_cn_18, 0);
-    lv_obj_set_style_text_color(s_ui_artist, lv_color_hex(0xB8B8BC), 0);
-    lv_obj_set_width(s_ui_artist, 640);
+    lv_obj_set_style_text_color(s_ui_artist, lv_color_hex(0x82ACB6), 0);
+    lv_obj_set_width(s_ui_artist, 560);
     lv_label_set_long_mode(s_ui_artist, LV_LABEL_LONG_DOT);
-    lv_obj_set_style_text_align(s_ui_artist, LV_TEXT_ALIGN_CENTER, 0);
-    lv_obj_align(s_ui_artist, LV_ALIGN_TOP_MID, 0, 424);
+    lv_obj_set_style_text_align(s_ui_artist, LV_TEXT_ALIGN_LEFT, 0);
+    lv_obj_set_pos(s_ui_artist, 350, 150);
+
+    lbl = lv_label_create(scr);
+    lv_label_set_text(lbl, "CONNECTED DEVICE");
+    lv_obj_set_style_text_font(lbl, &lv_font_cn_18, 0);
+    lv_obj_set_style_text_color(lbl, lv_color_hex(0x3C7380), 0);
+    lv_obj_set_pos(lbl, 350, 190);
 
     s_ui_cover = lv_img_create(cover_frame);
     lv_obj_set_size(s_ui_cover, LVGL_COVER_SIZE, LVGL_COVER_SIZE);
-    lv_obj_set_style_bg_color(s_ui_cover, lv_color_hex(0x342426), 0);
-    lv_obj_set_style_bg_opa(s_ui_cover, LV_OPA_COVER, 0);
-    lv_obj_set_style_radius(s_ui_cover, 12, 0);
+    lv_img_set_zoom(s_ui_cover, LVGL_COVER_ZOOM);
+    lv_img_set_pivot(s_ui_cover, LVGL_COVER_SIZE / 2u,
+                     LVGL_COVER_SIZE / 2u);
+    lv_obj_set_style_bg_opa(s_ui_cover, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_radius(s_ui_cover, 10, 0);
     lv_obj_center(s_ui_cover);
+    if (s_cover_cached && (s_cover_img.data != NULL)) {
+        lv_img_set_src(s_ui_cover, &s_cover_img);
+        lv_img_set_zoom(s_ui_cover, LVGL_COVER_ZOOM);
+        lv_img_set_pivot(s_ui_cover, LVGL_COVER_SIZE / 2u,
+                         LVGL_COVER_SIZE / 2u);
+        lv_obj_set_size(s_ui_cover, LVGL_COVER_SIZE, LVGL_COVER_SIZE);
+        lv_obj_center(s_ui_cover);
+    } else {
+        lv_obj_add_flag(s_ui_cover, LV_OBJ_FLAG_HIDDEN);
+    }
+
+    s_ui_cover_loading = lv_label_create(cover_frame);
+    lv_label_set_text(s_ui_cover_loading, LV_SYMBOL_AUDIO "\n加载封面...");
+    lv_obj_set_style_text_font(s_ui_cover_loading, &lv_font_cn_18, 0);
+    lv_obj_set_style_text_color(s_ui_cover_loading, lv_color_hex(0x979797), 0);
+    lv_obj_set_style_text_align(s_ui_cover_loading, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_center(s_ui_cover_loading);
+    if (s_cover_cached && (s_cover_img.data != NULL)) {
+        lv_obj_add_flag(s_ui_cover_loading, LV_OBJ_FLAG_HIDDEN);
+    }
 
     /* 控制按钮：上一曲 / 播放暂停 / 下一曲 */
     s_btn_prev = lv_btn_create(scr);
-    lv_obj_set_size(s_btn_prev, 72, 72);
-    lv_obj_set_style_bg_color(s_btn_prev, lv_color_hex(0x242024), 0);
+    lv_obj_set_size(s_btn_prev, 66, 52);
+    lv_obj_set_style_bg_color(s_btn_prev, lv_color_hex(0x0B3542), 0);
     lv_obj_set_style_bg_opa(s_btn_prev, LV_OPA_COVER, 0);
-    lv_obj_set_style_border_width(s_btn_prev, 0, 0);
-    lv_obj_set_style_radius(s_btn_prev, LV_RADIUS_CIRCLE, 0);
+    lv_obj_set_style_border_color(s_btn_prev, lv_color_hex(0x188A9B), 0);
+    lv_obj_set_style_border_width(s_btn_prev, 1, 0);
+    lv_obj_set_style_radius(s_btn_prev, 10, 0);
     lbl = lv_label_create(s_btn_prev);
     lv_label_set_text(lbl, LV_SYMBOL_PREV);
-    lv_obj_set_style_text_color(lbl, lv_color_hex(0xF5E9EB), 0);
+    lv_obj_set_style_text_color(lbl, lv_color_hex(0xC6FAFF), 0);
     lv_obj_center(lbl);
-    lv_obj_align(s_btn_prev, LV_ALIGN_BOTTOM_MID, -112, -46);
+    lv_obj_set_pos(s_btn_prev, 415, 280);
 
     s_btn_play = lv_btn_create(scr);
-    lv_obj_set_size(s_btn_play, 88, 88);
-    lv_obj_set_style_bg_color(s_btn_play, lv_color_hex(0xEC4141), 0);
+    lv_obj_set_size(s_btn_play, 82, 60);
+    lv_obj_set_style_bg_color(s_btn_play, lv_color_hex(0x0B7582), 0);
     lv_obj_set_style_bg_opa(s_btn_play, LV_OPA_COVER, 0);
-    lv_obj_set_style_border_width(s_btn_play, 0, 0);
-    lv_obj_set_style_radius(s_btn_play, LV_RADIUS_CIRCLE, 0);
-    lv_obj_set_style_shadow_color(s_btn_play, lv_color_hex(0xB52C39), 0);
-    lv_obj_set_style_shadow_width(s_btn_play, 14, 0);
-    lv_obj_set_style_shadow_opa(s_btn_play, LV_OPA_60, 0);
+    lv_obj_set_style_border_color(s_btn_play, lv_color_hex(0x23E2EA), 0);
+    lv_obj_set_style_border_width(s_btn_play, 2, 0);
+    lv_obj_set_style_radius(s_btn_play, 12, 0);
+    lv_obj_set_style_shadow_color(s_btn_play, lv_color_hex(0x0D5B67), 0);
+    lv_obj_set_style_shadow_width(s_btn_play, 8, 0);
+    lv_obj_set_style_shadow_opa(s_btn_play, LV_OPA_50, 0);
     lbl = lv_label_create(s_btn_play);
     lv_label_set_text(lbl, s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
     lv_obj_set_style_text_color(lbl, lv_color_white(), 0);
     lv_obj_center(lbl);
-    lv_obj_align(s_btn_play, LV_ALIGN_BOTTOM_MID, 0, -38);
+    lv_obj_set_pos(s_btn_play, 495, 276);
 
     s_btn_next = lv_btn_create(scr);
-    lv_obj_set_size(s_btn_next, 72, 72);
-    lv_obj_set_style_bg_color(s_btn_next, lv_color_hex(0x242024), 0);
+    lv_obj_set_size(s_btn_next, 66, 52);
+    lv_obj_set_style_bg_color(s_btn_next, lv_color_hex(0x0B3542), 0);
     lv_obj_set_style_bg_opa(s_btn_next, LV_OPA_COVER, 0);
-    lv_obj_set_style_border_width(s_btn_next, 0, 0);
-    lv_obj_set_style_radius(s_btn_next, LV_RADIUS_CIRCLE, 0);
+    lv_obj_set_style_border_color(s_btn_next, lv_color_hex(0x188A9B), 0);
+    lv_obj_set_style_border_width(s_btn_next, 1, 0);
+    lv_obj_set_style_radius(s_btn_next, 10, 0);
     lbl = lv_label_create(s_btn_next);
     lv_label_set_text(lbl, LV_SYMBOL_NEXT);
-    lv_obj_set_style_text_color(lbl, lv_color_hex(0xF5E9EB), 0);
+    lv_obj_set_style_text_color(lbl, lv_color_hex(0xC6FAFF), 0);
     lv_obj_center(lbl);
-    lv_obj_align(s_btn_next, LV_ALIGN_BOTTOM_MID, 112, -46);
+    lv_obj_set_pos(s_btn_next, 595, 280);
 
     lv_obj_add_event_cb(s_btn_play, lvgl_bt_music_btn_cb, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(s_btn_prev, lvgl_bt_music_btn_cb, LV_EVENT_CLICKED, NULL);
@@ -1428,51 +1781,621 @@ static void lvgl_bt_music_ui_create(lv_obj_t *scr)
     lv_group_focus_obj(s_btn_play);
 }
 
-static void lvgl_show_music_page(void)
+/* ── 蓝牙电话：拨号 / 最近通话 / 通讯录 ─────────────────────────────── */
+static lv_obj_t *lvgl_phone_button_create(lv_obj_t *parent, lv_coord_t x,
+                                           lv_coord_t y, lv_coord_t w,
+                                           lv_coord_t h, const char *text,
+                                           const lv_font_t *font)
 {
-    lv_obj_t *screen;
+    lv_obj_t *button = lv_btn_create(parent);
+    lv_obj_t *label = lv_label_create(button);
 
-    if (!s_dashboard_active) {
+    lv_obj_set_size(button, w, h);
+    lv_obj_set_pos(button, x, y);
+    lv_obj_set_style_bg_color(button, lv_color_hex(0x082B38), LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(button, LV_OPA_COVER, LV_PART_MAIN);
+    lv_obj_set_style_border_color(button, lv_color_hex(0x176878), LV_PART_MAIN);
+    lv_obj_set_style_border_width(button, 1, LV_PART_MAIN);
+    lv_obj_set_style_radius(button, 10, LV_PART_MAIN);
+    lv_obj_set_style_shadow_width(button, 0, LV_PART_MAIN);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_font(label, font, LV_PART_MAIN);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xE8FAFF), LV_PART_MAIN);
+    lv_obj_center(label);
+    return button;
+}
+
+static void lvgl_phone_button_selected(lv_obj_t *button, INT8U selected)
+{
+    if (button == NULL) {
         return;
     }
-    if (s_dashboard_snapshot != NULL) {
-        memcpy(s_dashboard_snapshot, (void *)s_lvgl_fb,
-               LVGL_H_RES * LVGL_V_RES * sizeof(lv_color_t));
-        s_dashboard_snapshot_valid = 1u;
+    lv_obj_set_style_border_width(button, selected ? 3 : 1, LV_PART_MAIN);
+    lv_obj_set_style_border_color(button,
+        selected ? lv_color_hex(0x18DDE7) : lv_color_hex(0x176878),
+        LV_PART_MAIN);
+    lv_obj_set_style_bg_color(button,
+        selected ? lv_color_hex(0x0C5A68) : lv_color_hex(0x082B38),
+        LV_PART_MAIN);
+}
+
+static const char *lvgl_phone_direction_text(uint8_t direction)
+{
+    switch (direction) {
+    case BT_XSTACK_PHONEBOOK_DIRECTION_INCOMING: return "IN";
+    case BT_XSTACK_PHONEBOOK_DIRECTION_OUTGOING: return "OUT";
+    case BT_XSTACK_PHONEBOOK_DIRECTION_MISSED: return "MISSED";
+    default: return "CALL";
     }
-    s_dashboard_active = 0u;
-    screen = lv_obj_create(NULL);
-    lvgl_bt_music_ui_create(screen);
-    /* Immediate load with auto-delete.  lv_scr_load() keeps every previous
-     * root screen alive; this form releases it as soon as the new page is
-     * active, preventing switch latency from growing over time. */
-    lv_scr_load_anim(screen, LV_SCR_LOAD_ANIM_NONE, 0u, 0u, true);
-    lv_obj_invalidate(screen);
+}
+
+static void lvgl_phone_status_set(const char *status)
+{
+    if (status == NULL) {
+        return;
+    }
+    strncpy(s_phone_status, status, BT_UI_TEXT_MAX - 1u);
+    s_phone_status[BT_UI_TEXT_MAX - 1u] = '\0';
+    if (s_phone_active && (s_phone_status_label != NULL)) {
+        lv_label_set_text(s_phone_status_label, s_phone_status);
+    }
+}
+
+static void lvgl_phone_sync_start_if_needed(void)
+{
+    int sync_status;
+
+    if (s_phone_sync_active || (s_phone_contact_count != 0u) ||
+        (s_phone_call_count != 0u)) {
+        return;
+    }
+    sync_status = bt_xstack_demo_phonebook_sync();
+    if (sync_status == BT_XSTACK_OK) {
+        s_phone_sync_active = 1u;
+        lvgl_phone_status_set("电话本同步中...");
+    } else if (sync_status == BT_XSTACK_NOT_READY) {
+        lvgl_phone_status_set("请先连接手机");
+    }
+}
+
+static void lvgl_phone_switch_tab(INT8U tab)
+{
+    if (tab >= LVGL_PHONE_TAB_COUNT) {
+        return;
+    }
+    s_phone_tab = tab;
+    s_phone_cursor = 0u;
+    s_phone_list_offset[tab] = 0u;
+    if (tab != LVGL_PHONE_TAB_DIAL) {
+        /* Dialing does not need PBAP. Defer the long phonebook transfer
+         * until the user explicitly opens a data-bearing tab. */
+        lvgl_phone_sync_start_if_needed();
+    }
+    lvgl_phone_refresh();
+}
+
+static void lvgl_phone_refresh_list(lv_obj_t **buttons, lv_obj_t **labels,
+                                    INT8U count, INT8U contact_list,
+                                    INT8U offset)
+{
+    INT8U i;
+    INT8U index;
+
+    for (i = 0u; i < LVGL_PHONE_VISIBLE_ROWS; i++) {
+        index = (INT8U)(offset + i);
+        if (index < count) {
+            if (contact_list) {
+                const lvgl_phone_contact_t *entry = &s_phone_contacts[index];
+                lv_label_set_text_fmt(labels[i], "%s\n%s",
+                    entry->name[0] != '\0' ? entry->name : entry->number,
+                    entry->number);
+            } else {
+                const lvgl_phone_call_t *entry = &s_phone_calls[index];
+                lv_label_set_text_fmt(labels[i], "%s  %s\n%s",
+                    lvgl_phone_direction_text(entry->direction),
+                    entry->name[0] != '\0' ? entry->name : entry->number,
+                    entry->number);
+            }
+            lv_obj_clear_flag(buttons[i], LV_OBJ_FLAG_HIDDEN);
+            lvgl_phone_button_selected(buttons[i], (index == s_phone_cursor));
+        } else {
+            lv_obj_add_flag(buttons[i], LV_OBJ_FLAG_HIDDEN);
+        }
+    }
+}
+
+static void lvgl_phone_refresh(void)
+{
+    INT8U i;
+    INT8U dial_selected;
+
+    if (!s_phone_active) {
+        return;
+    }
+    for (i = 0u; i < LVGL_PHONE_TAB_COUNT; i++) {
+        lvgl_phone_button_selected(s_phone_tab_btn[i], (i == s_phone_tab));
+        if (i == s_phone_tab) {
+            lv_obj_clear_flag(s_phone_panel[i], LV_OBJ_FLAG_HIDDEN);
+        } else {
+            lv_obj_add_flag(s_phone_panel[i], LV_OBJ_FLAG_HIDDEN);
+        }
+    }
+    if (s_phone_status_label != NULL) {
+        lv_label_set_text(s_phone_status_label, s_phone_status);
+    }
+    if (s_phone_number_label != NULL) {
+        lv_label_set_text(s_phone_number_label,
+            s_phone_dial[0] != '\0' ? s_phone_dial : "输入号码");
+    }
+    for (i = 0u; i < LVGL_PHONE_DIAL_KEY_COUNT; i++) {
+        dial_selected = !s_phone_nav_active &&
+                        (s_phone_tab == LVGL_PHONE_TAB_DIAL) &&
+                        (i == s_phone_cursor);
+        lvgl_phone_button_selected(s_phone_dial_btn[i], dial_selected);
+    }
+    lvgl_phone_refresh_list(s_phone_recent_btn, s_phone_recent_label,
+                            s_phone_call_count, 0u,
+                            s_phone_list_offset[LVGL_PHONE_TAB_RECENT]);
+    lvgl_phone_refresh_list(s_phone_contact_btn, s_phone_contact_label,
+                            s_phone_contact_count, 1u,
+                            s_phone_list_offset[LVGL_PHONE_TAB_CONTACT]);
+}
+
+static void lvgl_phone_dial_current(void)
+{
+    bt_xstack_result_t result;
+
+    if (s_phone_dial[0] == '\0') {
+        lvgl_phone_status_set("请先输入号码");
+        return;
+    }
+    result = bt_xstack_hfp_dial(s_phone_dial);
+    if (result == BT_XSTACK_OK) {
+        lvgl_phone_status_set("正在呼叫...");
+    } else {
+        lvgl_phone_status_set("拨号失败");
+    }
+}
+
+static void lvgl_phone_activate(void)
+{
+    static const char dial_keys[] = "123456789*0#";
+    INT32U length;
+
+    if (s_phone_tab == LVGL_PHONE_TAB_DIAL) {
+        if (s_phone_cursor < 12u) {
+            length = strlen(s_phone_dial);
+            if (length < LVGL_PHONE_NUMBER_MAX) {
+                s_phone_dial[length] = dial_keys[s_phone_cursor];
+                s_phone_dial[length + 1u] = '\0';
+            }
+        } else if (s_phone_cursor == 12u) {
+            length = strlen(s_phone_dial);
+            if (length > 0u) {
+                s_phone_dial[length - 1u] = '\0';
+            }
+        } else {
+            lvgl_phone_dial_current();
+        }
+    } else if (s_phone_tab == LVGL_PHONE_TAB_RECENT) {
+        if (s_phone_cursor < s_phone_call_count) {
+            strncpy(s_phone_dial, s_phone_calls[s_phone_cursor].number,
+                    LVGL_PHONE_NUMBER_MAX);
+            s_phone_dial[LVGL_PHONE_NUMBER_MAX] = '\0';
+            lvgl_phone_dial_current();
+        } else {
+            lvgl_phone_status_set("暂无最近通话");
+        }
+    } else if (s_phone_cursor < s_phone_contact_count) {
+        strncpy(s_phone_dial, s_phone_contacts[s_phone_cursor].number,
+                LVGL_PHONE_NUMBER_MAX);
+        s_phone_dial[LVGL_PHONE_NUMBER_MAX] = '\0';
+        lvgl_phone_dial_current();
+    } else {
+        lvgl_phone_status_set("暂无联系人，等待手机同步");
+    }
+    lvgl_phone_refresh();
+}
+
+static void lvgl_phone_key_move(lvgl_phone_key_t key)
+{
+    INT8U count;
+
+    if (!s_phone_active) {
+        return;
+    }
+    if (key == LVGL_PHONE_KEY_SELECT) {
+        lvgl_phone_activate();
+        return;
+    }
+    if (s_phone_tab != LVGL_PHONE_TAB_DIAL) {
+        count = (s_phone_tab == LVGL_PHONE_TAB_RECENT) ?
+                s_phone_call_count : s_phone_contact_count;
+        if (key == LVGL_PHONE_KEY_UP) {
+            if (s_phone_cursor > 0u) {
+                s_phone_cursor--;
+                if (s_phone_cursor < s_phone_list_offset[s_phone_tab]) {
+                    s_phone_list_offset[s_phone_tab]--;
+                }
+            }
+        } else if (key == LVGL_PHONE_KEY_DOWN) {
+            if ((count > 0u) && (s_phone_cursor + 1u < count)) {
+                s_phone_cursor++;
+                if (s_phone_cursor >= s_phone_list_offset[s_phone_tab] +
+                                      LVGL_PHONE_VISIBLE_ROWS) {
+                    s_phone_list_offset[s_phone_tab]++;
+                }
+            }
+        } else if (key == LVGL_PHONE_KEY_LEFT) {
+            if (s_phone_tab > LVGL_PHONE_TAB_DIAL) lvgl_phone_switch_tab(s_phone_tab - 1u);
+        } else if (key == LVGL_PHONE_KEY_RIGHT) {
+            if (s_phone_tab + 1u < LVGL_PHONE_TAB_COUNT) lvgl_phone_switch_tab(s_phone_tab + 1u);
+        }
+        lvgl_phone_refresh();
+        return;
+    }
+
+    if (key == LVGL_PHONE_KEY_UP) {
+        if (s_phone_cursor >= 12u) s_phone_cursor = (INT8U)(9u + s_phone_cursor - 12u);
+        else if (s_phone_cursor >= 3u) s_phone_cursor -= 3u;
+    } else if (key == LVGL_PHONE_KEY_DOWN) {
+        if (s_phone_cursor < 9u) s_phone_cursor += 3u;
+        else if (s_phone_cursor == 9u) s_phone_cursor = 12u;
+        else if (s_phone_cursor == 10u) s_phone_cursor = 13u;
+        else if ((s_phone_cursor == 11u) || (s_phone_cursor == 12u) ||
+                 (s_phone_cursor == 13u)) s_phone_nav_active = 1u;
+    } else if (key == LVGL_PHONE_KEY_LEFT) {
+        if (s_phone_cursor == 13u) s_phone_cursor = 12u;
+        else if ((s_phone_cursor < 12u) && ((s_phone_cursor % 3u) != 0u)) s_phone_cursor--;
+    } else if (key == LVGL_PHONE_KEY_RIGHT) {
+        if (s_phone_cursor == 12u) s_phone_cursor = 13u;
+        else if ((s_phone_cursor < 12u) && ((s_phone_cursor % 3u) != 2u)) s_phone_cursor++;
+        else if (s_phone_cursor == 2u || s_phone_cursor == 5u ||
+                 s_phone_cursor == 8u || s_phone_cursor == 11u) lvgl_phone_switch_tab(LVGL_PHONE_TAB_RECENT);
+    }
+    lvgl_phone_refresh();
+}
+
+static void lvgl_phone_tab_cb(lv_event_t *event)
+{
+    INT8U i;
+    lv_obj_t *target = lv_event_get_target(event);
+
+    for (i = 0u; i < LVGL_PHONE_TAB_COUNT; i++) {
+        if (target == s_phone_tab_btn[i]) {
+            lvgl_phone_switch_tab(i);
+            return;
+        }
+    }
+}
+
+static void lvgl_phone_action_cb(lv_event_t *event)
+{
+    INT8U i;
+    lv_obj_t *target = lv_event_get_target(event);
+
+    for (i = 0u; i < LVGL_PHONE_DIAL_KEY_COUNT; i++) {
+        if (target == s_phone_dial_btn[i]) {
+            s_phone_tab = LVGL_PHONE_TAB_DIAL;
+            s_phone_cursor = i;
+            lvgl_phone_activate();
+            return;
+        }
+    }
+    for (i = 0u; i < LVGL_PHONE_VISIBLE_ROWS; i++) {
+        if (target == s_phone_recent_btn[i]) {
+            s_phone_tab = LVGL_PHONE_TAB_RECENT;
+            s_phone_cursor = (INT8U)(s_phone_list_offset[LVGL_PHONE_TAB_RECENT] + i);
+            lvgl_phone_activate();
+            return;
+        }
+        if (target == s_phone_contact_btn[i]) {
+            s_phone_tab = LVGL_PHONE_TAB_CONTACT;
+            s_phone_cursor = (INT8U)(s_phone_list_offset[LVGL_PHONE_TAB_CONTACT] + i);
+            lvgl_phone_activate();
+            return;
+        }
+    }
+}
+
+static void lvgl_phone_ui_create(lv_obj_t *screen)
+{
+    static const char *tab_text[LVGL_PHONE_TAB_COUNT] = {
+        "拨号", "最近通话", "通讯录"
+    };
+    /* All coordinates below are local to the 009_plane content frame
+     * (930 x 370).  The former phone page still used 1024-wide root-screen
+     * coordinates and therefore escaped the frame like a pop-up. */
+    /* Three equal tabs form a centred, symmetric group in the header. */
+    static const lv_coord_t tab_x[LVGL_PHONE_TAB_COUNT] = { 300, 415, 530 };
+    static const char *dial_text[LVGL_PHONE_DIAL_KEY_COUNT] = {
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#", "删除", "拨号"
+    };
+    lv_obj_t *label;
+    INT8U i;
+
+    s_phone_active = 1u;
+    s_phone_nav_active = 0u;
+    lv_group_remove_all_objs(s_group);
+
+    label = lv_label_create(screen);
+    lv_label_set_text(label, LV_SYMBOL_CALL "  BLUETOOTH CALL");
+    lv_obj_set_style_text_font(label, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_color(label, lv_color_hex(0x1ADBE5), LV_PART_MAIN);
+    lv_obj_set_pos(label, 50, 20);
+    s_phone_status_label = lv_label_create(screen);
+    lv_obj_set_width(s_phone_status_label, 240);
+    lv_label_set_long_mode(s_phone_status_label, LV_LABEL_LONG_DOT);
+    lv_obj_set_style_text_font(s_phone_status_label, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_align(s_phone_status_label, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN);
+    lv_obj_set_style_text_color(s_phone_status_label, lv_color_hex(0x85C8D0), LV_PART_MAIN);
+    /* Right-aligned counterpart of the left BLUETOOTH CALL heading. */
+    lv_obj_set_pos(s_phone_status_label, 640, 22);
+
+    for (i = 0u; i < LVGL_PHONE_TAB_COUNT; i++) {
+        s_phone_tab_btn[i] = lvgl_phone_button_create(screen, tab_x[i],
+            18, 100, 38, tab_text[i], &lv_font_cn_18);
+        lv_obj_add_event_cb(s_phone_tab_btn[i], lvgl_phone_tab_cb, LV_EVENT_CLICKED, NULL);
+        s_phone_panel[i] = lv_obj_create(screen);
+        lv_obj_set_size(s_phone_panel[i], 870, 282);
+        lv_obj_set_pos(s_phone_panel[i], 30, 66);
+        /* 009_plane is the only page background.  Tab panels are transparent
+         * layout containers so the dialer is embedded, never a second card. */
+        lv_obj_set_style_bg_opa(s_phone_panel[i], LV_OPA_TRANSP, LV_PART_MAIN);
+        lv_obj_set_style_border_width(s_phone_panel[i], 0, LV_PART_MAIN);
+        lv_obj_set_style_radius(s_phone_panel[i], 0, LV_PART_MAIN);
+        lv_obj_set_style_pad_all(s_phone_panel[i], 0, LV_PART_MAIN);
+        lv_obj_clear_flag(s_phone_panel[i], LV_OBJ_FLAG_SCROLLABLE);
+    }
+
+    s_phone_number_label = lv_label_create(s_phone_panel[LVGL_PHONE_TAB_DIAL]);
+    lv_obj_set_width(s_phone_number_label, 360);
+    lv_label_set_long_mode(s_phone_number_label, LV_LABEL_LONG_DOT);
+    lv_obj_set_style_text_font(s_phone_number_label, &lv_font_montserrat_48, LV_PART_MAIN);
+    lv_obj_set_style_text_align(s_phone_number_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
+    lv_obj_set_style_text_color(s_phone_number_label, lv_color_hex(0xE7FBFF), LV_PART_MAIN);
+    lv_obj_set_pos(s_phone_number_label, 255, 8);
+    for (i = 0u; i < 12u; i++) {
+        s_phone_dial_btn[i] = lvgl_phone_button_create(s_phone_panel[LVGL_PHONE_TAB_DIAL],
+            286 + (lv_coord_t)(i % 3u) * 99, 68 + (lv_coord_t)(i / 3u) * 42,
+            84, 36, dial_text[i], &lv_font_cn_18);
+        lv_obj_add_event_cb(s_phone_dial_btn[i], lvgl_phone_action_cb, LV_EVENT_CLICKED, NULL);
+    }
+    s_phone_dial_btn[12] = lvgl_phone_button_create(s_phone_panel[LVGL_PHONE_TAB_DIAL],
+        292, 240, 136, 34, dial_text[12], &lv_font_cn_18);
+    s_phone_dial_btn[13] = lvgl_phone_button_create(s_phone_panel[LVGL_PHONE_TAB_DIAL],
+        442, 240, 136, 34, dial_text[13], &lv_font_cn_18);
+    lv_obj_set_style_bg_color(s_phone_dial_btn[13], lv_color_hex(0x0D6C75),
+                               LV_PART_MAIN);
+    lv_obj_set_style_border_color(s_phone_dial_btn[13], lv_color_hex(0x18DDE7),
+                                  LV_PART_MAIN);
+    for (i = 12u; i < LVGL_PHONE_DIAL_KEY_COUNT; i++) {
+        lv_obj_add_event_cb(s_phone_dial_btn[i], lvgl_phone_action_cb, LV_EVENT_CLICKED, NULL);
+    }
+
+    for (i = 0u; i < LVGL_PHONE_VISIBLE_ROWS; i++) {
+        s_phone_recent_btn[i] = lvgl_phone_button_create(s_phone_panel[LVGL_PHONE_TAB_RECENT],
+            24, 10 + (lv_coord_t)i * 52, 822, 44, "", &lv_font_cn_18);
+        s_phone_recent_label[i] = lv_obj_get_child(s_phone_recent_btn[i], 0);
+        lv_obj_set_width(s_phone_recent_label[i], 770);
+        lv_label_set_long_mode(s_phone_recent_label[i], LV_LABEL_LONG_DOT);
+        lv_obj_set_style_text_align(s_phone_recent_label[i], LV_TEXT_ALIGN_LEFT, LV_PART_MAIN);
+        lv_obj_align(s_phone_recent_label[i], LV_ALIGN_LEFT_MID, 18, 0);
+        lv_obj_add_event_cb(s_phone_recent_btn[i], lvgl_phone_action_cb, LV_EVENT_CLICKED, NULL);
+
+        s_phone_contact_btn[i] = lvgl_phone_button_create(s_phone_panel[LVGL_PHONE_TAB_CONTACT],
+            24, 10 + (lv_coord_t)i * 52, 822, 44, "", &lv_font_cn_18);
+        s_phone_contact_label[i] = lv_obj_get_child(s_phone_contact_btn[i], 0);
+        lv_obj_set_width(s_phone_contact_label[i], 770);
+        lv_label_set_long_mode(s_phone_contact_label[i], LV_LABEL_LONG_DOT);
+        lv_obj_set_style_text_align(s_phone_contact_label[i], LV_TEXT_ALIGN_LEFT, LV_PART_MAIN);
+        lv_obj_align(s_phone_contact_label[i], LV_ALIGN_LEFT_MID, 18, 0);
+        lv_obj_add_event_cb(s_phone_contact_btn[i], lvgl_phone_action_cb, LV_EVENT_CLICKED, NULL);
+    }
+    lvgl_phone_refresh();
+}
+
+static void lvgl_show_music_page(void)
+{
+    if (!s_dashboard_active || (s_active_page == LVGL_PAGE_MUSIC)) {
+        return;
+    }
+    s_phone_active = 0u;
+    s_active_page = LVGL_PAGE_MUSIC;
+    s_nav_focus = LVGL_PAGE_MUSIC;
+    lvgl_nav_marker_refresh();
+    lvgl_dashboard_background_set("U:/shell.bin");
+    lvgl_dashboard_content_set_visible(0u);
+    if (s_content_panel != NULL) lv_obj_del(s_content_panel);
+    s_content_panel = lvgl_content_frame_create();
+    lvgl_bt_music_ui_create(s_content_panel);
+    lv_obj_invalidate(lv_scr_act());
+}
+
+static void lvgl_show_phone_page(void)
+{
+    if (!s_dashboard_active || (s_active_page == LVGL_PAGE_PHONE)) {
+        return;
+    }
+    s_phone_active = 1u;
+    s_active_page = LVGL_PAGE_PHONE;
+    s_nav_focus = LVGL_PAGE_PHONE;
+    lvgl_nav_marker_refresh();
+    lvgl_dashboard_background_set("U:/shell.bin");
+    s_phone_tab = LVGL_PHONE_TAB_DIAL;
+    s_phone_cursor = 0u;
+    s_phone_list_offset[LVGL_PHONE_TAB_RECENT] = 0u;
+    s_phone_list_offset[LVGL_PHONE_TAB_CONTACT] = 0u;
+    lvgl_dashboard_content_set_visible(0u);
+    if (s_content_panel != NULL) lv_obj_del(s_content_panel);
+    s_ui_title = s_ui_artist = s_ui_cover = s_ui_cover_loading = NULL;
+    s_btn_play = s_btn_prev = s_btn_next = NULL;
+    s_content_panel = lvgl_content_frame_create();
+    lvgl_phone_ui_create(s_content_panel);
+    if (s_phone_sync_active) {
+        lvgl_phone_status_set("电话本同步中...");
+    } else if ((s_phone_contact_count != 0u) || (s_phone_call_count != 0u)) {
+        lvgl_phone_status_set("电话本已同步");
+    } else {
+        lvgl_phone_status_set("已连接手机");
+    }
+    lv_obj_invalidate(lv_scr_act());
 }
 
 static void lvgl_show_dashboard_page(void)
 {
-    lv_obj_t *screen;
-
-    if (s_dashboard_active) {
+    if (!s_dashboard_active || (s_active_page == LVGL_PAGE_DASHBOARD)) {
         return;
     }
-    screen = lv_obj_create(NULL);
-    lvgl_dashboard_ui_create(screen);
-    lv_scr_load_anim(screen, LV_SCR_LOAD_ANIM_NONE, 0u, 0u, true);
-    if ((s_dashboard_snapshot != NULL) && (s_dashboard_snapshot_valid != 0u)) {
-        memcpy((void *)s_lvgl_fb, s_dashboard_snapshot,
-               LVGL_H_RES * LVGL_V_RES * sizeof(lv_color_t));
-        cache_invalid_range(s_lvgl_fb,
-                            LVGL_H_RES * LVGL_V_RES * sizeof(lv_color_t));
+    s_phone_active = 0u;
+    s_active_page = LVGL_PAGE_DASHBOARD;
+    s_nav_focus = LVGL_PAGE_DASHBOARD;
+    lvgl_nav_marker_refresh();
+    lvgl_dashboard_background_set("U:/dashboard.bin");
+    if (s_content_panel != NULL) {
+        lv_obj_del(s_content_panel);
+        s_content_panel = NULL;
     }
-    lv_obj_invalidate(screen);
+    s_ui_title = s_ui_artist = s_ui_cover = s_ui_cover_loading = NULL;
+    s_btn_play = s_btn_prev = s_btn_next = NULL;
+    lvgl_dashboard_content_set_visible(1u);
+    lv_obj_invalidate(lv_scr_act());
+}
+
+static void lvgl_show_location_page(void)
+{
+    lv_obj_t *title;
+    lv_obj_t *detail;
+
+    if (!s_dashboard_active || (s_active_page == LVGL_PAGE_LOCATION)) return;
+    s_phone_active = 0u;
+    s_active_page = LVGL_PAGE_LOCATION;
+    s_nav_focus = LVGL_PAGE_LOCATION;
+    lvgl_nav_marker_refresh();
+    lvgl_dashboard_background_set("U:/shell.bin");
+    lvgl_dashboard_content_set_visible(0u);
+    if (s_content_panel != NULL) lv_obj_del(s_content_panel);
+    s_ui_title = s_ui_artist = s_ui_cover = s_ui_cover_loading = NULL;
+    s_btn_play = s_btn_prev = s_btn_next = NULL;
+    s_content_panel = lvgl_content_frame_create();
+    title = lv_label_create(s_content_panel);
+    lv_label_set_text(title, LV_SYMBOL_GPS "  位置导航");
+    lv_obj_set_style_text_font(title, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_color(title, lv_color_hex(0x18DDE7), LV_PART_MAIN);
+    lv_obj_set_pos(title, 36, 32);
+    detail = lv_label_create(s_content_panel);
+    lv_label_set_text(detail, "您的目的地\nSkinner Hollow Road, Grants Pass\n\n导航服务待接入");
+    lv_obj_set_style_text_font(detail, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_color(detail, lv_color_hex(0xC8E8EC), LV_PART_MAIN);
+    lv_obj_set_pos(detail, 76, 102);
+    lv_obj_invalidate(lv_scr_act());
+}
+
+static void lvgl_show_speed_page(void)
+{
+    lv_obj_t *title;
+    lv_obj_t *detail;
+
+    if (!s_dashboard_active || (s_active_page == LVGL_PAGE_SPEED)) return;
+    s_phone_active = 0u;
+    s_active_page = LVGL_PAGE_SPEED;
+    s_nav_focus = LVGL_PAGE_SPEED;
+    lvgl_nav_marker_refresh();
+    lvgl_dashboard_background_set("U:/shell.bin");
+    lvgl_dashboard_content_set_visible(0u);
+    if (s_content_panel != NULL) lv_obj_del(s_content_panel);
+    s_ui_title = s_ui_artist = s_ui_cover = s_ui_cover_loading = NULL;
+    s_btn_play = s_btn_prev = s_btn_next = NULL;
+    s_content_panel = lvgl_content_frame_create();
+    title = lv_label_create(s_content_panel);
+    lv_label_set_text(title, "SPEED ASSIST");
+    lv_obj_set_style_text_font(title, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_color(title, lv_color_hex(0x18DDE7), LV_PART_MAIN);
+    lv_obj_set_pos(title, 50, 36);
+    detail = lv_label_create(s_content_panel);
+    lv_label_set_text(detail, "速度辅助页面\n功能预留，后续接入车辆数据");
+    lv_obj_set_style_text_font(detail, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_color(detail, lv_color_hex(0xB7D9DE), LV_PART_MAIN);
+    lv_obj_set_pos(detail, 90, 120);
+    lv_obj_invalidate(lv_scr_act());
+}
+
+static void lvgl_nav_show_focused_page(void)
+{
+    switch (s_nav_focus) {
+    case LVGL_PAGE_DASHBOARD:
+        lvgl_show_dashboard_page();
+        break;
+    case LVGL_PAGE_LOCATION:
+        lvgl_show_location_page();
+        break;
+    case LVGL_PAGE_PHONE:
+        lvgl_show_phone_page();
+        break;
+    case LVGL_PAGE_MUSIC:
+        lvgl_show_music_page();
+        break;
+    case LVGL_PAGE_SPEED:
+        lvgl_show_speed_page();
+        break;
+    default:
+        break;
+    }
+}
+
+static void lvgl_nav_key_move(lvgl_phone_key_t key)
+{
+    static const INT8U nav_order[LVGL_PAGE_COUNT] = {
+        LVGL_PAGE_LOCATION, LVGL_PAGE_SPEED, LVGL_PAGE_DASHBOARD,
+        LVGL_PAGE_MUSIC, LVGL_PAGE_PHONE
+    };
+    INT8U i;
+
+    if (s_phone_active) {
+        if (!s_phone_nav_active) {
+            lvgl_phone_key_move(key);
+            return;
+        }
+        if (key == LVGL_PHONE_KEY_UP) {
+            s_phone_nav_active = 0u;
+            s_phone_cursor = 13u; /* Return to the green "dial" key. */
+            lvgl_phone_refresh();
+            return;
+        }
+        if ((key != LVGL_PHONE_KEY_LEFT) && (key != LVGL_PHONE_KEY_RIGHT)) {
+            return;
+        }
+        /* Key2/Key4 now operate the fixed bottom strip and leave dialer
+         * focus; the selected icon switches its page immediately below. */
+        s_phone_active = 0u;
+        s_phone_nav_active = 0u;
+    }
+
+    if ((key != LVGL_PHONE_KEY_LEFT) && (key != LVGL_PHONE_KEY_RIGHT)) {
+        return;
+    }
+    for (i = 0u; i < LVGL_PAGE_COUNT; i++) {
+        if (nav_order[i] == s_nav_focus) break;
+    }
+    if (i >= LVGL_PAGE_COUNT) {
+        i = 0u;
+    }
+    if (key == LVGL_PHONE_KEY_LEFT) {
+        i = (i == 0u) ? (LVGL_PAGE_COUNT - 1u) : (INT8U)(i - 1u);
+    } else {
+        i = (INT8U)((i + 1u) % LVGL_PAGE_COUNT);
+    }
+    s_nav_focus = nav_order[i];
+    lvgl_nav_marker_refresh();
+    /* The highlight and the content are one selection.  No confirmation key
+     * is needed and no separate page transition is shown. */
+    lvgl_nav_show_focused_page();
 }
 
 int lvgl_page_show_music(void)
 {
     if ((s_dashboard_active == 0u) || (LVGLTaskQ == 0)) {
-        DBG_PRINT("[LVGL] KEY6 ignored (dashboard=%u queue=0x%x)\r\n",
+        DBG_PRINT("[LVGL] music request ignored (dashboard=%u queue=0x%x)\r\n",
                   s_dashboard_active, (INT32U)LVGLTaskQ);
         return 0;
     }
@@ -1483,17 +2406,97 @@ int lvgl_page_show_music(void)
     if (msgQSend(LVGLTaskQ, MSG_LVGL_SHOW_MUSIC, NULL, 0u,
                  MSG_PRI_NORMAL) != 0) {
         s_page_switch_pending = 0u;
-        DBG_PRINT("[LVGL] KEY6 page request failed\r\n");
+        DBG_PRINT("[LVGL] music page request failed\r\n");
         return 0;
     }
-    DBG_PRINT("[LVGL] KEY6 -> music page\r\n");
+    DBG_PRINT("[LVGL] -> music page\r\n");
+    return 1;
+}
+
+int lvgl_page_show_phone(void)
+{
+    if (LVGLTaskQ == 0) {
+        return 0;
+    }
+    if (s_page_switch_pending != 0u) {
+        return 1;
+    }
+    s_page_switch_pending = 1u;
+    if (msgQSend(LVGLTaskQ, MSG_LVGL_SHOW_PHONE, NULL, 0u,
+                 MSG_PRI_NORMAL) != 0) {
+        s_page_switch_pending = 0u;
+        DBG_PRINT("[LVGL] phone page request failed\r\n");
+        return 0;
+    }
+    DBG_PRINT("[LVGL] -> phone page\r\n");
+    return 1;
+}
+
+int lvgl_phone_key_send(lvgl_phone_key_t key)
+{
+    INT32U message;
+
+    if ((LVGLTaskQ == 0) || (key > LVGL_PHONE_KEY_SELECT)) {
+        return 0;
+    }
+    if (!s_phone_active) {
+        /* Outside the dialer, only Key2/Key4 move the bottom strip.  Consume
+         * the other dialer directions so Key1/Key3 cannot also issue the old
+         * AVRCP mapping after Key5/Key6/Key8 took over media control. */
+        if ((key != LVGL_PHONE_KEY_LEFT) && (key != LVGL_PHONE_KEY_RIGHT)) {
+            return (s_dashboard_active != 0u) ? 1 : 0;
+        }
+    }
+    message = MSG_LVGL_PHONE_KEY_UP + (INT32U)key;
+    if (msgQSend(LVGLTaskQ, message, NULL, 0u, MSG_PRI_NORMAL) != 0) {
+        DBG_PRINT("[LVGL] navigation key %u queue full\r\n", (unsigned int)key);
+        return 0;
+    }
+    return 1;
+}
+
+int lvgl_music_key_send(lvgl_music_key_t key)
+{
+    bt_xstack_result_t status;
+
+    if ((s_dashboard_active == 0u) || (key > LVGL_MUSIC_KEY_PLAY_PAUSE)) {
+        return 0;
+    }
+    /* The physical key is reserved by this UI while LVGL is active.  It
+     * controls AVRCP only on the selected music page, never opens a page. */
+    if (s_active_page != LVGL_PAGE_MUSIC) {
+        return 1;
+    }
+    /* This function is called by the peripheral task.  Do not touch LVGL
+     * objects here; AVRCP state events later refresh the controls in the
+     * LVGL task. */
+    if (key == LVGL_MUSIC_KEY_PREVIOUS) {
+        status = bt_xstack_avrcp_previous();
+    } else if (key == LVGL_MUSIC_KEY_NEXT) {
+        status = bt_xstack_avrcp_next();
+    } else if (s_playing) {
+        status = bt_xstack_avrcp_pause();
+    } else {
+        status = bt_xstack_avrcp_play();
+    }
+    if ((key == LVGL_MUSIC_KEY_PLAY_PAUSE) && (status == BT_XSTACK_OK)) {
+        /* The H5 link can delay the phone's AVRCP notification.  Reflect an
+         * accepted local Play/Pause command immediately through the normal
+         * UI event queue; a later remote PLAY_STATE remains authoritative. */
+        bt_ui_post_simple(BT_UI_EVENT_PLAY_STATE,
+                          s_playing ? BT_XSTACK_PLAY_STATE_PAUSED :
+                                      BT_XSTACK_PLAY_STATE_PLAYING,
+                          0u, 0u);
+    }
+    LVGL_RUNTIME_LOG("[LVGL] physical AVRCP key=%u status=%d\r\n",
+                     (unsigned int)key, status);
     return 1;
 }
 
 int lvgl_page_show_dashboard(void)
 {
-    if ((s_dashboard_active != 0u) || (LVGLTaskQ == 0)) {
-        DBG_PRINT("[LVGL] KEY5 ignored (dashboard=%u queue=0x%x)\r\n",
+    if ((s_dashboard_active == 0u) || (LVGLTaskQ == 0)) {
+        DBG_PRINT("[LVGL] dashboard request ignored (dashboard=%u queue=0x%x)\r\n",
                   s_dashboard_active, (INT32U)LVGLTaskQ);
         return 0;
     }
@@ -1504,11 +2507,109 @@ int lvgl_page_show_dashboard(void)
     if (msgQSend(LVGLTaskQ, MSG_LVGL_SHOW_DASHBOARD, NULL, 0u,
                  MSG_PRI_NORMAL) != 0) {
         s_page_switch_pending = 0u;
-        DBG_PRINT("[LVGL] KEY5 page request failed\r\n");
+        DBG_PRINT("[LVGL] dashboard page request failed\r\n");
         return 0;
     }
-    DBG_PRINT("[LVGL] KEY5 -> dashboard page\r\n");
+    DBG_PRINT("[LVGL] -> dashboard page\r\n");
     return 1;
+}
+
+static void lvgl_phone_copy_text(char *dst, const char *src, INT32U size)
+{
+    if ((dst == NULL) || (size == 0u)) {
+        return;
+    }
+    if (src == NULL) {
+        dst[0] = '\0';
+        return;
+    }
+    strncpy(dst, src, size - 1u);
+    dst[size - 1u] = '\0';
+}
+
+static void lvgl_phone_apply_event(const bt_ui_event_t *event)
+{
+    switch (event->type) {
+    case BT_UI_EVENT_HFP_STATE:
+        if (event->value_count > 0u) {
+            if (event->values[0] == BT_XSTACK_HFP_STATE_INCOMING) {
+                lvgl_phone_status_set("来电");
+            } else if (event->values[0] == BT_XSTACK_HFP_STATE_OUTGOING) {
+                lvgl_phone_status_set("正在呼叫...");
+            } else if (event->values[0] == BT_XSTACK_HFP_STATE_ACTIVE) {
+                lvgl_phone_status_set("通话中");
+            } else if (event->values[0] == BT_XSTACK_HFP_STATE_CONNECTED) {
+                lvgl_phone_status_set("已连接手机");
+            }
+        }
+        break;
+    case BT_UI_EVENT_CALL_NUMBER:
+        lvgl_phone_copy_text(s_phone_remote_number, event->text,
+                             sizeof(s_phone_remote_number));
+        if (s_phone_remote_number[0] != '\0') {
+            lvgl_phone_status_set(s_phone_remote_number);
+        }
+        break;
+    case BT_UI_EVENT_PB_STARTED:
+        if (!s_phone_sync_active) {
+            s_phone_contact_count = 0u;
+            s_phone_call_count = 0u;
+            s_phone_sync_active = 1u;
+        }
+        lvgl_phone_status_set("电话本同步中...");
+        break;
+    case BT_UI_EVENT_PB_CONTACT:
+        if ((event->pb.contact.number_count > 0u) &&
+            (s_phone_contact_count < LVGL_PHONE_CONTACT_MAX)) {
+            lvgl_phone_contact_t *contact =
+                &s_phone_contacts[s_phone_contact_count++];
+            lvgl_phone_copy_text(contact->name, event->pb.contact.name,
+                                 sizeof(contact->name));
+            lvgl_phone_copy_text(contact->number,
+                                 event->pb.contact.numbers[0].value,
+                                 sizeof(contact->number));
+        }
+        break;
+    case BT_UI_EVENT_PB_CALL_LOG:
+        if (s_phone_call_count < LVGL_PHONE_CALL_MAX) {
+            lvgl_phone_call_t *call = &s_phone_calls[s_phone_call_count++];
+            lvgl_phone_copy_text(call->name, event->pb.call.name,
+                                 sizeof(call->name));
+            lvgl_phone_copy_text(call->number, event->pb.call.number,
+                                 sizeof(call->number));
+            lvgl_phone_copy_text(call->timestamp, event->pb.call.timestamp,
+                                 sizeof(call->timestamp));
+            call->direction = event->pb.call.direction;
+        }
+        break;
+    case BT_UI_EVENT_PB_DONE:
+        s_phone_sync_active = 0u;
+        lvgl_phone_status_set("电话本已同步");
+        break;
+    case BT_UI_EVENT_PB_AUTH:
+        s_phone_sync_active = 0u;
+        lvgl_phone_status_set("手机需要电话本授权");
+        break;
+    case BT_UI_EVENT_PB_ERROR:
+        s_phone_sync_active = 0u;
+        lvgl_phone_status_set("电话本同步失败");
+        break;
+    default:
+        break;
+    }
+
+    if (s_phone_active) {
+        if (s_phone_tab == LVGL_PHONE_TAB_RECENT &&
+            s_phone_cursor >= s_phone_call_count) {
+            s_phone_cursor = (s_phone_call_count > 0u) ?
+                (s_phone_call_count - 1u) : 0u;
+        } else if (s_phone_tab == LVGL_PHONE_TAB_CONTACT &&
+                   s_phone_cursor >= s_phone_contact_count) {
+            s_phone_cursor = (s_phone_contact_count > 0u) ?
+                (s_phone_contact_count - 1u) : 0u;
+        }
+        lvgl_phone_refresh();
+    }
 }
 
 static void lvgl_bt_music_apply_event(const bt_ui_event_t *event)
@@ -1532,7 +2633,9 @@ static void lvgl_bt_music_apply_event(const bt_ui_event_t *event)
         s_playing = (event->values[0] == BT_XSTACK_PLAY_STATE_PLAYING) ? 1u : 0u;
     }
 
-    if (s_dashboard_active) {
+    lvgl_phone_apply_event(event);
+
+    if (s_active_page != LVGL_PAGE_MUSIC) {
         return;
     }
 
@@ -1547,12 +2650,14 @@ static void lvgl_bt_music_apply_event(const bt_ui_event_t *event)
         /* Connection state is intentionally not shown in the minimal page. */
         break;
     case BT_UI_EVENT_PLAY_STATE:
-        lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
-                          s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
+        if (s_btn_play != NULL) {
+            lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
+                              s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
+        }
         break;
     case BT_UI_EVENT_TRACK_INFO:
-        lv_label_set_text(s_ui_title, s_music_title);
-        lv_label_set_text(s_ui_artist, s_music_artist);
+        if (s_ui_title != NULL) lv_label_set_text(s_ui_title, s_music_title);
+        if (s_ui_artist != NULL) lv_label_set_text(s_ui_artist, s_music_artist);
         break;
     case BT_UI_EVENT_ABSOLUTE_VOLUME:
         break;
@@ -1565,6 +2670,7 @@ static void lvgl_bt_music_process_events(void)
 {
     bt_ui_event_t event;
     INT8U have_event;
+    INT8U processed = 0u;
 
     do {
         have_event = 0u;
@@ -1577,24 +2683,20 @@ static void lvgl_bt_music_process_events(void)
         taskEXIT_CRITICAL();
         if (have_event) {
             lvgl_bt_music_apply_event(&event);
+            processed++;
         }
-    } while (have_event);
+    } while (have_event && (processed < LVGL_BT_EVENTS_PER_FRAME));
 }
 
 static void lvgl_bt_ui_notify(const bt_ui_event_t *event, void *context)
 {
     INT8U next_head;
+    INT8U queue_full;
 
     (void)context;
     if (event == NULL) {
         return;
     }
-	if (s_dashboard_active &&
-		((event->type == BT_UI_EVENT_COVER_ART_DATA) ||
-		 (event->type == BT_UI_EVENT_COVER_ART_DONE) ||
-		 (event->type == BT_UI_EVENT_COVER_ART_ERROR))) {
-		return;
-	}
 
     switch (event->type) {
     case BT_UI_EVENT_CONN_STATE:
@@ -1602,6 +2704,15 @@ static void lvgl_bt_ui_notify(const bt_ui_event_t *event, void *context)
     case BT_UI_EVENT_PLAY_STATE:
     case BT_UI_EVENT_TRACK_INFO:
     case BT_UI_EVENT_ABSOLUTE_VOLUME:
+    case BT_UI_EVENT_HFP_STATE:
+    case BT_UI_EVENT_CALL_NUMBER:
+    case BT_UI_EVENT_RING:
+    case BT_UI_EVENT_PB_STARTED:
+    case BT_UI_EVENT_PB_CONTACT:
+    case BT_UI_EVENT_PB_CALL_LOG:
+    case BT_UI_EVENT_PB_DONE:
+    case BT_UI_EVENT_PB_AUTH:
+    case BT_UI_EVENT_PB_ERROR:
         break;
     case BT_UI_EVENT_COVER_ART_DATA:
     case BT_UI_EVENT_COVER_ART_DONE:
@@ -1614,7 +2725,19 @@ static void lvgl_bt_ui_notify(const bt_ui_event_t *event, void *context)
 
     taskENTER_CRITICAL();
     next_head = (INT8U)((s_bt_event_head + 1u) % LVGL_BT_EVENT_QUEUE_LEN);
-    if (next_head != s_bt_event_tail) {
+    queue_full = (next_head == s_bt_event_tail);
+    if (!queue_full || (event->type == BT_UI_EVENT_PLAY_STATE) ||
+        (event->type == BT_UI_EVENT_TRACK_INFO) ||
+        (event->type == BT_UI_EVENT_A2DP_STATE) ||
+        (event->type == BT_UI_EVENT_PB_DONE) ||
+        (event->type == BT_UI_EVENT_PB_AUTH) ||
+        (event->type == BT_UI_EVENT_PB_ERROR)) {
+        /* Playback and completion/error events are state transitions.
+         * Preserve them even during a burst of hundreds of call-log entries. */
+        if (queue_full) {
+            s_bt_event_tail = (INT8U)((s_bt_event_tail + 1u) %
+                                      LVGL_BT_EVENT_QUEUE_LEN);
+        }
         s_bt_event_queue[s_bt_event_head] = *event;
         s_bt_event_head = next_head;
     }
@@ -1688,12 +2811,10 @@ void state_lvgl_entry(void const *arg)
     draw_buf_size = LVGL_H_RES * (LVGL_V_RES / LVGL_DRAW_BUF_DIV) * sizeof(lv_color_t);
     s_lvgl_fb = (INT32U)gp_malloc_align(fb_size, 64);
     s_draw_buf_mem = (lv_color_t *)gp_malloc_align(draw_buf_size, 64);
-    s_dashboard_snapshot = (lv_color_t *)gp_malloc_align(fb_size, 64);
     s_cover_jpeg = (uint8_t *)gp_malloc_align(LVGL_COVER_JPEG_MAX_BYTES, 64);
     cover_rgb_size = LVGL_COVER_SIZE * LVGL_COVER_SIZE * sizeof(lv_color_t);
     s_cover_rgb565 = (lv_color_t *)gp_malloc_align(cover_rgb_size, 64);
     if ((s_lvgl_fb == 0) || (s_draw_buf_mem == 0) ||
-        (s_dashboard_snapshot == NULL) ||
         (s_cover_jpeg == NULL) || (s_cover_rgb565 == NULL)) {
         ERR_PRINT("[LVGL] fb alloc fail (fb=0x%x buf=0x%x)\r\n",
                   s_lvgl_fb, (INT32U)s_draw_buf_mem);
@@ -1729,7 +2850,7 @@ void state_lvgl_entry(void const *arg)
     ap_state_handling_display_path_set(DISPLAY_PATH_LVGL);
     LVGL_RUNTIME_LOG("[LVGL] display path -> LVGL\r\n");
 
-    /* 6. 默认进入仪表页；KEY6 右移到蓝牙音乐页，KEY5 左移返回。 */
+    /* 6. 默认进入仪表页；物理页面键由外围任务转发。 */
     lvgl_dashboard_ui_create(lv_scr_act());
     lv_obj_invalidate(lv_scr_act()); /* 首帧完整覆盖此前显示路径遗留的内容 */
     bt_ui_set_notify(lvgl_bt_ui_notify, NULL);
@@ -1745,9 +2866,28 @@ void state_lvgl_entry(void const *arg)
                 s_page_switch_pending = 0u;
                 lvgl_show_music_page();
                 break;
+            case MSG_LVGL_SHOW_PHONE:
+                s_page_switch_pending = 0u;
+                lvgl_show_phone_page();
+                break;
             case MSG_LVGL_SHOW_DASHBOARD:
                 s_page_switch_pending = 0u;
                 lvgl_show_dashboard_page();
+                break;
+            case MSG_LVGL_PHONE_KEY_UP:
+                lvgl_nav_key_move(LVGL_PHONE_KEY_UP);
+                break;
+            case MSG_LVGL_PHONE_KEY_DOWN:
+                lvgl_nav_key_move(LVGL_PHONE_KEY_DOWN);
+                break;
+            case MSG_LVGL_PHONE_KEY_LEFT:
+                lvgl_nav_key_move(LVGL_PHONE_KEY_LEFT);
+                break;
+            case MSG_LVGL_PHONE_KEY_RIGHT:
+                lvgl_nav_key_move(LVGL_PHONE_KEY_RIGHT);
+                break;
+            case MSG_LVGL_PHONE_KEY_SELECT:
+                lvgl_nav_key_move(LVGL_PHONE_KEY_SELECT);
                 break;
             default:
                 break;

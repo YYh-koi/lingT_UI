@@ -361,7 +361,7 @@
 
 /*== ADKEY ==*/
 #define ADKEY_DETECT_PIN		ADC_LINE_0
-#define ADKEY_NUM				6
+#define ADKEY_NUM				8
 #define ADKEY_OK_L				250
 #define ADKEY_OK_H				360
 #define ADKEY_PREV_L			710
@@ -374,6 +374,11 @@
 #define ADKEY_MENU_H			2320
 #define ADKEY_SOS_L				2670
 #define ADKEY_SOS_H				2780
+/* KEY7: 2.7K / KEY8: 1K branches of the AD_KEY resistor ladder. */
+#define ADKEY_KEY7_L			3150
+#define ADKEY_KEY7_H			3290
+#define ADKEY_KEY8_L			3660
+#define ADKEY_KEY8_H			3790
 
 /*==  POWER KEY ==*/
 #if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)

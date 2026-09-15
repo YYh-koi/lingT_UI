@@ -2,7 +2,7 @@
 1695178342 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\msg_manager\src\msg_manager.c
 	"application.h"
 
-1778470288 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\inc\application.h
+1789380599 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\inc\application.h
 	"drv_l2.h"
 	"msg_manager.h"
 	"turnkey_drv_msg.h"
@@ -288,7 +288,7 @@
 
 1787730333 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\inc\customer.h
 
-1787293660 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\board_config\inc\board_config.h
+1789371457 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\board_config\inc\board_config.h
 	"pinmux_config.h"
 
 1702451448 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\board_config\inc\pinmux_config.h
@@ -451,7 +451,7 @@
 	"gplib_calendar.h"
 	"gplib_zp_decode.h"
 
-1789027658 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\inc\gplib_cfg.h
+1789388479 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\inc\gplib_cfg.h
 
 1695178362 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\inc\gplib_wav.h
 
@@ -610,7 +610,7 @@
 
 1695178342 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\msg_manager\inc\msg_manager.h
 
-1789026641 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\inc\turnkey_drv_msg.h
+1789372965 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\inc\turnkey_drv_msg.h
 	"customer.h"
 
 1787194430 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\inc\turnkey_sys_msg.h
@@ -647,7 +647,7 @@
 
 1695178342 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\inc\task_peripheral_handling.h
 
-1789025436 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\inc\ap_peripheral_handling.h
+1789371021 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\inc\ap_peripheral_handling.h
 
 1695178342 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_storage_service\inc\task_storage_service.h
 
@@ -718,7 +718,7 @@
 
 1695178344 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_rtsp_service\inc\rtp.h
 
-1789026662 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\inc\state_lvgl.h
+1789385358 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\inc\state_lvgl.h
 
 1695178342 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_state_handling\state_audio_record\inc\state_audio_record.h
 	"task_state_handling.h"
@@ -915,13 +915,16 @@
 1780457218 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_encoder\src\task_encoder_video.c
 	"application.h"
 
-1789034612 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\src\state_lvgl.c
+1789442710 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\src\state_lvgl.c
 	"customer.h"
 	"state_lvgl.h"
 	"lvgl.h"
+	"dashboard_dynamic_assets.h"
 	"application.h"
 	"bt_ui_events.h"
 	"bt_xstack_audio.h"
+	"bt_xstack_phone.h"
+	"bt_xstack_demo.h"
 	"gp_stdlib.h"
 	"gplib_fs.h"
 	"proto.h"
@@ -987,7 +990,7 @@
 	<nuttx/config.h>
 	<lv_rt_thread_conf.h>
 
-1789023572 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lv_conf.h
+1789435392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lv_conf.h
 	<stdint.h>
 
 1787909436 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lvgl\src\misc\lv_types.h
@@ -1564,7 +1567,94 @@
 1787909434 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lvgl\src\extra\widgets\span\lv_span.h
 	"../../../lvgl.h"
 
-1789034609 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\src\ap_peripheral_handling.c
+1789369248 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_lvgl\src\dashboard_dynamic_assets.h
+
+1789350650 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_ui_events.h
+	<stdint.h>
+	"bt_xstack_types.h"
+	"bt_xstack_phonebook.h"
+
+1786811642 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_types.h
+	<stdbool.h>
+	<stdint.h>
+
+1786470544 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_phonebook.h
+	"bt_xstack_types.h"
+
+1786784662 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_audio.h
+	"bt_xstack_types.h"
+
+1778470286 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\proto.h
+	"fsystem.h"
+
+1778470286 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\fsystem.h
+	"gplib.h"
+	"fs.h"
+	"portab.h"
+	"ucBS.h"
+	<string.h>
+	"error.h"
+	"buffer.h"
+	"fs_driver.h"
+	"device.h"
+	"date.h"
+	"cds.h"
+	"dcb.h"
+	"fat.h"
+	"file.h"
+	"fat32.h"
+	"fnode.h"
+	"dirmatch.h"
+	"speedup.h"
+	"format.h"
+	"errors32.h"
+	"filesys32.h"
+	"unicode32.h"
+	"proto.h"
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\portab.h
+	"fs.h"
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\error.h
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\buffer.h
+
+1763605682 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\driver\fs_driver.h
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\device.h
+	"fs.h"
+
+1778812166 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\date.h
+
+1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\cds.h
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\dcb.h
+	"fs.h"
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\fat.h
+	"fs.h"
+
+1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\file.h
+
+1779073516 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\fat32.h
+	"fs.h"
+
+1779073508 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\fnode.h
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\dirmatch.h
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\speedup.h
+
+1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\format.h
+	"fs.h"
+
+1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\errors32.h
+
+1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\filesys32.h
+
+1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\unicode32.h
+
+1789385642 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\application\task_peripheral_handling\src\ap_peripheral_handling.c
 	"application.h"
 	"state_lvgl.h"
 
@@ -1879,20 +1969,10 @@
 	"bt_xstack_gatt.h"
 	"bt_xstack_cover_art.h"
 
-1786811642 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_types.h
-	<stdbool.h>
-	<stdint.h>
-
 1786343308 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_service.h
 	"bt_xstack_types.h"
 
 1785931038 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_phone.h
-	"bt_xstack_types.h"
-
-1786784662 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_audio.h
-	"bt_xstack_types.h"
-
-1786470544 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_phonebook.h
 	"bt_xstack_types.h"
 
 1786811264 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\liba_wifi_src\atbm\atbm6165\bt_api\bt_xstack_le.h
@@ -2482,76 +2562,6 @@
 	"video_codec_dynamic_quality.h"
 
 1778470286 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\driver\drv_struct.c
-	"fsystem.h"
-
-1778470286 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\fsystem.h
-	"gplib.h"
-	"fs.h"
-	"portab.h"
-	"ucBS.h"
-	<string.h>
-	"error.h"
-	"buffer.h"
-	"fs_driver.h"
-	"device.h"
-	"date.h"
-	"cds.h"
-	"dcb.h"
-	"fat.h"
-	"file.h"
-	"fat32.h"
-	"fnode.h"
-	"dirmatch.h"
-	"speedup.h"
-	"format.h"
-	"errors32.h"
-	"filesys32.h"
-	"unicode32.h"
-	"proto.h"
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\portab.h
-	"fs.h"
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\error.h
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\buffer.h
-
-1763605682 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\driver\fs_driver.h
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\device.h
-	"fs.h"
-
-1778812166 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\date.h
-
-1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\cds.h
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\dcb.h
-	"fs.h"
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\fat.h
-	"fs.h"
-
-1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\file.h
-
-1779073516 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\fat32.h
-	"fs.h"
-
-1779073508 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\fnode.h
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\dirmatch.h
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\speedup.h
-
-1732779884 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\format.h
-	"fs.h"
-
-1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\errors32.h
-
-1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\filesys32.h
-
-1695178356 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\unicode32.h
-
-1778470286 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\include\proto.h
 	"fsystem.h"
 
 1732779886 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gplib\fs\driver\fs_drv_manager.c
@@ -4874,6 +4884,10 @@
 1787909436 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lvgl\src\misc\lv_utils.h
 	<stdint.h>
 
+1788861499 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lvgl\src\font\lv_font_cn_18.c
+	"lvgl.h"
+	"lvgl/lvgl.h"
+
 1787909435 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lvgl\src\font\lv_font_dejavu_16_persian_hebrew.c
 	"lvgl.h"
 	"../../lvgl.h"
@@ -5344,7 +5358,13 @@
 1786554204 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_audio_task.h
 	<stdint.h>
 
-1789004020 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\wifi_demo\bt_xstack_demo.c
+1789350650 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\wifi_demo\bt_ui_events.c
+	<string.h>
+	"FreeRTOS.h"
+	"task.h"
+	"bt_ui_events.h"
+
+1789435392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\wifi_demo\bt_xstack_demo.c
 	<string.h>
 	"application.h"
 	"bt_audio_task.h"
@@ -5353,9 +5373,9 @@
 	"bt_ui_events.h"
 	"task.h"
 
-1785613722 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_xstack_demo.h
+1789373420 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_xstack_demo.h
 
-1789027578 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\src\main.c
+1789350650 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\src\main.c
 	"application.h"
 	"project.h"
 	"turnkey_version.h"
@@ -5363,19 +5383,4 @@
 	"bt_xstack_demo.h"
 
 1780362162 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\inc\turnkey_version.h
-
-1789004020 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\wifi_demo\bt_ui_events.c
-	<string.h>
-	"FreeRTOS.h"
-	"task.h"
-	"bt_ui_events.h"
-
-1789004020 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\bt_ui_events.h
-	<stdint.h>
-	"bt_xstack_types.h"
-	"bt_xstack_phonebook.h"
-
-1788861499 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\LVGL\lvgl\src\font\lv_font_cn_18.c
-	"lvgl.h"
-	"lvgl/lvgl.h"
 

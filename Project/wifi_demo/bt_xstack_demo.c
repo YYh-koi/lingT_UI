@@ -25,8 +25,12 @@ static volatile bt_xstack_hfp_state_t bt_xstack_demo_hfp_state =
 static volatile uint8_t bt_xstack_demo_hfp_ringing;
 static volatile uint8_t bt_xstack_demo_avrcp_connected;
 static volatile uint8_t bt_xstack_demo_a2dp_streaming;
+static volatile bt_xstack_play_state_t bt_xstack_demo_play_state =
+    BT_XSTACK_PLAY_STATE_UNKNOWN;
 static volatile uint8_t bt_xstack_demo_pcm_config_valid;
 static volatile uint8_t bt_xstack_demo_resume_pending;
+static bt_xstack_addr_t bt_xstack_demo_phone_address;
+static volatile uint8_t bt_xstack_demo_phone_address_valid;
 static uint32_t bt_xstack_demo_pcm_sample_rate;
 static uint8_t bt_xstack_demo_pcm_channel_count;
 static uint8_t bt_xstack_demo_pcm_bits_per_sample;
@@ -206,6 +210,7 @@ static void bt_xstack_demo_service_event(
         bt_xstack_demo_hfp_state = BT_XSTACK_HFP_STATE_IDLE;
         bt_xstack_demo_avrcp_connected = 0u;
         bt_xstack_demo_a2dp_streaming = 0u;
+        bt_xstack_demo_play_state = BT_XSTACK_PLAY_STATE_UNKNOWN;
         bt_xstack_demo_pcm_config_valid = 0u;
         bt_xstack_demo_resume_pending = 0u;
         taskEXIT_CRITICAL();
@@ -304,6 +309,10 @@ static void bt_xstack_demo_phone_event(
     }
 
     if (event->id == BT_XSTACK_PHONE_EVENT_DEVICE) {
+        taskENTER_CRITICAL();
+        bt_xstack_demo_phone_address = event->address;
+        bt_xstack_demo_phone_address_valid = 1u;
+        taskEXIT_CRITICAL();
         status = bt_xstack_phonebook_sync(
             &event->address, BT_XSTACK_PHONEBOOK_ALL);
         DBG_PRINT("xstack demo phonebook sync status=%d\r\n", status);
@@ -376,6 +385,24 @@ static void bt_xstack_demo_phone_event(
         taskENTER_CRITICAL();
     }
     taskEXIT_CRITICAL();
+}
+
+int bt_xstack_demo_phonebook_sync(void)
+{
+    bt_xstack_addr_t address;
+    uint8_t valid;
+    bt_xstack_result_t status;
+
+    taskENTER_CRITICAL();
+    valid = bt_xstack_demo_phone_address_valid;
+    address = bt_xstack_demo_phone_address;
+    taskEXIT_CRITICAL();
+    if (!valid) {
+        return BT_XSTACK_NOT_READY;
+    }
+    status = bt_xstack_phonebook_sync(&address, BT_XSTACK_PHONEBOOK_ALL);
+    DBG_PRINT("xstack demo phonebook re-sync status=%d\r\n", status);
+    return status;
 }
 
 static void bt_xstack_demo_phonebook_event(
@@ -553,10 +580,22 @@ static void bt_xstack_demo_audio_event(
             BT_XSTACK_A2DP_STATE_IDLE, 0u, 0u);
         break;
     case BT_XSTACK_AUDIO_EVENT_AVRCP_STATE:
-        /* 连接状态已由 connection 回调上报 */
+        /* Some phones only report AVRCP completion through this audio event;
+         * keep the physical-key control gate aligned with that state. */
+        if (event->value_count > 0u) {
+            taskENTER_CRITICAL();
+            bt_xstack_demo_avrcp_connected =
+                (event->values[0] == BT_XSTACK_AVRCP_STATE_CONNECTED) ? 1u : 0u;
+            taskEXIT_CRITICAL();
+        }
         break;
     case BT_XSTACK_AUDIO_EVENT_PLAY_STATE:
     case BT_XSTACK_AUDIO_EVENT_TRACK_STATE:
+        taskENTER_CRITICAL();
+        bt_xstack_demo_play_state = (event->value_count > 0u) ?
+            (bt_xstack_play_state_t)event->values[0] :
+            BT_XSTACK_PLAY_STATE_UNKNOWN;
+        taskEXIT_CRITICAL();
         bt_ui_post_simple(BT_UI_EVENT_PLAY_STATE,
             (event->value_count > 0u) ? event->values[0] : 0u,
             0u, 0u);
@@ -795,12 +834,14 @@ static INT8U bt_xstack_demo_media_key_handler(
     ap_peripheral_media_key_action_t action)
 {
     uint8_t connected;
+    bt_xstack_play_state_t play_state;
     bt_xstack_result_t status;
 
     DBG_PRINT("xstack demo media key handler: action=%u\r\n",
         (unsigned int)action);
     taskENTER_CRITICAL();
     connected = bt_xstack_demo_avrcp_connected;
+    play_state = bt_xstack_demo_play_state;
     taskEXIT_CRITICAL();
     if (!connected) {
         return 0u;
@@ -811,7 +852,17 @@ static INT8U bt_xstack_demo_media_key_handler(
         status = bt_xstack_avrcp_previous();
         break;
     case AP_PERIPHERAL_MEDIA_KEY_PLAY_PAUSE:
-        status = bt_xstack_avrcp_play_pause();
+        /* Several phone players ignore the toggle opcode once their A2DP
+         * stream is closed by Pause.  Use the state-specific AVRCP opcode so
+         * Key2 can always resume playback without a phone-side action. */
+        if ((play_state == BT_XSTACK_PLAY_STATE_PAUSED) ||
+            (play_state == BT_XSTACK_PLAY_STATE_STOPPED)) {
+            status = bt_xstack_avrcp_play();
+        } else if (play_state == BT_XSTACK_PLAY_STATE_PLAYING) {
+            status = bt_xstack_avrcp_pause();
+        } else {
+            status = bt_xstack_avrcp_play_pause();
+        }
         break;
     case AP_PERIPHERAL_MEDIA_KEY_NEXT:
         status = bt_xstack_avrcp_next();
@@ -820,8 +871,8 @@ static INT8U bt_xstack_demo_media_key_handler(
         return 0u;
     }
 
-    DBG_PRINT("xstack demo media key action=%u status=%d\r\n",
-        (unsigned int)action, status);
+    DBG_PRINT("xstack demo media key action=%u play_state=%u status=%d\r\n",
+        (unsigned int)action, (unsigned int)play_state, status);
     return 1u;
 }
 
