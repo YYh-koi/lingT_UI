@@ -83,11 +83,11 @@ INT32S tft_tp2915_init(INT32U tft_index)
 	drv_l1_disp_dev_data_mode_set(tft_index, TFT_DATA_MODE_565);
 	DBG_PRINT("[TP2915] data_mode ok\r\n");
 
-	/* EXPERIMENT: DIVIDE_6 selects 37 MHz DCLK, approximately 41.0 Hz with
+	/* EXPERIMENT: DIVIDE_10 selects 22.2 MHz DCLK, approximately 24.6 Hz with
 	   the current 1243 x 726 timing.  Validate panel image quality and
 	   Wi-Fi/SDIO stability before treating this as a production setting. */
 	drv_l1_disp_dev_clk_set(tft_index, TFT_CLK_DIVIDE_10);
-	DBG_PRINT("[TP2915] clk ok (DIVIDE_6 37MHz, experimental)\r\n");
+	DBG_PRINT("[TP2915] clk ok (DIVIDE_10 22.2MHz, experimental)\r\n");
 	drv_l1_disp_dev_hdmi_en_set(tft_index, 0);
 	DBG_PRINT("[TP2915] pre-en ctrl=0x%08x\r\n", R_TFT_CTRL);
 	DBG_PRINT("[TP2915] output enable deferred until after Wi-Fi/BT startup\r\n");
