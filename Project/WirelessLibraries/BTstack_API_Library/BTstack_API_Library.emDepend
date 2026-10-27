@@ -1661,3 +1661,1899 @@
 	<stdint.h>
 	"adapter/btstack_types.h"
 
+1785665322 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\alloc.c
+	<stdlib.h>
+	<oi_codec_sbc_private.h>
+
+1785665330 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_codec_sbc_private.h
+	<stdio.h>
+	<stdio.h>
+	"oi_assert.h"
+	"oi_codec_sbc.h"
+
+1785665328 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_assert.h
+
+1785665330 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_codec_sbc.h
+	"oi_stddefs.h"
+	"oi_status.h"
+	<stdint.h>
+
+1785665336 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_stddefs.h
+	"oi_cpu_dep.h"
+
+1785665332 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_cpu_dep.h
+	<stdint.h>
+
+1785665334 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_status.h
+	"oi_stddefs.h"
+
+1785665322 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\bitalloc-sbc.c
+	<oi_codec_sbc_private.h>
+
+1785665322 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\bitalloc.c
+	"oi_utils.h"
+	<oi_codec_sbc_private.h>
+
+1785665338 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_utils.h
+	<stdarg.h>
+	"oi_common.h"
+	"oi_string.h"
+	"oi_bt_spec.h"
+
+1785665330 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_common.h
+	"oi_bt_spec.h"
+	"oi_stddefs.h"
+	"oi_status.h"
+	"oi_time.h"
+	"oi_osinterface.h"
+
+1785665330 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_bt_spec.h
+	"oi_stddefs.h"
+
+1785665336 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_time.h
+	"oi_stddefs.h"
+	"oi_osinterface.h"
+
+1785665332 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_osinterface.h
+	"oi_stddefs.h"
+	"oi_time.h"
+	"oi_status.h"
+	"oi_modules.h"
+
+1785665332 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_modules.h
+
+1785665336 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_string.h
+	"oi_cpu_dep.h"
+	"oi_stddefs.h"
+	<string.h>
+
+1785665324 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\bitstream-decode.c
+	"oi_stddefs.h"
+	"oi_bitstream.h"
+	"oi_assert.h"
+
+1785665330 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\include\oi_bitstream.h
+	"oi_codec_sbc_private.h"
+	"oi_stddefs.h"
+
+1785665324 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\decoder-oina.c
+	<oi_codec_sbc_private.h>
+
+1785665324 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\decoder-private.c
+	"oi_codec_sbc_private.h"
+	"oi_bitstream.h"
+	<stdio.h>
+
+1785665324 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\decoder-sbc.c
+	"oi_codec_sbc_private.h"
+	"oi_bitstream.h"
+	"readsamplesjoint.inc"
+	"readsamplesjoint.inc"
+	"readsamplesjoint.inc"
+
+1785665328 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\readsamplesjoint.inc
+	"readsamplesjoint.inc"
+	"readsamplesjoint.inc"
+	"readsamplesjoint.inc"
+
+1785665326 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\dequant.c
+	<oi_codec_sbc_private.h>
+	<math.h>
+
+1785665326 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\framing-sbc.c
+	"oi_codec_sbc_private.h"
+	<stdio.h>
+
+1785665326 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\framing.c
+	"oi_codec_sbc_private.h"
+	"oi_assert.h"
+	<stdio.h>
+	<string.h>
+
+1785665326 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\oi_codec_version.c
+	"oi_stddefs.h"
+	"oi_codec_sbc_private.h"
+
+1785665328 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\synthesis-8-generated.c
+	<oi_codec_sbc_private.h>
+
+1785665328 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\synthesis-dct8.c
+	"oi_codec_sbc_private.h"
+
+1785665326 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\bluedroid\decoder\srce\synthesis-sbc.c
+	"oi_codec_sbc_private.h"
+
+1786379188 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\md5\md5.c
+	<string.h>
+	"md5.h"
+
+1786379094 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\md5\md5.h
+	<openssl/md5.h>
+
+1786379170 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\yxml\yxml.c
+	<yxml.h>
+	<string.h>
+
+1786379170 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\3rd-party\yxml\yxml.h
+	<stdint.h>
+	<stddef.h>
+
+1787194782 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\api\bt_xstack_api_core.c
+	"../include/api/bt_xstack.h"
+	"btstack_core_internal.h"
+	"../core/btstack_ring.h"
+	"core/btstack_profile_manager.h"
+	"profiles/btstack_avrcp_cover_art.h"
+	<stddef.h>
+	<string.h>
+	"btstack_runtime.h"
+	"port/btstack_platform.h"
+
+1787164074 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack.h
+	"bt_xstack_types.h"
+	"bt_xstack_service.h"
+	"bt_xstack_phone.h"
+	"bt_xstack_audio.h"
+	"bt_xstack_phonebook.h"
+	"bt_xstack_le.h"
+	"bt_xstack_gatt.h"
+	"bt_xstack_cover_art.h"
+
+1786811642 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack_types.h
+	<stdbool.h>
+	<stdint.h>
+
+1786343308 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack_service.h
+	"bt_xstack_types.h"
+
+1785931038 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack_phone.h
+	"bt_xstack_types.h"
+
+1786784662 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack_audio.h
+	"bt_xstack_types.h"
+
+1786470544 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack_phonebook.h
+	"bt_xstack_types.h"
+
+1786811522 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack_le.h
+	"../core/bt_xstack_le.h"
+
+1786811264 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\bt_xstack_le.h
+	"bt_xstack_types.h"
+
+1786811642 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\bt_xstack_types.h
+	<stdbool.h>
+	<stdint.h>
+
+1786811522 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack_gatt.h
+	"../core/bt_xstack_gatt.h"
+
+1786813012 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\bt_xstack_gatt.h
+	"bt_xstack_types.h"
+
+1787194782 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\api\bt_xstack_cover_art.h
+	<stdint.h>
+	"bt_xstack_types.h"
+
+1787163874 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_core_internal.h
+	<stdint.h>
+	"../include/core/bt_xstack_types.h"
+	"../include/core/bt_xstack_service.h"
+	"../include/core/bt_xstack_phone.h"
+	"../include/core/bt_xstack_audio.h"
+	"../include/core/bt_xstack_phonebook.h"
+	"../include/core/bt_xstack_le.h"
+	"../include/core/bt_xstack_gatt.h"
+	"../include/core/bt_xstack_cover_art.h"
+	"../include/profiles/btstack_a2dp_sink.h"
+	"../include/profiles/btstack_avrcp.h"
+	"../include/profiles/btstack_hfp_hf.h"
+	"../include/profiles/btstack_pbap_client.h"
+	"../include/profiles/btstack_gatt_client.h"
+	"../include/profiles/btstack_gatt_server.h"
+	"../include/profiles/btstack_bip_client.h"
+
+1786343308 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\bt_xstack_service.h
+	"bt_xstack_types.h"
+
+1785931038 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\bt_xstack_phone.h
+	"bt_xstack_types.h"
+
+1786784662 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\bt_xstack_audio.h
+	"bt_xstack_types.h"
+
+1786470544 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\bt_xstack_phonebook.h
+	"bt_xstack_types.h"
+
+1787194782 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\bt_xstack_cover_art.h
+	<stdint.h>
+	"bt_xstack_types.h"
+
+1786776150 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_a2dp_sink.h
+	<stdbool.h>
+	<stdint.h>
+	"events/btstack_event.h"
+	"adapter/btstack_types.h"
+
+1785220898 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\events\btstack_event.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1786807782 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\adapter\btstack_types.h
+	<stdbool.h>
+	<stddef.h>
+	<stdint.h>
+	"btstack_config.h"
+
+1787162692 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\btstack_config.h
+
+1786793836 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_avrcp.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1786793836 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_hfp_hf.h
+	<stdbool.h>
+	<stdint.h>
+	"events/btstack_event.h"
+	"adapter/btstack_types.h"
+
+1786775474 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_pbap_client.h
+	<stdint.h>
+	"adapter/btstack_types.h"
+	"profiles/btstack_vcard_parser.h"
+
+1786386290 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_vcard_parser.h
+	<stddef.h>
+	<stdint.h>
+
+1786809370 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_gatt_client.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+	"ble/gatt_client.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\gatt_client.h
+	"hci.h"
+
+1786300360 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci.h
+	"btstack_config.h"
+	"btstack_bool.h"
+	"btstack_chipset.h"
+	"btstack_control.h"
+	"btstack_linked_list.h"
+	"btstack_util.h"
+	"hci_cmd.h"
+	"gap.h"
+	"hci_transport.h"
+	"btstack_run_loop.h"
+	"classic/btstack_link_key_db.h"
+	"ble/att_db.h"
+	"btstack_sco_transport.h"
+	<stdint.h>
+	<stdlib.h>
+	<stdarg.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_bool.h
+	<stdbool.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_chipset.h
+	<stdint.h>
+	"btstack_util.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_util.h
+	<stdint.h>
+	<string.h>
+	"bluetooth.h"
+	"btstack_defines.h"
+	"btstack_linked_list.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\bluetooth.h
+	<stdint.h>
+
+1783411212 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_defines.h
+	<stdint.h>
+	"btstack_version.h"
+	"btstack_linked_list.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_version.h
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_linked_list.h
+	"btstack_bool.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_control.h
+	<stdint.h>
+	"btstack_util.h"
+
+1785860080 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci_cmd.h
+	"bluetooth.h"
+	"btstack_defines.h"
+	<stdint.h>
+	<stdarg.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\gap.h
+	"btstack_defines.h"
+	"btstack_util.h"
+	"classic/btstack_link_key_db.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\btstack_link_key_db.h
+	"bluetooth.h"
+
+1776085206 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\hci_transport.h
+	"btstack_config.h"
+	"btstack_defines.h"
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_run_loop.h
+	"btstack_config.h"
+	"btstack_bool.h"
+	"btstack_linked_list.h"
+	"btstack_defines.h"
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\att_db.h
+	<stdint.h>
+	"bluetooth.h"
+	"btstack_linked_list.h"
+	"btstack_defines.h"
+	"btstack_bool.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_sco_transport.h
+	"btstack_config.h"
+	"bluetooth.h"
+	"btstack_defines.h"
+	<stdint.h>
+
+1786809062 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_gatt_server.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1787282520 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_bip_client.h
+	<stdint.h>
+	"adapter/btstack_types.h"
+	"core/bt_xstack_cover_art.h"
+
+1786602200 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_ring.h
+	<stdbool.h>
+	<stdint.h>
+
+1786809682 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\core\btstack_profile_manager.h
+	<stdint.h>
+	<stdbool.h>
+	"api/bt_xstack_types.h"
+	"adapter/btstack_types.h"
+
+1787163700 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_avrcp_cover_art.h
+	<stdint.h>
+	<stdbool.h>
+	"adapter/btstack_types.h"
+	"core/bt_xstack_cover_art.h"
+	"profiles/btstack_bip_client.h"
+
+1786550304 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_runtime.h
+
+1786687310 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\port\btstack_platform.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_port_ops.h"
+	"btstack_control.h"
+	"port/btstack_stack_ops.h"
+	"port/btstack_worker_ops.h"
+
+1782235196 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\adapter\btstack_port_ops.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1786767754 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\port\btstack_stack_ops.h
+	<stdbool.h>
+	<stdint.h>
+	"btstack_run_loop.h"
+	"core/btstack_profile_manager.h"
+	"hci_transport.h"
+
+1786701274 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\port\btstack_worker_ops.h
+	<stdint.h>
+
+1786814904 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_adapter.c
+	"adapter/btstack_adapter.h"
+	<string.h>
+	"adapter/btstack_property.h"
+	"adapter/btstack_types.h"
+	"events/btstack_event.h"
+	"gap/btstack_gap.h"
+	"core/btstack_profile_manager.h"
+
+1786814874 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\adapter\btstack_adapter.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1782235196 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\adapter\btstack_property.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1786808736 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\gap\btstack_gap.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1786615620 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_call_audio_tx.c
+	"btstack_call_audio_tx.h"
+	<string.h>
+	"port/btstack_platform.h"
+	"profiles/btstack_hfp_hf.h"
+
+1786615620 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_call_audio_tx.h
+	<stdbool.h>
+	<stdint.h>
+	"api/bt_xstack_types.h"
+
+1787163896 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_core_dispatcher.c
+	"btstack_core_internal.h"
+	<string.h>
+	"adapter/btstack_adapter.h"
+	"adapter/btstack_types.h"
+	"btstack_run_loop.h"
+	"core/btstack_profile_manager.h"
+	"port/btstack_platform.h"
+	"profiles/btstack_avrcp.h"
+	"profiles/btstack_avrcp_cover_art.h"
+	"profiles/btstack_hfp_hf.h"
+	"profiles/btstack_pbap_client.h"
+	"profiles/btstack_gatt_client.h"
+	"profiles/btstack_gatt_server.h"
+
+1787163906 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_event_mapper.c
+	"btstack_core_internal.h"
+	<string.h>
+	"adapter/btstack_adapter.h"
+	"adapter/btstack_types.h"
+	"profiles/btstack_a2dp_sink.h"
+	"profiles/btstack_avrcp.h"
+	"profiles/btstack_hfp_hf.h"
+	"profiles/btstack_pbap_client.h"
+	"classic/hfp_hf.h"
+	"port/btstack_platform.h"
+	"core/btstack_profile_manager.h"
+
+1786083562 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\hfp_hf.h
+	"hci.h"
+	"classic/sdp_client_rfcomm.h"
+	"classic/hfp.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\sdp_client_rfcomm.h
+	"btstack_util.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\hfp.h
+	"hci.h"
+	"classic/sdp_client_rfcomm.h"
+
+1786782808 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_event_queue.c
+	"events/btstack_event.h"
+	<string.h>
+	"adapter/btstack_port_ops.h"
+	"port/btstack_platform.h"
+
+1786687310 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_platform.c
+	"port/btstack_platform.h"
+
+1786556802 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_port_ops.c
+	"adapter/btstack_port_ops.h"
+	<string.h>
+
+1787163886 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_profile_manager.c
+	"core/btstack_profile_manager.h"
+	<string.h>
+	"adapter/btstack_types.h"
+	"adapter/btstack_adapter.h"
+	"classic/rfcomm.h"
+	"classic/sdp_server.h"
+	"port/btstack_platform.h"
+	"profiles/btstack_a2dp_sink.h"
+	"profiles/btstack_avrcp.h"
+	"profiles/btstack_avrcp_cover_art.h"
+	"profiles/btstack_hfp_hf.h"
+	"profiles/btstack_gatt_client.h"
+	"profiles/btstack_gatt_server.h"
+	"profiles/btstack_hogp_device.h"
+	"profiles/btstack_pbap_client.h"
+	"btstack_core_internal.h"
+	"btstack_call_audio_tx.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\rfcomm.h
+	"btstack_util.h"
+	<stdint.h>
+	"btstack_run_loop.h"
+	"gap.h"
+	"l2cap.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\l2cap.h
+	"hci.h"
+	"l2cap_signaling.h"
+	"btstack_util.h"
+	"bluetooth.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\l2cap_signaling.h
+	<stdint.h>
+	<stdarg.h>
+	"btstack_util.h"
+	"hci_cmd.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\sdp_server.h
+	<stdint.h>
+	"btstack_linked_list.h"
+	"btstack_config.h"
+
+1786810086 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_hogp_device.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+	"profiles/btstack_gatt_server.h"
+
+1786779906 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_property.c
+	"adapter/btstack_property.h"
+	<string.h>
+	"adapter/btstack_port_ops.h"
+	"port/btstack_platform.h"
+
+1786602200 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_ring.c
+	"btstack_ring.h"
+	<string.h>
+
+1786793420 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\core\btstack_runtime.c
+	"btstack_runtime.h"
+	<string.h>
+	"adapter/btstack_adapter.h"
+	"adapter/btstack_types.h"
+	"btstack_core_internal.h"
+	"btstack_memory.h"
+	"core/btstack_profile_manager.h"
+	"btstack_run_loop.h"
+	"hci.h"
+	"l2cap.h"
+	"port/btstack_platform.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_memory.h
+	"btstack_config.h"
+	"hci.h"
+	"l2cap.h"
+	"classic/avdtp_sink.h"
+	"classic/avdtp_source.h"
+	"classic/avrcp.h"
+	"classic/bnep.h"
+	"classic/btstack_link_key_db.h"
+	"classic/btstack_link_key_db_memory.h"
+	"classic/goep_server.h"
+	"classic/hfp.h"
+	"classic/hid_host.h"
+	"classic/rfcomm.h"
+	"classic/sdp_server.h"
+	"ble/gatt-service/battery_service_client.h"
+	"ble/gatt-service/hids_client.h"
+	"ble/gatt-service/scan_parameters_service_client.h"
+	"ble/gatt_client.h"
+	"ble/sm.h"
+	"mesh/mesh_network.h"
+	"mesh/mesh_keys.h"
+	"mesh/mesh_virtual_addresses.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_sink.h
+	<stdint.h>
+	"hci.h"
+	"classic/avdtp.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp.h
+	<stdint.h>
+	"hci.h"
+	"btstack_ring_buffer.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_ring_buffer.h
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_source.h
+	<stdint.h>
+	"classic/avdtp.h"
+
+1776085206 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avrcp.h
+	<stdint.h>
+	"btstack_bool.h"
+	"btstack_run_loop.h"
+	"btstack_linked_list.h"
+	"l2cap.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\bnep.h
+	"btstack_util.h"
+	"btstack_run_loop.h"
+	"gap.h"
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\btstack_link_key_db_memory.h
+	"btstack_link_key_db.h"
+	"btstack_linked_list.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\goep_server.h
+	"btstack_config.h"
+	"gap.h"
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\hid_host.h
+	<stdint.h>
+	"btstack_defines.h"
+	"bluetooth.h"
+	"btstack_hid.h"
+	"btstack_hid_parser.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_hid.h
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_hid_parser.h
+	<stdint.h>
+	"btstack_bool.h"
+	"btstack_hid.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\gatt-service\battery_service_client.h
+	<stdint.h>
+	"btstack_defines.h"
+	"bluetooth.h"
+	"btstack_linked_list.h"
+	"ble/gatt_client.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\gatt-service\hids_client.h
+	<stdint.h>
+	"btstack_defines.h"
+	"btstack_hid.h"
+	"bluetooth.h"
+	"btstack_linked_list.h"
+	"ble/gatt_client.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\gatt-service\scan_parameters_service_client.h
+	<stdint.h>
+	"btstack_defines.h"
+	"bluetooth.h"
+	"ble/gatt_client.h"
+	"btstack_linked_list.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\sm.h
+	<stdint.h>
+	"btstack_util.h"
+	"btstack_defines.h"
+	"hci.h"
+
+1786808844 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\gap\btstack_gap.c
+	"gap/btstack_gap.h"
+	<string.h>
+	"btstack_defines.h"
+	"btstack_event.h"
+	"gap.h"
+	"hci.h"
+	"btstack_gap_internal.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_event.h
+	"btstack_util.h"
+	<stdint.h>
+	"ble/gatt_client.h"
+
+1786808844 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\gap\btstack_gap_internal.h
+	"gap/btstack_gap.h"
+	"hci.h"
+
+1782235196 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\gap\btstack_gap_ad_data.c
+	"gap/btstack_gap_ad_data.h"
+	<string.h>
+
+1782235196 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\gap\btstack_gap_ad_data.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1786808250 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\gap\btstack_gap_classic.c
+	"gap/btstack_gap.h"
+	<string.h>
+	"bluetooth.h"
+	"btstack_event.h"
+	"gap.h"
+	"hci.h"
+	"btstack_gap_internal.h"
+
+1786808844 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\gap\btstack_gap_le.c
+	"gap/btstack_gap.h"
+	<string.h>
+	"bluetooth.h"
+	"btstack_defines.h"
+	"btstack_event.h"
+	"ble/le_device_db.h"
+	"ble/sm.h"
+	"gap.h"
+	"hci.h"
+	"btstack_gap_internal.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\le_device_db.h
+	"btstack_util.h"
+	"btstack_config.h"
+
+1783249782 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_control_gpcv2178.c
+	"btstack_control.h"
+	"btstack_gpcv2178_platform.h"
+	"project.h"
+
+1783248264 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_gpcv2178_platform.h
+
+1783270938 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\project.h
+	"FreeRTOSConfig.h"
+	"FreeRTOS.h"
+	"task.h"
+	"queue.h"
+	"semphr.h"
+	"timers.h"
+	"typedef.h"
+	<ctype.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<stdarg.h>
+	"drv_l1_sfr.h"
+	"arm.h"
+	"cmsis_os.h"
+	"customer.h"
+	"board_config.h"
+	"drv_l1_gpio.h"
+
+1695178344 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\FreeRTOSConfig.h
+	<stdint.h>
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\FreeRTOS.h
+	<stddef.h>
+	<stdint.h>
+	"FreeRTOSConfig.h"
+	"projdefs.h"
+	"portable.h"
+	<reent.h>
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\projdefs.h
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\portable.h
+	"deprecated_definitions.h"
+	"portmacro.h"
+	"mpu_wrappers.h"
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\deprecated_definitions.h
+	"..\..\Source\portable\owatcom\16bitdos\pc\portmacro.h"
+	"..\..\Source\portable\owatcom\16bitdos\flsh186\portmacro.h"
+	"../portable/GCC/ATMega323/portmacro.h"
+	"../portable/IAR/ATMega323/portmacro.h"
+	"../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
+	"../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
+	"../../Source/portable/MPLAB/PIC18F/portmacro.h"
+	"../../Source/portable/MPLAB/PIC32MX/portmacro.h"
+	"libFreeRTOS/Include/portmacro.h"
+	"../../Source/portable/SDCC/Cygnal/portmacro.h"
+	"../../Source/portable/GCC/ARM7_LPC2000/portmacro.h"
+	"portmacro.h"
+	"../../Source/portable/GCC/ARM7_LPC23xx/portmacro.h"
+	"..\..\Source\portable\IAR\MSP430\portmacro.h"
+	"../../Source/portable/GCC/MSP430F449/portmacro.h"
+	"../../Source/portable/Rowley/MSP430F449/portmacro.h"
+	"..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h"
+	"../../Source/portable/GCC/ARM7_AT91SAM7S/portmacro.h"
+	"..\..\Source\portable\IAR\AtmelSAM7S64\portmacro.h"
+	"..\..\Source\portable\IAR\AtmelSAM9XE\portmacro.h"
+	"..\..\Source\portable\IAR\LPC2000\portmacro.h"
+	"..\..\Source\portable\IAR\STR71x\portmacro.h"
+	"..\..\Source\portable\IAR\STR75x\portmacro.h"
+	"..\..\Source\portable\GCC\STR75x\portmacro.h"
+	"..\..\Source\portable\IAR\STR91x\portmacro.h"
+	"../../Source/portable/GCC/H8S2329/portmacro.h"
+	"../../Source/portable/GCC/ARM7_AT91FR40008/portmacro.h"
+	"../../Source/portable/RVDS/ARM_CM3/portmacro.h"
+	"../../Source/portable/GCC/ARM_CM3/portmacro.h"
+	"../../Source/portable/GCC/ARM_CM3/portmacro.h"
+	"../../Source/portable/IAR/ARM_CM3/portmacro.h"
+	"../../Source/portable/IAR/ARM_CM3/portmacro.h"
+	"../../Source/portable/CodeWarrior/HCS12/portmacro.h"
+	"../../Source/portable/GCC/MicroBlaze/portmacro.h"
+	"..\..\Source\portable\Paradigm\Tern_EE\small\portmacro.h"
+	"../../Source/portable/GCC/HCS12/portmacro.h"
+	"../../Source/portable/GCC/MCF5235/portmacro.h"
+	"../../../Source/portable/GCC/ColdFire_V2/portmacro.h"
+	"../../Source/portable/CodeWarrior/ColdFire_V2/portmacro.h"
+	"../../Source/portable/GCC/PPC405_Xilinx/portmacro.h"
+	"../../Source/portable/GCC/PPC440_Xilinx/portmacro.h"
+	"..\..\Source\portable\Softune\MB96340\portmacro.h"
+	"frconfig.h"
+	"..\portable\BCC\16BitDOS\PC\prtmacro.h"
+	"frconfig.h"
+	"..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
+	"portmacro.h"
+	"portmacro.h"
+	"portmacro.h"
+	"portmacro.h"
+	"../../Source/portable/IAR/V850ES/portmacro.h"
+	"../../Source/portable/IAR/V850ES/portmacro.h"
+	"../../Source/portable/IAR/V850ES/portmacro.h"
+	"../../Source/portable/IAR/V850ES/portmacro.h"
+	"../../Source/portable/IAR/V850ES/portmacro.h"
+	"../../Source/portable/IAR/78K0R/portmacro.h"
+	"../../Source/portable/IAR/78K0R/portmacro.h"
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\portable\GCC\ARM_CA9\portmacro.h
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\mpu_wrappers.h
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\task.h
+	"list.h"
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\list.h
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\queue.h
+	"task.h"
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\semphr.h
+	"queue.h"
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\freertos_v202012\Source\include\timers.h
+	"task.h"
+
+1732843522 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\Include\typedef.h
+
+1778470284 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\driver_l1\inc\drv_l1_sfr.h
+
+1695178346 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\driver_l1\common\inc\arm.h
+
+1695178340 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\os\cmsis_os.h
+	"project.h"
+	<cmsis_os.h>
+	"osObjects.h"
+	"osObjects.h"
+	<stdint.h>
+	<stddef.h>
+
+1789461725 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\Project\GPCV2178_Turnkey_SDK\inc\customer.h
+
+1789371457 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\board_config\inc\board_config.h
+	"pinmux_config.h"
+
+1702451448 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\board_config\inc\pinmux_config.h
+	"project.h"
+
+1695178346 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\driver_l1\common\inc\drv_l1_gpio.h
+
+1786607376 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_gpcv2178_port.c
+	"btstack_gpcv2178_port.h"
+	"adapter/btstack_types.h"
+	"btstack_runtime.h"
+	"port/btstack_platform.h"
+
+1785611894 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_gpcv2178_port.h
+
+1785622338 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_hci_dump_gpcv2178.c
+	"btstack_hci_dump_gpcv2178.h"
+	"bluetooth.h"
+	"btstack_defines.h"
+	"gplib_print_string.h"
+	"project.h"
+
+1785621032 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_hci_dump_gpcv2178.h
+	"hci_dump.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci_dump.h
+	<stdint.h>
+	<stdarg.h>
+	"btstack_bool.h"
+	<avr/pgmspace.h>
+
+1785622540 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\gpstdlib\print_string\inc\gplib_print_string.h
+	"Typedef.h"
+
+1786810242 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_platform_gpcv2178.c
+	"port/btstack_platform.h"
+	"adapter/btstack_types.h"
+	"btstack_config.h"
+	"btstack_event.h"
+	"btstack_gpcv2178_platform.h"
+	"btstack_hci_dump_gpcv2178.h"
+	"btstack_rtos_gpcv2178.h"
+	"btstack_run_loop_gpcv2178.h"
+	"btstack_uart_gpcv2178.h"
+	"btstack_uart_slip_wrapper.h"
+	"gplib_print_string.h"
+	"hci.h"
+	"hci_cmd.h"
+	"hci_transport_h4.h"
+	"hci_transport_h5.h"
+	"project.h"
+
+1786604814 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_rtos_gpcv2178.h
+	"port/btstack_worker_ops.h"
+
+1786607376 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_run_loop_gpcv2178.h
+	<stdbool.h>
+	<stdint.h>
+	"btstack_run_loop.h"
+	"port/btstack_stack_ops.h"
+
+1783249158 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_uart_gpcv2178.h
+	<stdint.h>
+	"btstack_uart.h"
+
+1776085206 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\btstack_uart.h
+	<stdint.h>
+	"btstack_config.h"
+
+1776085206 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\btstack_uart_slip_wrapper.h
+	<stdint.h>
+	"btstack_uart.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\hci_transport_h4.h
+	"hci_transport.h"
+	"btstack_uart.h"
+	"btstack_uart_block.h"
+
+1786610638 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\btstack_uart_block.h
+	<stdint.h>
+	"btstack_uart.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\hci_transport_h5.h
+	"hci_transport.h"
+	"btstack_uart.h"
+
+1786696884 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_rtos_gpcv2178.c
+	"btstack_rtos_gpcv2178.h"
+	"btstack_config.h"
+	"adapter/btstack_types.h"
+	"FreeRTOS.h"
+	"task.h"
+
+1786701902 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_run_loop_gpcv2178.c
+	"btstack_run_loop_gpcv2178.h"
+	"btstack_debug.h"
+	"project.h"
+	"port/btstack_platform.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_debug.h
+	"btstack_config.h"
+	"btstack_defines.h"
+	"hci_dump.h"
+	<avr/pgmspace.h>
+	<assert.h>
+	<stdnoreturn.h>
+
+1783249782 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_storage_gpcv2178.c
+	"adapter/btstack_port_ops.h"
+	"project.h"
+
+1789465172 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\ports\gpcv2178\btstack_uart_gpcv2178.c
+	"btstack_uart_gpcv2178.h"
+	"btstack_config.h"
+	"btstack_run_loop.h"
+	"btstack_run_loop_gpcv2178.h"
+	"btstack_slip.h"
+	"drv_l1_arm_cp15.h"
+	"drv_l1_dma.h"
+	"drv_l1_uart.h"
+	"gplib_print_string.h"
+	"project.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\btstack_slip.h
+	<stdint.h>
+
+1695178346 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\driver_l1\common\inc\drv_l1_arm_cp15.h
+
+1732779882 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\driver_l1\common\inc\drv_l1_dma.h
+	"Cmsis_os.h"
+
+1695178346 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\driver_l1\common\inc\drv_l1_uart.h
+	"typedef.h"
+
+1786780006 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_a2dp_media.c
+	"btstack_a2dp_media.h"
+	"btstack_config.h"
+	<limits.h>
+	<stddef.h>
+	<string.h>
+	"btstack_util.h"
+	"classic/btstack_sbc.h"
+
+1785665646 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_a2dp_media.h
+	<stdint.h>
+	"adapter/btstack_types.h"
+	"events/btstack_event.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\btstack_sbc.h
+	<stdint.h>
+	"btstack_sbc_plc.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\btstack_sbc_plc.h
+	<stdint.h>
+
+1786779906 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_a2dp_sink.c
+	"profiles/btstack_a2dp_sink.h"
+	<string.h>
+	"btstack_defines.h"
+	"btstack_event.h"
+	"classic/a2dp_sink.h"
+	"classic/avdtp.h"
+	"classic/sdp_server.h"
+	"btstack_a2dp_media.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\a2dp_sink.h
+	<stdint.h>
+	"classic/avdtp.h"
+
+1787163776 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_avrcp.c
+	"profiles/btstack_avrcp.h"
+	<string.h>
+	"btstack_avrcp_internal.h"
+	"profiles/btstack_avrcp_cover_art.h"
+	"btstack_defines.h"
+	"btstack_event.h"
+	"classic/avrcp.h"
+
+1786784482 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_avrcp_internal.h
+	"profiles/btstack_avrcp.h"
+
+1789539456 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_avrcp_controller.c
+	"btstack_avrcp_internal.h"
+	"profiles/btstack_avrcp_cover_art.h"
+	<string.h>
+	"btstack_defines.h"
+	"btstack_event.h"
+	"btstack_run_loop.h"
+	"classic/avrcp_controller.h"
+	"classic/sdp_server.h"
+
+1776085206 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avrcp_controller.h
+	<stdint.h>
+	"btstack_run_loop.h"
+	"btstack_linked_list.h"
+	"classic/avrcp.h"
+
+1787304832 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_avrcp_cover_art.c
+	"profiles/btstack_avrcp_cover_art.h"
+	<limits.h>
+	<stdio.h>
+	<string.h>
+	"btstack_debug.h"
+	"btstack_avrcp_internal.h"
+
+1786779906 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_avrcp_target.c
+	"btstack_avrcp_internal.h"
+	"btstack_defines.h"
+	"btstack_event.h"
+	"classic/avrcp_target.h"
+	"classic/sdp_server.h"
+
+1776085206 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avrcp_target.h
+	<stdint.h>
+	"classic/avrcp.h"
+
+1787304846 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_bip_client.c
+	"profiles/btstack_bip_client.h"
+	<limits.h>
+	<stdio.h>
+	<string.h>
+	"btstack_debug.h"
+	"btstack_defines.h"
+	"btstack_event.h"
+	"classic/avrcp_cover_art_client.h"
+	"yxml.h"
+
+1787282520 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avrcp_cover_art_client.h
+	<stdint.h>
+	"bluetooth.h"
+	"btstack_config.h"
+	"btstack_defines.h"
+	"classic/goep_client.h"
+	"btstack_linked_list.h"
+	"classic/obex_parser.h"
+	"l2cap.h"
+	"classic/obex.h"
+	"classic/obex_srm_client.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\goep_client.h
+	<stdlib.h>
+	<string.h>
+	"btstack_defines.h"
+	"l2cap.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex_parser.h
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex.h
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex_srm_client.h
+	<stdint.h>
+	"btstack_bool.h"
+
+1786811736 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_gatt_client.c
+	"profiles/btstack_gatt_client.h"
+	<string.h>
+	"bluetooth.h"
+	"btstack_defines.h"
+	"btstack_event.h"
+
+1786811736 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_gatt_server.c
+	"profiles/btstack_gatt_server.h"
+	<stddef.h>
+	<string.h>
+	"ble/att_db_util.h"
+	"ble/att_server.h"
+	"bluetooth.h"
+	"btstack_defines.h"
+	"btstack_event.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\att_db_util.h
+	"btstack_config.h"
+	"btstack_crypto.h"
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_crypto.h
+	"btstack_defines.h"
+	"btstack_config.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\att_server.h
+	<stdint.h>
+	"hci.h"
+	"ble/att_db.h"
+	"btstack_defines.h"
+	"btstack_config.h"
+
+1786793836 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_hfp_hf.c
+	"profiles/btstack_hfp_hf.h"
+	<string.h>
+	"btstack_defines.h"
+	"btstack_event.h"
+	"classic/hfp_hf.h"
+	"classic/sdp_server.h"
+	"hci.h"
+	"port/btstack_platform.h"
+
+1786779906 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_hid_device.c
+	"profiles/btstack_hid_device.h"
+	<string.h>
+
+1782235602 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\include\profiles\btstack_hid_device.h
+	<stdbool.h>
+	<stdint.h>
+	"adapter/btstack_types.h"
+
+1786814966 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_hogp_device.c
+	"profiles/btstack_hogp_device.h"
+	<string.h>
+	"adapter/btstack_adapter.h"
+	"bluetooth_gatt.h"
+	"profiles/btstack_gatt_server.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\bluetooth_gatt.h
+
+1786780006 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_pbap_client.c
+	"btstack_config.h"
+	"profiles/btstack_pbap_client.h"
+	<stddef.h>
+	<string.h>
+	"bluetooth.h"
+	"btstack_defines.h"
+	"btstack_event.h"
+	"btstack_run_loop.h"
+	"classic/goep_client.h"
+	"classic/obex.h"
+	"classic/pbap_client.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\pbap_client.h
+	<stdint.h>
+	"btstack_config.h"
+	"yxml.h"
+	"classic/obex_srm_client.h"
+	"classic/obex_parser.h"
+
+1786386290 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\profiles\btstack_vcard_parser.c
+	"profiles/btstack_vcard_parser.h"
+	<string.h>
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ad_parser.c
+	<stdint.h>
+	<string.h>
+	"bluetooth_data_types.h"
+	"btstack_util.h"
+	"hci.h"
+	"hci_cmd.h"
+	"ad_parser.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\bluetooth_data_types.h
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ad_parser.h
+	"btstack_config.h"
+	"btstack_bool.h"
+	<stdint.h>
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\att_db.c
+	<string.h>
+	"ble/att_db.h"
+	"ble/core.h"
+	"bluetooth.h"
+	"btstack_debug.h"
+	"btstack_util.h"
+	"btp.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\core.h
+	"btstack_config.h"
+
+1786809272 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\att_db_util.c
+	<string.h>
+	<stdlib.h>
+	"ble/att_db_util.h"
+	"ble/att_db.h"
+	"ble/core.h"
+	"btstack_util.h"
+	"btstack_debug.h"
+	"bluetooth.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\att_dispatch.c
+	"ble/att_dispatch.h"
+	"ble/core.h"
+	"btstack_debug.h"
+	"l2cap.h"
+	"btstack_event.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\att_dispatch.h
+	"btstack_util.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\att_server.c
+	<stdint.h>
+	<string.h>
+	<inttypes.h>
+	"btstack_config.h"
+	"ble/att_dispatch.h"
+	"ble/att_db.h"
+	"ble/att_server.h"
+	"ble/core.h"
+	"ble/le_device_db.h"
+	"ble/sm.h"
+	"bluetooth_psm.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"btstack_run_loop.h"
+	"gap.h"
+	"hci_dump.h"
+	"l2cap.h"
+	"btstack_tlv.h"
+	"ble/sm.h"
+	"bluetooth_psm.h"
+	<stdio.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\bluetooth_psm.h
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_tlv.h
+	<stdint.h>
+
+1786807840 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\gatt_client.c
+	<stdint.h>
+	<string.h>
+	<stddef.h>
+	"btstack_config.h"
+	"ble/att_dispatch.h"
+	"ble/att_db.h"
+	"ble/gatt_client.h"
+	"ble/le_device_db.h"
+	"ble/sm.h"
+	"bluetooth_psm.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"btstack_run_loop.h"
+	"btstack_util.h"
+	"hci.h"
+	"hci_dump.h"
+	"hci_event_builder.h"
+	"l2cap.h"
+	"classic/sdp_client.h"
+	"bluetooth_gatt.h"
+	"bluetooth_sdp.h"
+	"classic/sdp_util.h"
+	"hci_event.h"
+	"bluetooth_psm.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci_event_builder.h
+	<stdint.h>
+	"bluetooth.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\sdp_client.h
+	"btstack_config.h"
+	"btstack_util.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\bluetooth_sdp.h
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\sdp_util.h
+	"btstack_bool.h"
+	<stdint.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci_event.h
+	"bluetooth.h"
+	<stdint.h>
+	<stdarg.h>
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\le_device_db_memory.c
+	"ble/le_device_db.h"
+	"ble/core.h"
+	<string.h>
+	"btstack_debug.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\ble\sm.c
+	<string.h>
+	<inttypes.h>
+	"ble/le_device_db.h"
+	"ble/core.h"
+	"ble/sm.h"
+	"bluetooth_company_id.h"
+	"btstack_bool.h"
+	"btstack_crypto.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_linked_list.h"
+	"btstack_memory.h"
+	"btstack_tlv.h"
+	"gap.h"
+	"hci.h"
+	"hci_dump.h"
+	"l2cap.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\bluetooth_company_id.h
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_crypto.c
+	"btstack_crypto.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_linked_list.h"
+	"btstack_util.h"
+	"btstack_bool.h"
+	"hci.h"
+	"rijndael.h"
+	"uECC.h"
+	"mbedtls/mbedtls_config.h"
+	"mbedtls/platform.h"
+	"mbedtls/ecp.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_linked_list.c
+	"btstack_linked_list.h"
+	"btstack_debug.h"
+	<stddef.h>
+
+1785929028 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_memory.c
+	"btstack_memory.h"
+	"btstack_memory_pool.h"
+	"btstack_debug.h"
+	<stdlib.h>
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_memory_pool.h
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_memory_pool.c
+	"btstack_memory_pool.h"
+	<stddef.h>
+	"btstack_debug.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_run_loop.c
+	"btstack_run_loop.h"
+	"btstack_debug.h"
+	"btstack_config.h"
+	"btstack_util.h"
+	<inttypes.h>
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_tlv.c
+	"btstack_tlv.h"
+	"btstack_debug.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\btstack_util.c
+	<Windows.h>
+	<intrin.h>
+	"btstack_config.h"
+	"btstack_debug.h"
+	"btstack_util.h"
+	<stdio.h>
+	<string.h>
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\a2dp.c
+	<stdint.h>
+	<string.h>
+	"a2dp.h"
+	"l2cap.h"
+	"classic/sdp_util.h"
+	"classic/avdtp_source.h"
+	"classic/a2dp_source.h"
+	"btstack_event.h"
+	"bluetooth_sdp.h"
+	"bluetooth_psm.h"
+	<stddef.h>
+	"bluetooth.h"
+	"classic/a2dp.h"
+	"classic/avdtp_util.h"
+	"btstack_debug.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\a2dp.h
+	<stdint.h>
+	"btstack_defines.h"
+	"classic/avdtp.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\a2dp_source.h
+	<stdint.h>
+	"classic/avdtp.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_util.h
+	<stdint.h>
+	"classic/avdtp.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\a2dp_sink.c
+	<stdint.h>
+	<string.h>
+	"bluetooth_psm.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"classic/a2dp.h"
+	"classic/a2dp_sink.h"
+	"classic/avdtp_sink.h"
+	"classic/avdtp_util.h"
+	"classic/sdp_util.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp.c
+	<stdint.h>
+	<string.h>
+	"bluetooth_psm.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"classic/avdtp.h"
+	"classic/avdtp_util.h"
+	"classic/avdtp_acceptor.h"
+	"classic/avdtp_initiator.h"
+	"classic/avdtp_util.h"
+	"classic/sdp_client.h"
+	"classic/sdp_util.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_acceptor.h
+	<stdint.h>
+	"classic/avdtp.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_initiator.h
+	<stdint.h>
+	"classic/avdtp.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_acceptor.c
+	<stdint.h>
+	<string.h>
+	"classic/avdtp.h"
+	"classic/avdtp_util.h"
+	"classic/avdtp_acceptor.h"
+	"btstack_debug.h"
+	"btstack_util.h"
+	"l2cap.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_initiator.c
+	<stdint.h>
+	<string.h>
+	"bluetooth_psm.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"l2cap.h"
+	"classic/avdtp.h"
+	"classic/avdtp_util.h"
+	"classic/avdtp_initiator.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_sink.c
+	<stdint.h>
+	<string.h>
+	"bluetooth_psm.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"l2cap.h"
+	"classic/avdtp.h"
+	"classic/avdtp_acceptor.h"
+	"classic/avdtp_initiator.h"
+	"classic/avdtp_sink.h"
+	"classic/avdtp_util.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avdtp_util.c
+	<stdint.h>
+	<string.h>
+	"classic/avdtp.h"
+	"classic/avdtp_util.h"
+	"btstack_debug.h"
+	"l2cap.h"
+
+1787281578 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avrcp.c
+	<stdint.h>
+	<string.h>
+	"bluetooth_psm.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"classic/avrcp.h"
+	"classic/avrcp_target.h"
+	"classic/sdp_client.h"
+	"classic/sdp_util.h"
+
+1786429330 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avrcp_controller.c
+	<stdint.h>
+	<string.h>
+	<inttypes.h>
+	"classic/avrcp.h"
+	"classic/avrcp_controller.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+
+1787282520 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avrcp_cover_art_client.c
+	<string.h>
+	"btstack_debug.h"
+	"btstack_event.h"
+	"classic/avrcp.h"
+	"classic/avrcp_cover_art_client.h"
+	"classic/obex.h"
+	"hci_event.h"
+
+1783410934 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\avrcp_target.c
+	<stdint.h>
+	<stdio.h>
+	<string.h>
+	<inttypes.h>
+	"classic/avrcp.h"
+	"classic/avrcp_target.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_util.h"
+	"l2cap.h"
+	<stdio.h>
+
+1785665338 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\btstack_sbc_decoder_bluedroid.c
+	"btstack_config.h"
+	<stdint.h>
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	"btstack_debug.h"
+	"btstack_util.h"
+	"btstack_sbc.h"
+	"btstack_sbc_plc.h"
+	"oi_codec_sbc.h"
+	"oi_assert.h"
+
+1785665338 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\btstack_sbc_plc.c
+	<stdint.h>
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	"btstack_sbc_plc.h"
+	"btstack_debug.h"
+
+1786379088 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\goep_client.c
+	"btstack_config.h"
+	<stdint.h>
+	<string.h>
+	"btstack_debug.h"
+	"hci_dump.h"
+	"bluetooth_sdp.h"
+	"btstack_event.h"
+	"classic/goep_client.h"
+	"classic/obex_message_builder.h"
+	"classic/obex.h"
+	"classic/obex_iterator.h"
+	"classic/rfcomm.h"
+	"classic/sdp_client.h"
+	"classic/sdp_util.h"
+	"l2cap.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex_message_builder.h
+	<stdint.h>
+	<string.h>
+	"btstack_defines.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex_iterator.h
+	<stdint.h>
+	"btstack_bool.h"
+
+1786004802 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\hfp.c
+	"btstack_config.h"
+	<stdint.h>
+	<stdio.h>
+	<string.h>
+	<inttypes.h>
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"btstack_run_loop.h"
+	"classic/sdp_client_rfcomm.h"
+	"classic/sdp_server.h"
+	"classic/sdp_util.h"
+	"classic/sdp_client.h"
+	"hci.h"
+	"hci_cmd.h"
+	"hci_dump.h"
+
+1786300360 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\hfp_hf.c
+	"btstack_config.h"
+	<stdint.h>
+	<stdio.h>
+	<string.h>
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"btstack_run_loop.h"
+	"classic/core.h"
+	"classic/hfp.h"
+	"classic/hfp_hf.h"
+	"classic/sdp_client_rfcomm.h"
+	"classic/sdp_server.h"
+	"classic/sdp_util.h"
+	"hci.h"
+	"hci_cmd.h"
+	"hci_dump.h"
+	"l2cap.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\core.h
+	"btstack_config.h"
+
+1786379090 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex_iterator.c
+	"btstack_config.h"
+	<stdint.h>
+	<stdlib.h>
+	<stdio.h>
+	"hci_cmd.h"
+	"btstack_debug.h"
+	"hci.h"
+	"bluetooth_sdp.h"
+	"classic/sdp_client_rfcomm.h"
+	"btstack_event.h"
+	"classic/obex.h"
+	"classic/obex_iterator.h"
+
+1786379088 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex_message_builder.c
+	"btstack_config.h"
+	<stdint.h>
+	<stdlib.h>
+	"btstack_util.h"
+	"btstack_debug.h"
+	"classic/obex.h"
+	"classic/obex_message_builder.h"
+
+1786379088 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex_parser.c
+	"btstack_config.h"
+	"classic/obex.h"
+	"classic/obex_parser.h"
+	<string.h>
+	"btstack_debug.h"
+	"btstack_util.h"
+
+1786379090 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\obex_srm_client.c
+	"btstack_debug.h"
+	"classic/goep_client.h"
+	"classic/obex.h"
+	"classic/obex_srm_client.h"
+
+1786499740 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\pbap_client.c
+	"btstack_config.h"
+	<stdint.h>
+	<string.h>
+	"hci_cmd.h"
+	"btstack_run_loop.h"
+	"btstack_debug.h"
+	"hci.h"
+	"btstack_memory.h"
+	"hci_dump.h"
+	"l2cap.h"
+	"bluetooth_sdp.h"
+	"classic/sdp_client_rfcomm.h"
+	"btstack_event.h"
+	"md5.h"
+	"classic/obex.h"
+	"classic/obex_parser.h"
+	"classic/goep_client.h"
+	"classic/pbap.h"
+	"classic/pbap_client.h"
+	"sdp_util.h"
+
+1782146392 D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\pbap.h
+
+1786003670 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\rfcomm.c
+	<inttypes.h>
+	<string.h>
+	<stdint.h>
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"btstack_util.h"
+	"classic/core.h"
+	"classic/rfcomm.h"
+	"hci.h"
+	"hci_cmd.h"
+	"hci_dump.h"
+	"l2cap.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\sdp_client.c
+	"btstack_config.h"
+	"bluetooth_psm.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"classic/core.h"
+	"classic/sdp_client.h"
+	"classic/sdp_server.h"
+	"classic/sdp_util.h"
+	"hci_cmd.h"
+	"l2cap.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\sdp_client_rfcomm.c
+	<stdint.h>
+	<string.h>
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"classic/core.h"
+	"classic/sdp_client.h"
+	"classic/sdp_client_rfcomm.h"
+	"classic/sdp_util.h"
+	"hci_cmd.h"
+
+1783409422 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\sdp_server.c
+	<string.h>
+	"bluetooth.h"
+	"bluetooth_psm.h"
+	"bluetooth_sdp.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"classic/core.h"
+	"classic/sdp_server.h"
+	"classic/sdp_util.h"
+	"gplib_print_string.h"
+	"hci.h"
+	"hci_dump.h"
+	"l2cap.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\classic\sdp_util.c
+	"bluetooth.h"
+	"btstack_config.h"
+	"btstack_debug.h"
+	"btstack_util.h"
+	"classic/core.h"
+	"classic/sdp_util.h"
+	<stdlib.h>
+	<string.h>
+	<stdint.h>
+	<inttypes.h>
+	<stdio.h>
+
+1786022506 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci.c
+	"btstack_config.h"
+	"btstack_run_loop_embedded.h"
+	"gap.h"
+	"ble/le_device_db.h"
+	<stdarg.h>
+	<string.h>
+	<inttypes.h>
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_linked_list.h"
+	"btstack_memory.h"
+	"bluetooth_company_id.h"
+	"bluetooth_data_types.h"
+	"gap.h"
+	"hci.h"
+	"hci_cmd.h"
+	"hci_dump.h"
+	"ad_parser.h"
+	<stdio.h>
+
+1785860080 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci_cmd.c
+	"btstack_config.h"
+	"hci.h"
+	"hci_cmd.h"
+	"btstack_debug.h"
+	<string.h>
+	"classic/sdp_util.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci_dump.c
+	"btstack_config.h"
+	"btstack_debug.h"
+	"btstack_bool.h"
+	"btstack_util.h"
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci_event.c
+	"btstack_config.h"
+	"hci.h"
+	"hci_event.h"
+	"btstack_defines.h"
+	"btstack_debug.h"
+	<string.h>
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\hci_event_builder.c
+	"hci_event_builder.h"
+	"btstack_debug.h"
+	"btstack_util.h"
+	<stdint.h>
+	<stddef.h>
+
+1786003638 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\l2cap.c
+	"l2cap.h"
+	"hci.h"
+	"hci_dump.h"
+	"bluetooth_sdp.h"
+	"bluetooth_psm.h"
+	"btstack_bool.h"
+	"btstack_debug.h"
+	"btstack_event.h"
+	"btstack_memory.h"
+	"gplib_print_string.h"
+	"ble/sm.h"
+	<stdarg.h>
+	<string.h>
+
+1782146392 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\src\l2cap_signaling.c
+	"l2cap_signaling.h"
+	"btstack_config.h"
+	"btstack_debug.h"
+	"hci.h"
+	<string.h>
+
+1776085206 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\btstack_slip.c
+	"btstack_slip.h"
+	"btstack_debug.h"
+
+1776085206 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\btstack_uart_slip_wrapper.c
+	"btstack_uart_slip_wrapper.h"
+	"btstack_run_loop.h"
+	"btstack_debug.h"
+	"btstack_defines.h"
+	"btstack_slip.h"
+	"btstack_util.h"
+
+1786612382 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\hci_transport_h4.c
+	"btstack_config.h"
+	"hci_transport_h4.h"
+	"btstack_debug.h"
+	"btstack_util.h"
+	"hci.h"
+	"hci_transport.h"
+	<stdio.h>
+	<string.h>
+
+1786612382 source:D:\PYH_PRJ\GPlus\GPCV2178_Turnkey_SDK_SVN1864_20260603_atbm\btstack\transport\hci_transport_h5.c
+	"btstack_config.h"
+	"hci_transport_h5.h"
+	"btstack_debug.h"
+	"hci.h"
+	"hci_transport.h"
+	<inttypes.h>
+	<stdio.h>
+

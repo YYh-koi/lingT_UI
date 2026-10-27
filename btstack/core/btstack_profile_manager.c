@@ -622,12 +622,12 @@ static int btstack_profile_manager_setup_classic(
         hfp_config.microphone_gain = config->classic.hfp_microphone_gain;
         hfp_config.speaker_gain = config->classic.hfp_speaker_gain;
         hfp_config.event_callback =
-            btstack_profile_manager_hfp_event;
+            btstack_profile_manager_hfp_event;// 事件上行
         status = btstack_hfp_hf_setup(&hfp_config);
         if (status != BTSTACK_STATUS_OK) return status;
         btstack_call_audio_tx_init();
         status = btstack_hfp_hf_set_direct_audio_callback(
-            btstack_core_event_mapper_call_audio);
+            btstack_core_event_mapper_call_audio);// 下行 PCM
         if (status != BTSTACK_STATUS_OK) return status;
     }
 

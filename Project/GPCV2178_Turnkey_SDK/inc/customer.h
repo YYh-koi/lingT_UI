@@ -130,6 +130,7 @@
 #define C_DEL_SDC_FIRMWARE_BIN			CUSTOM_ON
 #define C_VOICE_RECOGNIZE				CUSTOM_OFF
 #define C_WIFI_FUNC						CUSTOM_ON
+#define C_BT_XSTACK_DEMO_ENABLE			CUSTOM_ON
 #define C_WIFI_ON_OFF_KEY				CUSTOM_OFF
 #define C_APP_DOUBLE_BUFFER_DOWNLOAD	CUSTOM_ON
 #define C_TFT_DISPLAY_FUNC				CUSTOM_ON
@@ -179,11 +180,13 @@
 #define C_USB_H264						CUSTOM_ON
 #define C_STORAGE_DEVICE                CUSTOM_OFF
 #define C_CARCAM_UVC_DISPLAY			CUSTOM_OFF // OFF:PCAM mode  ON:In-vehicle Infotainment System mode
-#if (LVGL_SUPPORT == 1)
+#if (LVGL_SUPPORT == 1) && (C_TFT_DISPLAY_FUNC == CUSTOM_ON)
 #define C_LVGL_SUPPORT					CUSTOM_ON
 #else
 #define C_LVGL_SUPPORT  				CUSTOM_OFF
 #endif
+/* Preload the installed U3 UI pack into DDR; 0 keeps direct Flash reads. */
+#define C_LVGL_UI_RAM_CACHE              CUSTOM_ON
 
 /*== Storage Type ==*/
 #define STORAGE_SD_DEV					1 // 0:SD0, 1:SD1

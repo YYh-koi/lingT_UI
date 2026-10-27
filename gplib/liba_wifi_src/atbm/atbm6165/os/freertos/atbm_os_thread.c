@@ -7,34 +7,33 @@ pAtbm_thread_t freertos_createThread(char *name,atbm_void (*task)(atbm_void *p_a
 {
 	int ret = 0;
 	TaskHandle_t pid;
-	char task_name[10];
+	const char *task_name = name;
 	if(WORK_TASK_PRIO==prio)
 	{
-		strcpy(task_name,"WORK_TASK");
+		task_name = "WORK_TASK";
 		printf ("++%s =%d WORK_TASK_PRIO\n", task_name,prio);
 	}
 	else if(BH_TASK_PRIO==prio)
 	{	
 	
-		strcpy(task_name,"BH_TASK");
+		task_name = "BH_TASK";
 		printf ("++%s =%dBH_TASK_PRIO\n", task_name,prio);
 	}
 	else if(ELOOP_TASK_PRIO==prio)
 	{
-		strcpy(task_name,"ELOOP_TASK");
+		task_name = "ELOOP_TASK";
 		printf ("++%s =%dELOOP_TASK_PRIO\n", task_name,prio);
 	}
 	else if(HIF_TASK_PRIO==prio)
 	{
-		strcpy(task_name,"HIF_TASK");
+		task_name = "HIF_TASK";
 		printf ("++%s =%dHIF_TASK_PRIO\n", task_name,prio);
 	}
 	else if(TX_BH_TASK_PRIO==prio)
 	{
-		strcpy(task_name,"TX_BH_TASK_");
+		task_name = "TX_BH_TASK_";
 		printf ("++%s =%dTX_BH_TASK_PRIO\n", task_name,prio);
 	}else{
-		strcpy(task_name,name);
 		printf ("F:%s ++%s =%d \n", __func__, task_name,prio);
 	}
 

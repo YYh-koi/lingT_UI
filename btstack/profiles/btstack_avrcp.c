@@ -148,16 +148,16 @@ int btstack_avrcp_setup(const btstack_avrcp_config_t *config)
            sizeof(btstack_avrcp_peer_address));
 
     avrcp_init();
-    avrcp_register_packet_handler(btstack_avrcp_packet_handler);
+    avrcp_register_packet_handler(btstack_avrcp_packet_handler);   
 
 #if BTSTACK_AVRCP_CONTROLLER
-    status = btstack_avrcp_controller_setup(config);
+    status = btstack_avrcp_controller_setup(config);   // 控制器  
     if (status != BTSTACK_STATUS_OK) {
         return status;
     }
 #endif
 #if BTSTACK_AVRCP_TARGET
-    status = btstack_avrcp_target_setup(config);
+    status = btstack_avrcp_target_setup(config);  //目标
     if (status != BTSTACK_STATUS_OK) {
         return status;
     }

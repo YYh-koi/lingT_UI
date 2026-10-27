@@ -2267,15 +2267,14 @@ void drv_l2_disable_te_pin(void)
 	}
  }
 
-/* DEBUG 背光延迟点亮实验（2026-08-28）：g_bl_delay_enable=0 时禁止开背光（atbm SDIO 中断敏感期），
-   wifi_ap_mode_enable() 返回后由 main.c 置 1 并点亮。背光升压电路干扰 SDIO DAT1，claim_irq 后崩溃。实验后删除。 */
+/* Keep the display task's backlight-on request pending until Wi-Fi/BT starts. */
 INT32U g_bl_delay_enable = 0;
 
 void drv_l2_tft_backlight_en_set(BOOLEAN enable)
 {
 	if(enable == TRUE && g_bl_delay_enable == 0)
 	{
-		DRV_DISP_DBG("[BL-DBG] backlight ON deferred (g_bl_delay_enable=0)\r\n");
+		DRV_DISP_DBG("[BL-DBG] backlight ON deferred\r\n");
 		return;
 	}
 	if(TFT_Param && TFT_Param->lcd_bl_ctrl == LCD_BL_CTRL_PWM)
@@ -2383,8 +2382,8 @@ void drv_l2_asyn_double_tft_backlight_en_set(BOOLEAN display1_bl_enable,BOOLEAN 
 {
 	if(display1_bl_enable == TRUE && g_bl_delay_enable == 0)
 	{
-		DRV_DISP_DBG("[BL-DBG] asyn BL1 ON deferred (g_bl_delay_enable=0)\r\n");
-		display1_bl_enable = FALSE;	/* DEBUG 背光延迟点亮实验（2026-08-28）：g_bl_delay_enable=0 时禁止开背光 */
+		DRV_DISP_DBG("[BL-DBG] async backlight ON deferred\r\n");
+		display1_bl_enable = FALSE;
 	}
 	#ifdef PANEL_IO_BL_ON
 		gpio_write_io(PANEL_IO_BL_ON, display1_bl_enable ? DATA_HIGH : DATA_LOW);

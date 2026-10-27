@@ -148,11 +148,13 @@ void wifi_ap_mode_enable(void)
 	}
 	if(atbm_wifi_p2p_mode_enable() == STATUS_OK)
 	{
+		#if (defined C_BT_XSTACK_DEMO_ENABLE) && (C_BT_XSTACK_DEMO_ENABLE)
 		INT32S bt_status = bt_xstack_demo_start();
 		if(bt_status != 0)
 		{
 			ERR_PRINT("xstack demo start failed: %d\r\n", bt_status);
 		}
+		#endif
 		if(wifi_first_run_flag == 0)
 		{
 			wifi_first_run_flag = 1;
@@ -405,25 +407,24 @@ void InitTask()
 
 	#if (defined C_WIFI_FUNC) && (C_WIFI_FUNC)
 	#if (C_WIFI_ON_OFF_KEY==0)
-	wifi_ap_mode_enable(); /* DEBUG 插屏崩溃实验：已确认插屏+关wifi=正常；现在恢复wifi做TFT_EN二分实验 */
-	/* DEBUG 背光延迟点亮实验（2026-08-28）：背光升压电路干扰 SDIO DAT1 导致 atbm claim_irq 后崩溃。
-	   待 wifi/bt 初始化全部完成（DAT1 中断稳定）后再允许点亮背光。实验后恢复为正常点亮时机。 */
+	/* Start Wi-Fi/BT before enabling the panel output and backlight. */
+	wifi_ap_mode_enable();
+	/* The display task defers backlight-on requests until this flag is set. */
 	extern INT32U g_bl_delay_enable;
 	g_bl_delay_enable = 1;
 	drv_l2_tft_backlight_en_set(TRUE);
 	#endif
 	#endif
 
-	/* DEBUG L95 延迟实验（2026-08-28 第四轮）：TFT 输出使能延迟到 wifi 初始化窗口之后再补开（与背光同理），
-	   验证 TFT 输出信号(DCLK+数据线)是否干扰 SDIO DAT1。若延迟后稳定 => 坐实干扰源为 TFT 输出，再定正式时机。 */
+	/* TP2915 output is enabled after Wi-Fi/BT startup. */
 	drv_l1_disp_dev_en_set(TFT_1, TRUE);
-	DBG_PRINT("[MAIN] TFT output enabled after-wifi (L95 deferred)\r\n");
+	DBG_PRINT("[MAIN] TFT output enabled after-wifi\r\n");
 
-	/* DEBUG 实验：wifi/BT init 窗口已过，放行 LVGL 任务（见 state_lvgl.c 启动门） */
 	#if (defined C_LVGL_SUPPORT) && (C_LVGL_SUPPORT)
+	/* Release LVGL after Wi-Fi/BT and panel startup. */
 	extern volatile INT32U g_lvgl_start_ok;
 	g_lvgl_start_ok = 1;
-	DBG_PRINT("[MAIN] LVGL start released\r\n");
+	DBG_PRINT("[MAIN] LVGL start released after-wifi\r\n");
 	#endif
 
 

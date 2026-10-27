@@ -1473,5 +1473,5 @@ void btstack_core_call_audio_deliver(const uint8_t *data, uint32_t length)
     callback = bt_xstack_api_config.call_audio_callback;
     context = bt_xstack_api_config.context;
     btstack_platform_exit_critical();
-    if (callback != NULL) callback(data, length, context);
+    if (callback != NULL) callback(data, length, context);// ← 直接调，没有环、没有 notify
 }

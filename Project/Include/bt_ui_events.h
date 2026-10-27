@@ -35,12 +35,13 @@ typedef enum {
     /* 音乐 A2DP/AVRCP */
     BT_UI_EVENT_A2DP_STATE,     /* values[0]=bt_xstack_a2dp_state_t */
     BT_UI_EVENT_PLAY_STATE,     /* values[0]=bt_xstack_play_state_t */
+    BT_UI_EVENT_PLAY_REQUESTED, /* 本机播放目标：values[0]=playing, [1]=请求序号 */
     BT_UI_EVENT_PLAY_MODE,      /* values[0]=repeat, [1]=shuffle */
     BT_UI_EVENT_TRACK_INFO,     /* text=歌名, text2=歌手, text3=专辑 */
     BT_UI_EVENT_ABSOLUTE_VOLUME,/* values[0]=0..127 */
-    BT_UI_EVENT_COVER_ART_DATA, /* data/len/offset 封面分片 */
-    BT_UI_EVENT_COVER_ART_DONE, /* data_len=封面总长度 */
-    BT_UI_EVENT_COVER_ART_ERROR,/* values[0]=native_status */
+    BT_UI_EVENT_COVER_ART_DATA, /* values[0]=generation, data/len/offset 分片 */
+    BT_UI_EVENT_COVER_ART_DONE, /* values[0]=generation, data_len=封面总长度 */
+    BT_UI_EVENT_COVER_ART_ERROR,/* values[0]=native_status, [1]=generation */
 
     /* 通话 HFP */
     BT_UI_EVENT_HFP_STATE,      /* values[0]=bt_xstack_hfp_state_t */

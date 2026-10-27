@@ -501,7 +501,7 @@ int btstack_hfp_hf_setup(const btstack_hfp_hf_config_t *config)
     btstack_hfp_callsetup = 0u;
     btstack_hfp_callheld = 0u;
 
-    status = hfp_hf_init(config->rfcomm_channel);
+    status = hfp_hf_init(config->rfcomm_channel);   //控制通道：RFCOMM 服务端
     if (status != ERROR_CODE_SUCCESS) {
         return BTSTACK_STATUS_ERROR;
     }
@@ -514,19 +514,19 @@ int btstack_hfp_hf_setup(const btstack_hfp_hf_config_t *config)
     }
     hfp_hf_init_supported_features(features);
     hfp_hf_init_codecs(sizeof(codecs), codecs);
-    hfp_hf_register_packet_handler(btstack_hfp_packet_handler);
+    hfp_hf_register_packet_handler(btstack_hfp_packet_handler);  //event 
     /*
      * BTstack 1.6.2 delivers its synthetic SCO_CAN_SEND_NOW only through
      * the singleton SCO handler. Keep that singleton owned by upstream HFP
      * for downlink audio, and use stack-context availability checks plus
      * ordinary HCI progress events for uplink readiness.
      */
-    hfp_hf_set_direct_audio_callback(btstack_hfp_upstream_audio_handler);
+    hfp_hf_set_direct_audio_callback(btstack_hfp_upstream_audio_handler);  //音频
     memset(&btstack_hfp_hci_event_registration, 0,
         sizeof(btstack_hfp_hci_event_registration));
     btstack_hfp_hci_event_registration.callback =
         btstack_hfp_hci_event_handler;
-    hci_add_event_handler(&btstack_hfp_hci_event_registration);
+    hci_add_event_handler(&btstack_hfp_hci_event_registration);  //上行 SCO 发送时机探测
     (void)hfp_hf_set_default_microphone_gain(config->microphone_gain);
     (void)hfp_hf_set_default_speaker_gain(config->speaker_gain);
     hfp_hf_create_sdp_record(

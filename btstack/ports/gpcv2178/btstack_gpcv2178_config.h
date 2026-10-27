@@ -54,7 +54,9 @@
 
 #define BTSTACK_GPCV2178_UART_RX_RING_SIZE 2048u
 #define BTSTACK_GPCV2178_UART_TX_CHUNK_SIZE 256u
-#define BTSTACK_GPCV2178_UART_RX_DMA_CHUNK_SIZE 512u
+/* A2DP H5 frames are about 616 bytes.  Keep one audio frame in a single
+ * DMA block so it is not split across the DMA block hand-off. */
+#define BTSTACK_GPCV2178_UART_RX_DMA_CHUNK_SIZE 768u
 #define BTSTACK_GPCV2178_UART_RX_USE_DMA 1
 #define BTSTACK_GPCV2178_UART_TX_USE_DMA 0
 #define BTSTACK_GPCV2178_UART_DIAG_VERBOSE 0

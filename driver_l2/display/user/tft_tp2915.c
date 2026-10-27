@@ -83,19 +83,14 @@ INT32S tft_tp2915_init(INT32U tft_index)
 	drv_l1_disp_dev_data_mode_set(tft_index, TFT_DATA_MODE_565);
 	DBG_PRINT("[TP2915] data_mode ok\r\n");
 
-	/* DEBUG 面板耦合实验（2026-08-28 第六轮）：拔屏不崩、插屏+TFT输出=崩 => 面板/连接器把 TFT 信号耦合回 SDC0 DAT1。
-	   降 DCLK DIVIDE_6(37MHz)->DIVIDE_8(27.75MHz) 验证频率相关性：
-	   ① 插屏不崩 => DCLK 37MHz EMI 坐实，正式方案=降 DCLK(约30fps) 或 DCLK 加 RC
-	   ② 仍崩     => 与 DCLK 频率无关，查数据线/地环路/排线逐针 */
-	drv_l1_disp_dev_clk_set(tft_index, TFT_CLK_DIVIDE_8);
-	DBG_PRINT("[TP2915] clk ok (DIVIDE_8 27.75MHz)\r\n");
+	/* EXPERIMENT: DIVIDE_6 selects 37 MHz DCLK, approximately 41.0 Hz with
+	   the current 1243 x 726 timing.  Validate panel image quality and
+	   Wi-Fi/SDIO stability before treating this as a production setting. */
+	drv_l1_disp_dev_clk_set(tft_index, TFT_CLK_DIVIDE_10);
+	DBG_PRINT("[TP2915] clk ok (DIVIDE_6 37MHz, experimental)\r\n");
 	drv_l1_disp_dev_hdmi_en_set(tft_index, 0);
 	DBG_PRINT("[TP2915] pre-en ctrl=0x%08x\r\n", R_TFT_CTRL);
-	/* DEBUG L95 延迟实验（2026-08-28 第四轮）：实测"L95(en_set) 打开=崩溃，关=正常"。
-	   与背光同理，把 TFT 输出使能延迟到 wifi_ap_mode_enable() 返回后由 main.c 补开，
-	   验证 TFT 输出信号(DCLK 37MHz+数据线翻转)是否干扰 SDIO DAT1。实验后恢复正式点亮时机。 */
-	//drv_l1_disp_dev_en_set(tft_index, TRUE);   /* DEBUG: en_set DEFERRED -> main.c 在 wifi 后补开 */
-	DBG_PRINT("[TP2915] DEBUG: en_set DEFERRED (TFT output enabled after wifi by main.c)\r\n");
+	DBG_PRINT("[TP2915] output enable deferred until after Wi-Fi/BT startup\r\n");
 
 	DBG_PRINT("%s OK\r\n", __FUNCTION__);
 	return STATUS_OK;

@@ -2,92 +2,113 @@
 <emIDE_layout_file>
 	<ActiveTarget name="Debug" />
 	<ExpandedNodes>
+		<Node path="/application/task_lvgl/src" />
+		<Node path="/application/task_lvgl" />
+		<Node path="/application" />
 		<Node path="/Project/LVGL/lvgl/src/core" />
 		<Node path="/Project/LVGL/lvgl/src" />
 		<Node path="/Project/LVGL/lvgl" />
 		<Node path="/Project/LVGL" />
 		<Node path="/Project" />
 	</ExpandedNodes>
-	<File name="..\..\gpstdlib\print_string\inc\gplib_print_string.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="139" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\application\task_lvgl\src\state_lvgl.c" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="82010" topLine="2054" />
-		</Cursor>
-	</File>
-	<File name="..\..\resource\src\resource_RGB565.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="11010" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\Setup\startup_GPCV2178.S" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3377" topLine="84" />
-		</Cursor>
-	</File>
-	<File name="..\wifi_demo\atbm_wifi_probe_demo.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="646" topLine="15" />
-		</Cursor>
-	</File>
-	<File name="inc\customer.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="..\..\os\freertos_v202012\Source\portable\GCC\ARM_CA9\port.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="22658" topLine="570" />
-		</Cursor>
-	</File>
-	<File name="..\..\application\task_socket_cmd\src\socket_cmd.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4064" topLine="69" />
-		</Cursor>
-	</File>
-	<File name="..\wifi_demo\bt_audio_task.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="674" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="..\..\gplib\gp_paint\src\gp_paint.c" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="17233" topLine="459" />
-		</Cursor>
-	</File>
-	<File name="src\main.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="19843" topLine="546" />
-		</Cursor>
-	</File>
-	<File name="..\..\resource\src\resource.c" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2294" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\gpstdlib\sp_mm\mm_gplus.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="970" topLine="28" />
-		</Cursor>
-	</File>
-	<File name="..\..\application\task_bsd\src\nn_api.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3394" topLine="93" />
-		</Cursor>
-	</File>
-	<File name="..\..\os\freertos_v202012\Source\include\task.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1504" topLine="27" />
-		</Cursor>
-	</File>
-	<File name="..\LVGL\lvgl\src\core\lv_obj.c" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\LVGL\lvgl\src\core\lv_obj.c" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="22684" topLine="738" />
 		</Cursor>
 	</File>
+	<File name="..\..\gpstdlib\sp_mm\mm_gplus.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="970" topLine="28" />
+		</Cursor>
+	</File>
+	<File name="..\..\gplib\gp_paint\src\gp_paint.c" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="17233" topLine="459" />
+		</Cursor>
+	</File>
+	<File name="..\Setup\startup_GPCV2178.S" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4316" topLine="131" />
+		</Cursor>
+	</File>
+	<File name="..\..\os\freertos_v202012\Source\portable\GCC\ARM_CA9\port.c" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="22658" topLine="570" />
+		</Cursor>
+	</File>
+	<File name="..\..\resource\src\resource_RGB565.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="11010" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\os\freertos_v202012\Source\include\task.h" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1504" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="..\..\gpstdlib\print_string\inc\gplib_print_string.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="139" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\driver_l1\common\src\drv_l1_arm_cp15.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10798" topLine="426" />
+		</Cursor>
+	</File>
+	<File name="..\..\resource\src\resource.c" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2294" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\application\task_peripheral_handling\src\task_peripheral_handling.c" open="1" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7604" topLine="245" />
+		</Cursor>
+	</File>
+	<File name="..\..\application\task_lvgl\src\state_lvgl.c" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\wifi_demo\bt_audio_task.c" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="674" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="..\..\application\task_bsd\src\nn_api.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3394" topLine="93" />
+		</Cursor>
+	</File>
+	<File name="..\wifi_demo\atbm_wifi_probe_demo.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="646" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="..\..\driver_l1\common\src\drv_l1_dma.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="39535" topLine="1501" />
+		</Cursor>
+	</File>
+	<File name="src\main.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="19752" topLine="548" />
+		</Cursor>
+	</File>
+	<File name="inc\customer.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\application\task_socket_cmd\src\socket_cmd.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4064" topLine="69" />
+		</Cursor>
+	</File>
+	<Expand folder="/application/task_lvgl/src" />
+	<Expand folder="/application/task_lvgl" />
+	<Expand folder="/application" />
 	<Expand folder="/Project/LVGL/lvgl/src/core" />
 	<Expand folder="/Project/LVGL/lvgl/src" />
 	<Expand folder="/Project/LVGL/lvgl" />

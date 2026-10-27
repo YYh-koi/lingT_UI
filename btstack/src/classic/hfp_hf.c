@@ -1674,7 +1674,7 @@ uint8_t hfp_hf_set_default_speaker_gain(uint8_t gain){
 
 uint8_t hfp_hf_init(uint8_t rfcomm_channel_nr){
     uint8_t status = rfcomm_register_service(hfp_hf_rfcomm_packet_handler, rfcomm_channel_nr, 0xffff);
-    if (status != ERROR_CODE_SUCCESS){
+    if (status != ERROR_CODE_SUCCESS){   //RFCOMM 服务端：等手机连进来（入向控制通道）
         return status;
     }
 
@@ -1682,10 +1682,10 @@ uint8_t hfp_hf_init(uint8_t rfcomm_channel_nr){
     hfp_hf_set_defaults();
 
     hfp_hf_hci_event_callback_registration.callback = &hfp_hf_hci_event_packet_handler;
-    hci_add_event_handler(&hfp_hf_hci_event_callback_registration);
+    hci_add_event_handler(&hfp_hf_hci_event_callback_registration);  //HCI 事件通道：连接完成 / SCO 建立 / 断开等"通知"
 
     // used to set packet handler for outgoing rfcomm connections - could be handled by emitting an event to us
-    hfp_set_hf_rfcomm_packet_handler(&hfp_hf_rfcomm_packet_handler);
+    hfp_set_hf_rfcomm_packet_handler(&hfp_hf_rfcomm_packet_handler); //出向 RFCOMM：车机主动连手机时也用同一个处理函数
     return ERROR_CODE_SUCCESS;
 }
 

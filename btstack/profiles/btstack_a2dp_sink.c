@@ -243,8 +243,8 @@ int btstack_a2dp_sink_setup(const btstack_a2dp_sink_config_t *config)
            sizeof(btstack_a2dp_peer_address));
 
     a2dp_sink_init();
-    a2dp_sink_register_packet_handler(btstack_a2dp_packet_handler);
-    a2dp_sink_register_media_handler(btstack_a2dp_media_handler);
+    a2dp_sink_register_packet_handler(btstack_a2dp_packet_handler);// ← 控制：信令/连接/配置
+    a2dp_sink_register_media_handler(btstack_a2dp_media_handler);// ← 数据：AVDTP 媒体包
     if (a2dp_sink_create_stream_endpoint(
             AVDTP_AUDIO,
             AVDTP_CODEC_SBC,

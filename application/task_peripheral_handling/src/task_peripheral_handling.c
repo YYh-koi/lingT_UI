@@ -35,7 +35,7 @@ INT8U screen_saver_enable;
 extern INT32U back_car_detect;
 #endif
 
-#if C_WIFI_SEND_FIX_H264I
+#if (defined C_WIFI_FUNC) && (C_WIFI_FUNC) && C_WIFI_SEND_FIX_H264I
 extern void rtsp_h264_fix_send(void);
 #endif
 
@@ -252,7 +252,7 @@ task_peripheral_handling_entry(
             #endif
 
 			
-			#if C_WIFI_SEND_FIX_H264I
+			#if (defined C_WIFI_FUNC) && (C_WIFI_FUNC) && C_WIFI_SEND_FIX_H264I
 			rtsp_h264_fix_send();		/* send fix H246 I frame to rtsp_h264_tx_task() */
 			#endif
 

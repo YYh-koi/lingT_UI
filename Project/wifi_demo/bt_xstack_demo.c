@@ -245,7 +245,6 @@ static void bt_xstack_demo_phone_event(
     void *context)
 {
     uint32_t value;
-    bt_xstack_result_t status;
 
     (void)context;
     if (event == NULL) {
@@ -273,7 +272,10 @@ static void bt_xstack_demo_phone_event(
             0u, 0u);
         break;
     case BT_XSTACK_PHONE_EVENT_DEVICE:
-        /* demo 在此触发电话本同步，UI 无需处理 */
+        /* Only remember the peer here.  Starting a complete PBAP transfer
+         * during the HFP connection floods the UI with contact callbacks.
+         * The LVGL phone page starts it when the user opens call history or
+         * contacts. */
         break;
     case BT_XSTACK_PHONE_EVENT_AUDIO:
         bt_ui_post_simple(BT_UI_EVENT_CALL_AUDIO,
@@ -313,9 +315,6 @@ static void bt_xstack_demo_phone_event(
         bt_xstack_demo_phone_address = event->address;
         bt_xstack_demo_phone_address_valid = 1u;
         taskEXIT_CRITICAL();
-        status = bt_xstack_phonebook_sync(
-            &event->address, BT_XSTACK_PHONEBOOK_ALL);
-        DBG_PRINT("xstack demo phonebook sync status=%d\r\n", status);
     }
 
     taskENTER_CRITICAL();
@@ -409,24 +408,28 @@ static void bt_xstack_demo_phonebook_event(
     const bt_xstack_phonebook_event_t *event,
     void *context)
 {
-    uint8_t i;
-
     (void)context;
     if (event == NULL) {
         DBG_PRINT("xstack demo phonebook event: NULL\r\n");
         return;
     }
 
-    DBG_PRINT("xstack demo phonebook event: %s(%u) category=%u status=%u"
-        " parser_errors=%lu addr=%02x:%02x:%02x:%02x:%02x:%02x\r\n",
-        bt_xstack_demo_phonebook_event_name(event->id),
-        (unsigned int)event->id,
-        (unsigned int)event->category,
-        (unsigned int)event->status,
-        (unsigned long)event->parser_error_count,
-        event->address.bytes[0], event->address.bytes[1],
-        event->address.bytes[2], event->address.bytes[3],
-        event->address.bytes[4], event->address.bytes[5]);
+    /* A full phonebook can contain hundreds of records.  Do not print every
+     * CONTACT/CALL callback: serial formatting and UART output steal time
+     * from the UI and Bluetooth tasks.  Lifecycle messages stay visible. */
+    if ((event->id != BT_XSTACK_PHONEBOOK_EVENT_CONTACT) &&
+        (event->id != BT_XSTACK_PHONEBOOK_EVENT_CALL)) {
+        DBG_PRINT("xstack demo phonebook event: %s(%u) category=%u status=%u"
+            " parser_errors=%lu addr=%02x:%02x:%02x:%02x:%02x:%02x\r\n",
+            bt_xstack_demo_phonebook_event_name(event->id),
+            (unsigned int)event->id,
+            (unsigned int)event->category,
+            (unsigned int)event->status,
+            (unsigned long)event->parser_error_count,
+            event->address.bytes[0], event->address.bytes[1],
+            event->address.bytes[2], event->address.bytes[3],
+            event->address.bytes[4], event->address.bytes[5]);
+    }
 
     /* UI: 电话本/通话记录事件 */
     switch (event->id) {
@@ -467,31 +470,6 @@ static void bt_xstack_demo_phonebook_event(
         break;
     }
 
-    if (event->id == BT_XSTACK_PHONEBOOK_EVENT_CONTACT) {
-        DBG_PRINT("xstack demo phonebook contact: name=\"%s\" numbers=%u"
-            " truncated=%u\r\n",
-            event->data.contact.name,
-            (unsigned int)event->data.contact.number_count,
-            (unsigned int)event->data.contact.truncated);
-        for (i = 0u;
-             (i < event->data.contact.number_count) &&
-             (i < BT_XSTACK_PHONEBOOK_NUMBER_COUNT);
-             i++) {
-            DBG_PRINT("xstack demo phonebook contact number[%u]:"
-                " value=\"%s\" type=0x%02x\r\n",
-                (unsigned int)i,
-                event->data.contact.numbers[i].value,
-                (unsigned int)event->data.contact.numbers[i].type_flags);
-        }
-    } else if (event->id == BT_XSTACK_PHONEBOOK_EVENT_CALL) {
-        DBG_PRINT("xstack demo phonebook call: name=\"%s\" number=\"%s\""
-            " timestamp=\"%s\" direction=%u truncated=%u\r\n",
-            event->data.call.name,
-            event->data.call.number,
-            event->data.call.timestamp,
-            (unsigned int)event->data.call.direction,
-            (unsigned int)event->data.call.truncated);
-    }
 }
 
 static void bt_xstack_demo_connection_event(
@@ -720,6 +698,63 @@ static void bt_xstack_demo_audio_event(
     taskEXIT_CRITICAL();
 }
 
+#if (LVGL_RUNTIME_LOG_EN == 1)
+/* Trace only phase boundaries; logging every OBEX fragment changes throughput. */
+static void bt_xstack_demo_cover_art_trace(const bt_xstack_cover_art_event_t *event)
+{
+    static uint32_t generation;
+    static uint32_t chunks;
+    static TickType_t first_tick;
+    static TickType_t last_tick;
+    static TickType_t max_gap;
+    TickType_t now = xTaskGetTickCount();
+
+    if (event->type == BT_XSTACK_COVER_ART_STARTED) {
+        DBG_PRINT("[BIP] start gen=%u op=%u t_ms=%u\r\n",
+                  (unsigned int)event->generation,
+                  (unsigned int)event->data.started.operation,
+                  (unsigned int)(now * portTICK_PERIOD_MS));
+    } else if (event->type == BT_XSTACK_COVER_ART_DATA) {
+        if (event->data.data.offset == 0u) {
+            generation = event->generation;
+            chunks = 0u;
+            first_tick = now;
+            last_tick = now;
+            max_gap = 0u;
+            DBG_PRINT("[BIP] first gen=%u t_ms=%u\r\n",
+                      (unsigned int)generation,
+                      (unsigned int)(now * portTICK_PERIOD_MS));
+        }
+        if ((generation == event->generation) &&
+            ((chunks != 0u) || (event->data.data.offset == 0u))) {
+            if ((now - last_tick) > max_gap) {
+                max_gap = now - last_tick;
+            }
+            last_tick = now;
+            chunks++;
+        }
+    } else if (event->type == BT_XSTACK_COVER_ART_COMPLETED) {
+        if ((generation == event->generation) && (chunks != 0u)) {
+            DBG_PRINT("[BIP] done gen=%u bytes=%u rx_ms=%u chunks=%u gap_ms=%u\r\n",
+                      (unsigned int)generation,
+                      (unsigned int)event->data.completed.total_length,
+                      (unsigned int)((now - first_tick) * portTICK_PERIOD_MS),
+                      (unsigned int)chunks,
+                      (unsigned int)(max_gap * portTICK_PERIOD_MS));
+            chunks = 0u;
+        }
+    } else if (event->type == BT_XSTACK_COVER_ART_ERROR) {
+        if (generation == event->generation) {
+            chunks = 0u;
+        }
+        DBG_PRINT("[BIP] error gen=%u op=%u status=%d native=%u\r\n",
+                  (unsigned int)event->generation,
+                  (unsigned int)event->data.error.operation, (int)event->status,
+                  (unsigned int)event->data.error.native_status);
+    }
+}
+#endif
+
 static void bt_xstack_demo_cover_art_event(
     const bt_xstack_cover_art_event_t *event,
     void *context)
@@ -729,6 +764,9 @@ static void bt_xstack_demo_cover_art_event(
         return;
     }
 
+#if (LVGL_RUNTIME_LOG_EN == 1)
+    bt_xstack_demo_cover_art_trace(event);
+#endif
     switch (event->type) {
     case BT_XSTACK_COVER_ART_DATA: {
         bt_ui_event_t ui_ev;
@@ -738,6 +776,8 @@ static void bt_xstack_demo_cover_art_event(
         ui_ev.data = event->data.data.data;
         ui_ev.data_len = event->data.data.length;
         ui_ev.data_offset = event->data.data.offset;
+        ui_ev.values[0] = event->generation;
+        ui_ev.value_count = 1u;
         bt_ui_post_event(&ui_ev);
         break;
     }
@@ -747,6 +787,8 @@ static void bt_xstack_demo_cover_art_event(
         bt_ui_event_init(&ui_ev);
         ui_ev.type = BT_UI_EVENT_COVER_ART_DONE;
         ui_ev.data_len = event->data.completed.total_length;
+        ui_ev.values[0] = event->generation;
+        ui_ev.value_count = 1u;
         bt_ui_post_event(&ui_ev);
         break;
     }
@@ -756,7 +798,8 @@ static void bt_xstack_demo_cover_art_event(
         bt_ui_event_init(&ui_ev);
         ui_ev.type = BT_UI_EVENT_COVER_ART_ERROR;
         ui_ev.values[0] = (uint32_t)event->data.error.native_status;
-        ui_ev.value_count = 1u;
+        ui_ev.values[1] = event->generation;
+        ui_ev.value_count = 2u;
         bt_ui_post_event(&ui_ev);
         break;
     }
@@ -893,15 +936,15 @@ int bt_xstack_demo_start(void)
         return BT_XSTACK_INTERNAL_ERROR;
     }
 
-    config.service_callback = bt_xstack_demo_service_event;
-    config.connection_callback = bt_xstack_demo_connection_event;
-    config.phone_callback = bt_xstack_demo_phone_event;
-    config.phonebook_callback = bt_xstack_demo_phonebook_event;
-    config.audio_event_callback = bt_xstack_demo_audio_event;
-    config.cover_art_callback = bt_xstack_demo_cover_art_event;
-    config.media_audio_callback = bt_xstack_demo_pcm_event;
-    config.call_audio_callback = bt_xstack_demo_call_pcm_event;
-    status = bt_xstack_init(&config);
+    config.service_callback = bt_xstack_demo_service_event;//通用服务：上电、扫描、配对
+    config.connection_callback = bt_xstack_demo_connection_event;// HFP/A2DP/AVRCP 的连接状态
+    config.phone_callback = bt_xstack_demo_phone_event; //HFP 电话业务
+    config.phonebook_callback = bt_xstack_demo_phonebook_event; //HFP 电话本业务
+    config.audio_event_callback = bt_xstack_demo_audio_event; //A2DP/AVRCP 状态、元数据、PCM 格式
+    config.cover_art_callback = bt_xstack_demo_cover_art_event; //HFP 封面艺术业务
+    config.media_audio_callback = bt_xstack_demo_pcm_event; //A2DP 解码后的 PCM
+    config.call_audio_callback = bt_xstack_demo_call_pcm_event;  // HFP SCO 下行 PCM
+    status = bt_xstack_init(&config);    //创建/初始化 xstack 并把事件出口交给应用
     DBG_PRINT("xstack demo init status=%d\r\n", status);
     if (status != BT_XSTACK_OK) {
         bt_xstack_demo_set_start_state(BT_XSTACK_DEMO_IDLE);
@@ -915,7 +958,7 @@ int bt_xstack_demo_start(void)
         bt_xstack_demo_media_key_handler);
 
     bt_xstack_demo_set_start_state(BT_XSTACK_DEMO_WAIT_POWER);
-    status = bt_xstack_enable();
+    status = bt_xstack_enable();//请求上电
     DBG_PRINT("xstack demo enable status=%d\r\n", status);
     if (status != BT_XSTACK_OK) {
         bt_xstack_demo_set_start_state(BT_XSTACK_DEMO_IDLE);

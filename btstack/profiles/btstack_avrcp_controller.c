@@ -15,6 +15,7 @@
 #define BTSTACK_AVRCP_REQUEST_RETRY_MS 20u
 #define BTSTACK_AVRCP_METADATA_RETRY_MS 200u
 #define BTSTACK_AVRCP_METADATA_MAX_RETRIES 3u
+#define BTSTACK_AVRCP_TRACK_CHANGE_SETTLE_MS 600u
 
 enum {
     BTSTACK_AVRCP_PROGRESS_INTERVAL_MS = 1000u
@@ -89,6 +90,15 @@ static void btstack_avrcp_schedule_request(uint8_t request_mask)
 {
     btstack_avrcp_pending_requests |= request_mask;
     btstack_avrcp_arm_request_retry(BTSTACK_AVRCP_REQUEST_RETRY_MS);
+}
+
+static void btstack_avrcp_schedule_track_change_metadata(void)
+{
+    /* Some phones acknowledge NEXT/PREVIOUS before their media service has
+     * committed the new item.  Query after it settles as a fallback for a
+     * missing TRACK_CHANGED notification. */
+    btstack_avrcp_pending_requests |= BTSTACK_AVRCP_PENDING_METADATA;
+    btstack_avrcp_arm_request_retry(BTSTACK_AVRCP_TRACK_CHANGE_SETTLE_MS);
 }
 
 static void btstack_avrcp_metadata_complete(uint8_t status)
@@ -215,7 +225,6 @@ static void btstack_avrcp_controller_packet_handler(
     uint8_t length;
     uint32_t values[3];
 
-    (void)channel;
     if ((packet_type != HCI_EVENT_PACKET) ||
         (hci_event_packet_get_type(packet) != HCI_EVENT_AVRCP_META)) {
         return;
@@ -230,6 +239,10 @@ static void btstack_avrcp_controller_packet_handler(
         values[0] = btstack_avrcp_play_status;
         btstack_avrcp_internal_emit(
             BTSTACK_AVRCP_EVENT_PLAY_STATUS, values, 1u);
+        /* AVRCP notifications are one-shot.  Re-arm immediately so the
+         * next remote playback-state change is delivered as well. */
+        (void)avrcp_controller_enable_notification(
+            channel, AVRCP_NOTIFICATION_EVENT_PLAYBACK_STATUS_CHANGED);
         return;
 
     case AVRCP_SUBEVENT_PLAY_STATUS:
@@ -251,6 +264,11 @@ static void btstack_avrcp_controller_packet_handler(
 #endif
         btstack_avrcp_internal_emit(
             BTSTACK_AVRCP_EVENT_TRACK_CHANGED, NULL, 0u);
+        /* TRACK_CHANGED is also one-shot.  Without this re-registration the
+         * first next/previous command updates the UI, then all later track
+         * metadata and cover-art refreshes stop reaching the application. */
+        (void)avrcp_controller_enable_notification(
+            channel, AVRCP_NOTIFICATION_EVENT_TRACK_CHANGED);
         return;
 
     case AVRCP_SUBEVENT_SHUFFLE_AND_REPEAT_MODE:
@@ -350,7 +368,7 @@ int btstack_avrcp_controller_setup(
 
     avrcp_controller_init();
     avrcp_controller_register_packet_handler(
-        btstack_avrcp_controller_packet_handler);
+        btstack_avrcp_controller_packet_handler);//状态/元数据出口
 
     controller_features =
         (uint16_t)(1u <<
@@ -453,6 +471,11 @@ int btstack_avrcp_controller_control(
         break;
     default:
         return BTSTACK_STATUS_INVALID_ARGUMENT;
+    }
+    if ((status == ERROR_CODE_SUCCESS) &&
+        ((control == BTSTACK_AVRCP_CONTROL_NEXT) ||
+         (control == BTSTACK_AVRCP_CONTROL_PREVIOUS))) {
+        btstack_avrcp_schedule_track_change_metadata();
     }
     return btstack_avrcp_controller_status(status);
 #else

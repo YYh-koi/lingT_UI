@@ -2491,6 +2491,12 @@ static INT8U led_status = 0;
 static INT32U led_cnt = 0;
 void ap_peripheral_led_blink_set(INT8U state)
 {
+#if (LED == WIFI_LDO_EN_PIN)
+    /* IO_F15 is shared with the ATBM LDO enable on this board.  Do not let
+       record-status LED changes power-cycle the Wi-Fi module. */
+    (void)state;
+    return;
+#else
     switch(state)
     {
         case 0:     // led off
@@ -2508,10 +2514,14 @@ void ap_peripheral_led_blink_set(INT8U state)
 	     led_status = LED_STATUS_BLINK;
 	     break;
     }
+#endif
 }
 
 void LED_service(void)
 {
+#if (LED == WIFI_LDO_EN_PIN)
+    return;
+#else
     INT8U io_status;
 
     led_cnt += 1;
@@ -2530,6 +2540,7 @@ void LED_service(void)
 	     gpio_write_io(LED, DATA_LOW);
 	 }
     }
+#endif
 }
 
 

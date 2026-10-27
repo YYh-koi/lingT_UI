@@ -46,6 +46,7 @@
  * PBAP can enqueue dozens of records; four messages per pass keeps key focus
  * and AVRCP state visually responsive while that sync is in progress. */
 #define LVGL_BT_EVENTS_PER_FRAME 4u
+#define LVGL_PLAY_STATE_CONFIRM_TIMEOUT_MS 1500u
 #define LVGL_COVER_JPEG_MAX_BYTES (64u * 1024u)
 /* The scaler accepts this source/output size reliably. The LVGL object keeps
  * this real size, then centres its 150px visual result with a 160/256 zoom. */
@@ -61,16 +62,19 @@
 #define LVGL_PHONE_TAB_CONTACT 2u
 #define LVGL_PHONE_TAB_COUNT   3u
 #define LVGL_PHONE_DIAL_KEY_COUNT 14u
+/* 通话覆盖页：来电/去电/通话中自动弹出，通话结束自动关闭，不占底部导航槽位。
+   对方号码与已同步的 PBAP 通讯录按“数字尾号（>=7 位）”匹配联系人名。 */
+#define LVGL_CALL_NUMBER_MIN_DIGITS 7u
+#define LVGL_CALL_TICK_MS           1000u
 /* The large dashboard is one opaque U3 image. Only the speed arc, headlight
  * and voice state below are redrawn, so board preview animation stays local. */
 #define LVGL_DASHBOARD_DEMO_ANIMATION      1u
-/* The demo-only large arc previously invalidated a sizeable part of the
- * dashboard five times per second.  Keep all existing visual states, but
- * update the demo once per second; real vehicle/voice events can still update
- * these states later. */
+/* The TP2915 currently scans at about 49 Hz (DCLK DIVIDE_5).  A 30 Hz UI
+ * animation remains below that limit while making the dashboard fluid. */
 #define LVGL_DASHBOARD_HEADLIGHT_SIM_BLINK 1u
-#define LVGL_DASHBOARD_VOICE_SIM_BLINK     1u
-#define LVGL_DASHBOARD_TICK_MS             1000u
+#define LVGL_DASHBOARD_VOICE_SIM_BLINK     0u
+#define LVGL_DASHBOARD_TICK_MS             33u
+#define LVGL_DASHBOARD_SPEED_STEP_TENTHS   2
 /* dashboard.bin is the red-frame crop of the former 1024x600 material,
  * enlarged to fill the panel.  Every separately drawn dashboard object uses
  * these conversions so it stays aligned with that new background. */
@@ -163,16 +167,32 @@ static lv_obj_t *s_btn_next;
 static lv_obj_t *s_ui_cover;
 static lv_obj_t *s_ui_cover_loading;
 static volatile INT8U s_playing = 0;
+static volatile INT8U s_play_confirmed = 0;
+static volatile INT8U s_play_command_pending;
+static volatile INT8U s_play_command_target;
+static volatile INT8U s_play_command_guard;
+static TickType_t s_play_command_tick;
+static uint32_t s_play_command_sequence;
+static uint32_t s_play_request_event_sequence;
+static uint32_t s_play_event_sequence;
 
-/* Cover Art 数据只在 xstack 回调内拷贝；JPEG 解码及 lv_img 更新均在 LVGL 任务内完成。 */
+/* Cover Art 数据只在 xstack 回调内拷贝；JPEG 解码及 lv_img 更新均在 LVGL 任务内完成。
+ * 接收和解码必须使用不同缓冲：解码上一首的 JPEG 时，蓝牙回调仍可能正在传输下一首。 */
 static uint8_t *s_cover_jpeg;
+static uint8_t *s_cover_decode_jpeg;
 static lv_color_t *s_cover_rgb565;
 static uint32_t s_cover_jpeg_size;
+static uint32_t s_cover_generation;
 static volatile uint8_t s_cover_receiving;
+static volatile uint8_t s_cover_generation_valid;
 static volatile uint8_t s_cover_ready;
 static volatile uint8_t s_cover_decoding;
 static volatile uint8_t s_cover_cached;
 static lv_img_dsc_t s_cover_img;
+static TickType_t s_cover_ready_tick;
+static TickType_t s_cover_submit_tick;
+static uint32_t s_cover_submit_generation;
+static uint8_t s_cover_flush_pending;
 
 /* Board port of tools/lvgl_pc_simulator/src/ui_dashboard.c. The large,
  * static material is flattened in U3; small state materials remain separate. */
@@ -232,6 +252,10 @@ static INT8U s_phone_tab;
 static INT8U s_phone_cursor;
 static INT8U s_phone_list_offset[LVGL_PHONE_TAB_COUNT];
 static INT8U s_phone_sync_active;
+/* A phone with an empty PBAP database must not trigger a full re-sync each
+ * time its recent/contact tab is opened.  This flag is reset on the next
+ * HFP connection. */
+static INT8U s_phone_sync_attempted;
 static INT8U s_phone_contact_count;
 static INT8U s_phone_call_count;
 static char s_phone_dial[LVGL_PHONE_NUMBER_MAX + 1u];
@@ -249,12 +273,34 @@ static lv_obj_t *s_phone_recent_label[LVGL_PHONE_VISIBLE_ROWS];
 static lv_obj_t *s_phone_contact_btn[LVGL_PHONE_VISIBLE_ROWS];
 static lv_obj_t *s_phone_contact_label[LVGL_PHONE_VISIBLE_ROWS];
 
+/* 通话控件模型。事件在 LVGL 任务内更新，控件对象也只由 LVGL 任务创建/销毁。
+   s_call_present / s_call_incoming / s_call_talking 会被外围任务（按键上下文）
+   读取，故整体保持 volatile 单字节。 */
+static volatile INT8U s_call_page_active;
+static volatile INT8U s_call_present;
+static volatile INT8U s_call_incoming;
+static volatile INT8U s_call_talking;
+static volatile INT8U s_call_muted;
+static INT8U s_call_hfp_state;
+static INT8U s_call_ringing;
+static INT32U s_call_seconds;
+static char s_call_number[LVGL_PHONE_NUMBER_MAX + 1u];
+static char s_call_name[BT_UI_TEXT_MAX];
+/* 通话控件挂在 lv_layer_top()：该层在每帧最后绘制，切页面也盖不住它。
+   控件对象只由 LVGL 任务创建/销毁。 */
+static lv_obj_t *s_call_panel;
+static lv_obj_t *s_call_caller_label;
+static lv_obj_t *s_call_timer_label;
+static lv_obj_t *s_call_answer_btn;
+static lv_timer_t *s_call_timer;
+
 static void lvgl_phone_refresh(void);
 static void lvgl_phone_activate(void);
+static void lvgl_phone_copy_text(char *dst, const char *src, INT32U size);
 
 /* U: is a read-only LVGL file-system drive backed by the raw U3 SPI-NOR
- * partition. Resource files are converted LVGL v8 binary images, e.g.
- * "U:/001.bin". No image data is linked into the firmware. */
+ * partition, or its DDR snapshot when preloading succeeds. Resource files
+ * remain LVGL v8 binary images, e.g. "U:/001.bin". */
 typedef struct {
     INT32U data_addr;
     INT32U size;
@@ -263,6 +309,10 @@ typedef struct {
 
 static lv_fs_drv_t s_nand_fs_drv;
 static INT8U s_spui_ready;
+#if (C_LVGL_UI_RAM_CACHE == CUSTOM_ON)
+static INT8U *s_spui_ram;
+static INT32U s_spui_ram_size;
+#endif
 
 typedef struct {
     INT32U magic;
@@ -398,6 +448,21 @@ static void lvgl_spifc_scan_blank_region(void)
 }
 #endif
 
+static BOOLEAN lvgl_spui_valid_header(const lvgl_spui_header_t *header)
+{
+    INT32U minimum;
+
+    if ((header == NULL) || (header->magic != LVGL_SPUI_MAGIC) ||
+        (header->header_size != sizeof(*header)) || (header->file_count == 0u) ||
+        (header->file_count > LVGL_UI_INSTALL_MAX_FILES)) {
+        return FALSE;
+    }
+    minimum = header->header_size + ((INT32U)header->file_count * sizeof(lvgl_spui_entry_t));
+    return (header->image_size >= minimum) &&
+           (header->image_size <= (LVGL_SPUI_LIMIT - LVGL_SPUI_BASE)) &&
+           ((header->image_size & (LVGL_SPIFC_PAGE_BYTES - 1u)) == 0u);
+}
+
 static BOOLEAN lvgl_nand_fs_select(void)
 {
     lvgl_spui_header_t header;
@@ -407,13 +472,7 @@ static BOOLEAN lvgl_nand_fs_select(void)
                                   sizeof(header)) != 0) {
             return FALSE;
         }
-        if ((header.magic != LVGL_SPUI_MAGIC) ||
-            (header.header_size != sizeof(header)) ||
-            (header.file_count == 0u) ||
-            (header.file_count > LVGL_UI_INSTALL_MAX_FILES) ||
-            (header.image_size > (LVGL_SPUI_LIMIT - LVGL_SPUI_BASE)) ||
-            (header.image_size < (sizeof(header) +
-                                  ((INT32U)header.file_count * sizeof(lvgl_spui_entry_t))))) {
+        if (!lvgl_spui_valid_header(&header)) {
             return FALSE;
         }
         s_spui_ready = 1u;
@@ -452,8 +511,8 @@ static BOOLEAN lvgl_spui_find(const CHAR *name, lvgl_spui_entry_t *found)
     INT32U table_addr = LVGL_SPUI_BASE + sizeof(header);
 
     if (!lvgl_nand_fs_select() || (name == NULL) || (found == NULL) ||
-        (SPIFC_Flash_read_page(LVGL_SPUI_BASE, (INT8U *)&header,
-                               sizeof(header)) != 0)) {
+        (lvgl_spui_read(LVGL_SPUI_BASE, (INT8U *)&header,
+                        sizeof(header)) != 0) || !lvgl_spui_valid_header(&header)) {
         return FALSE;
     }
     for (i = 0u; i < header.file_count; i++) {
@@ -462,8 +521,10 @@ static BOOLEAN lvgl_spui_find(const CHAR *name, lvgl_spui_entry_t *found)
             return FALSE;
         }
         if (strncmp(entry.name, name, LVGL_UI_INSTALL_NAME_MAX) == 0) {
-            if ((entry.offset < header.header_size) ||
-                (entry.offset + entry.size > header.image_size)) {
+            if ((entry.offset < (header.header_size +
+                                 ((INT32U)header.file_count * sizeof(entry)))) ||
+                (entry.offset > header.image_size) ||
+                (entry.size > (header.image_size - entry.offset))) {
                 return FALSE;
             }
             *found = entry;
@@ -480,6 +541,25 @@ static INT32S lvgl_spui_read(INT32U addr, INT8U *dst, INT32U bytes)
     INT32U page_offset;
     INT32U chunk;
 
+    if ((addr < LVGL_SPUI_BASE) || (addr > LVGL_SPUI_LIMIT) ||
+        (bytes > (LVGL_SPUI_LIMIT - addr)) ||
+        ((dst == NULL) && (bytes != 0u))) {
+        return -1;
+    }
+#if (C_LVGL_UI_RAM_CACHE == CUSTOM_ON)
+    if (s_spui_ram != NULL) {
+        INT32U offset = addr - LVGL_SPUI_BASE;
+
+        if ((offset > s_spui_ram_size) ||
+            (bytes > (s_spui_ram_size - offset))) {
+            return -1;
+        }
+        if (bytes != 0u) {
+            memcpy(dst, s_spui_ram + offset, bytes);
+        }
+        return 0;
+    }
+#endif
     while (bytes != 0u) {
         page_addr = addr & ~(LVGL_SPIFC_PAGE_BYTES - 1u);
         page_offset = addr - page_addr;
@@ -497,6 +577,62 @@ static INT32S lvgl_spui_read(INT32U addr, INT8U *dst, INT32U bytes)
     }
     return 0;
 }
+
+#if (C_LVGL_UI_RAM_CACHE == CUSTOM_ON)
+static void lvgl_spui_ram_cache_init(void)
+{
+    lvgl_spui_header_t header;
+    INT8U *buffer;
+    INT32U offset;
+    INT32U chunk;
+    TickType_t start_tick;
+
+    if (s_spui_ram != NULL) {
+        return;
+    }
+    if (!lvgl_nand_fs_select() ||
+        (lvgl_spui_read(LVGL_SPUI_BASE, (INT8U *)&header, sizeof(header)) != 0) ||
+        !lvgl_spui_valid_header(&header)) {
+        ERR_PRINT("[U3 cache] pack unavailable; using Flash\r\n");
+        return;
+    }
+    /* Use the SDK DDR allocator, not LVGL's 1MiB object heap. The pack
+     * header bounds this allocation to the existing 5MiB UI partition. */
+    buffer = (INT8U *)gp_malloc_align(header.image_size, 64);
+    if (buffer == NULL) {
+        ERR_PRINT("[U3 cache] alloc failed (%d bytes); using Flash\r\n",
+                  header.image_size);
+        return;
+    }
+    DBG_PRINT("[U3 cache] loading %d bytes from Flash\r\n", header.image_size);
+    start_tick = xTaskGetTickCount();
+    for (offset = 0u; offset < header.image_size; offset += chunk) {
+        chunk = header.image_size - offset;
+        if (chunk > (16u * 1024u)) {
+            chunk = 16u * 1024u;
+        }
+        if (lvgl_spui_read(LVGL_SPUI_BASE + offset, buffer + offset, chunk) != 0) {
+            gp_free(buffer);
+            ERR_PRINT("[U3 cache] read failed at 0x%08x; using Flash\r\n",
+                      LVGL_SPUI_BASE + offset);
+            return;
+        }
+        vTaskDelay(1); /* Let Bluetooth/audio run during the one-time load. */
+    }
+    if (memcmp(buffer, &header, sizeof(header)) != 0) {
+        gp_free(buffer);
+        ERR_PRINT("[U3 cache] pack header changed; using Flash\r\n");
+        return;
+    }
+    /* Publish only the complete snapshot. It lives for the LVGL task's
+     * lifetime, so image handles remain valid across page switches. */
+    s_spui_ram_size = header.image_size;
+    s_spui_ram = buffer;
+    DBG_PRINT("[U3 cache] ready: %d bytes, %d ms; U: reads DDR\r\n",
+              s_spui_ram_size,
+              (INT32U)((xTaskGetTickCount() - start_tick) * portTICK_PERIOD_MS));
+}
+#endif
 
 static void *lvgl_nand_open_cb(lv_fs_drv_t *drv, const char *path, lv_fs_mode_t mode)
 {
@@ -630,21 +766,6 @@ static BOOLEAN lvgl_spui_sd_select(void)
     result = fs_changedisk(FS_SD1);
     DBG_PRINT("[U3 install] select FS%d result=%d\r\n", FS_SD1, result);
     return (result >= 0) ? TRUE : FALSE;
-}
-
-static BOOLEAN lvgl_spui_valid_header(const lvgl_spui_header_t *header)
-{
-    INT32U minimum;
-
-    if ((header == NULL) || (header->magic != LVGL_SPUI_MAGIC) ||
-        (header->header_size != sizeof(*header)) || (header->file_count == 0u) ||
-        (header->file_count > LVGL_UI_INSTALL_MAX_FILES)) {
-        return FALSE;
-    }
-    minimum = header->header_size + ((INT32U)header->file_count * sizeof(lvgl_spui_entry_t));
-    return (header->image_size >= minimum) &&
-           (header->image_size <= (LVGL_SPUI_LIMIT - LVGL_SPUI_BASE)) &&
-           ((header->image_size & (LVGL_SPIFC_PAGE_BYTES - 1u)) == 0u);
 }
 
 /* Header page is committed only after every later page has been read back
@@ -1147,6 +1268,21 @@ static void lvgl_disp_flush_cb(lv_disp_drv_t *drv, const lv_area_t *area, lv_col
     cache_drain_range(s_lvgl_fb + area->y1 * LVGL_H_RES * sizeof(lv_color_t),
                       area_h * LVGL_H_RES * sizeof(lv_color_t));
 
+    if (s_cover_flush_pending && (s_active_page == LVGL_PAGE_MUSIC) &&
+        (s_ui_cover != NULL)) {
+        lv_area_t cover_area;
+
+        lv_obj_get_coords(s_ui_cover, &cover_area);
+        if ((area->x1 <= cover_area.x2) && (area->x2 >= cover_area.x1) &&
+            (area->y1 <= cover_area.y2) && (area->y2 >= cover_area.y1)) {
+            s_cover_flush_pending = 0u;
+            /* Framebuffer commit, not the panel's later scan-out. */
+            LVGL_RUNTIME_LOG("[cover timing] gen=%u fb_ms=%u\r\n",
+                             (unsigned int)s_cover_submit_generation,
+                             (unsigned int)((xTaskGetTickCount() -
+                                             s_cover_submit_tick) * portTICK_PERIOD_MS));
+        }
+    }
     lv_disp_flush_ready(drv);
 }
 
@@ -1175,29 +1311,82 @@ static void lvgl_indev_key_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data)
 }
 
 /* ── 音乐播放器 UI ─────────────────────────────────────────────────── */
+static bt_xstack_result_t lvgl_bt_music_play_pause_request(void)
+{
+    INT8U current_playing;
+    INT8U target_playing;
+    TickType_t request_tick;
+    uint32_t request_sequence;
+    bt_xstack_result_t status;
+
+    taskENTER_CRITICAL();
+    current_playing = s_play_command_pending ?
+        s_play_command_target : s_playing;
+    target_playing = current_playing ? 0u : 1u;
+    request_tick = xTaskGetTickCount();
+    request_sequence = ++s_play_command_sequence;
+    s_play_request_event_sequence = s_play_event_sequence;
+    s_play_command_guard = 1u;
+    s_play_command_target = target_playing;
+    s_play_command_tick = request_tick;
+    s_play_command_pending = 1u;
+    taskEXIT_CRITICAL();
+
+    status = current_playing ? bt_xstack_avrcp_pause() : bt_xstack_avrcp_play();
+    if (status != BT_XSTACK_OK) {
+        INT8U rollback_playing = 0u;
+
+        taskENTER_CRITICAL();
+        if (s_play_command_pending &&
+            (s_play_command_sequence == request_sequence)) {
+            s_play_command_pending = 0u;
+            s_play_command_guard = 0u;
+            s_playing = s_play_confirmed;
+            rollback_playing = s_play_confirmed;
+        }
+        taskEXIT_CRITICAL();
+        bt_ui_post_simple(BT_UI_EVENT_PLAY_REQUESTED,
+            rollback_playing, request_sequence, 0u);
+        return status;
+    }
+
+    /* The UI task applies this target immediately. Remote PLAY_STATE events
+     * confirm it later; the request sequence rejects stale local updates. */
+    bt_ui_post_simple(BT_UI_EVENT_PLAY_REQUESTED,
+        target_playing, request_sequence, 0u);
+    return status;
+}
+
+static void lvgl_bt_music_expire_pending_state(void)
+{
+    TickType_t now = xTaskGetTickCount();
+    TickType_t timeout_ticks =
+        (TickType_t)(LVGL_PLAY_STATE_CONFIRM_TIMEOUT_MS / portTICK_PERIOD_MS);
+    INT8U expired = 0u;
+
+    taskENTER_CRITICAL();
+    if (s_play_command_pending &&
+        ((now - s_play_command_tick) >= timeout_ticks)) {
+        s_play_command_pending = 0u;
+        s_play_command_guard = 0u;
+        s_playing = s_play_confirmed;
+        expired = 1u;
+    }
+    taskEXIT_CRITICAL();
+
+    if (expired && (s_btn_play != NULL)) {
+        lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
+                          s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
+    }
+}
+
 static void lvgl_bt_music_control(lvgl_music_key_t key)
 {
     bt_xstack_result_t status;
 
     if (key == LVGL_MUSIC_KEY_PLAY_PAUSE) {
-        INT8U was_playing = s_playing;
-
-        /* Use explicit Play/Pause.  This remains reliable after an A2DP
-         * stream was stopped by a previous Pause command. */
-        s_playing = was_playing ? 0u : 1u;
-        if (s_btn_play != NULL) {
-            lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
-                              s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
-        }
-        status = was_playing ? bt_xstack_avrcp_pause() : bt_xstack_avrcp_play();
+        status = lvgl_bt_music_play_pause_request();
         LVGL_RUNTIME_LOG("[LVGL] AVRCP play/pause status=%d\r\n", status);
-        if (status != BT_XSTACK_OK) {
-            s_playing = was_playing;
-            if (s_btn_play != NULL) {
-                lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
-                                  s_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
-            }
-        }
     } else if (key == LVGL_MUSIC_KEY_PREVIOUS) {
         status = bt_xstack_avrcp_previous();
         LVGL_RUNTIME_LOG("[LVGL] AVRCP previous status=%d\r\n", status);
@@ -1222,22 +1411,33 @@ static void lvgl_bt_music_btn_cb(lv_event_t *e)
 
 static void lvgl_bt_cover_receive_event(const bt_ui_event_t *event)
 {
-    uint32_t received_size;
+    uint32_t received_size = 0u;
+    uint8_t *jpeg_buffer;
+    uint8_t cover_complete = 0u;
 
     if (event->type == BT_UI_EVENT_COVER_ART_ERROR) {
-        s_cover_receiving = 0u;
-        s_cover_ready = 0u;
+        taskENTER_CRITICAL();
+        if ((!s_cover_generation_valid) || (event->value_count < 2u) ||
+            (event->values[1] == s_cover_generation)) {
+            s_cover_receiving = 0u;
+            s_cover_ready = 0u;
+        }
+        taskEXIT_CRITICAL();
         return;
     }
     if (event->type == BT_UI_EVENT_COVER_ART_DATA) {
         if ((event->data == NULL) || (event->data_len == 0u) ||
-            (s_cover_jpeg == NULL) || s_cover_decoding) {
+            (s_cover_jpeg == NULL)) {
             return;
         }
+
+        taskENTER_CRITICAL();
         if (event->data_offset == 0u) {
             s_cover_jpeg_size = 0u;
             s_cover_ready = 0u;
             s_cover_receiving = 1u;
+            s_cover_generation = event->values[0];
+            s_cover_generation_valid = (event->value_count > 0u) ? 1u : 0u;
             /* Lyrics may update TRACK_INFO many times per second.  Only the
              * first byte of a new Cover Art transfer is authoritative for
              * changing the displayed cover. */
@@ -1247,21 +1447,44 @@ static void lvgl_bt_cover_receive_event(const bt_ui_event_t *event)
              * cover remains on screen until a whole replacement decodes. */
         }
         received_size = s_cover_jpeg_size;
-        if ((!s_cover_receiving) || (event->data_offset != received_size) ||
-            (event->data_len > (LVGL_COVER_JPEG_MAX_BYTES - received_size))) {
-            s_cover_receiving = 0u;
+        if (s_cover_generation_valid &&
+            ((event->value_count == 0u) ||
+             (event->values[0] != s_cover_generation))) {
+            taskEXIT_CRITICAL();
             return;
         }
-        memcpy(s_cover_jpeg + received_size, event->data, event->data_len);
+        if ((!s_cover_receiving) ||
+            (event->data_offset != received_size) ||
+            (event->data_len > (LVGL_COVER_JPEG_MAX_BYTES - received_size))) {
+            s_cover_receiving = 0u;
+            taskEXIT_CRITICAL();
+            return;
+        }
+        jpeg_buffer = s_cover_jpeg;
         s_cover_jpeg_size = received_size + event->data_len;
+        taskEXIT_CRITICAL();
+        memcpy(jpeg_buffer + received_size, event->data, event->data_len);
         return;
     }
-    if ((event->type == BT_UI_EVENT_COVER_ART_DONE) && s_cover_receiving &&
-        (event->data_len == s_cover_jpeg_size)) {
-        s_cover_receiving = 0u;
-        s_cover_ready = 1u;
+    if (event->type == BT_UI_EVENT_COVER_ART_DONE) {
+        taskENTER_CRITICAL();
+        if (s_cover_receiving &&
+            ((!s_cover_generation_valid) ||
+             ((event->value_count > 0u) &&
+              (event->values[0] == s_cover_generation))) &&
+            (event->data_len == s_cover_jpeg_size)) {
+            s_cover_receiving = 0u;
+            received_size = s_cover_jpeg_size;
+            s_cover_ready_tick = xTaskGetTickCount();
+            s_cover_ready = 1u;
+            cover_complete = 1u;
+        }
+        taskEXIT_CRITICAL();
+        if (!cover_complete) {
+            return;
+        }
         LVGL_RUNTIME_LOG("[LVGL] cover received %u bytes\r\n",
-                         (unsigned int)s_cover_jpeg_size);
+                         (unsigned int)received_size);
     }
 }
 
@@ -1269,16 +1492,32 @@ static void lvgl_bt_cover_decode_if_ready(void)
 {
     IMAGE_DECODE_STRUCT image;
     uint32_t jpeg_size;
+    uint8_t *decode_jpeg;
+    uint32_t generation;
+    TickType_t ready_tick;
+    TickType_t decode_start_tick;
+    TickType_t decode_end_tick;
 
-    if ((s_active_page != LVGL_PAGE_MUSIC) || (!s_cover_ready) || (s_cover_jpeg == NULL) ||
+    if ((s_active_page != LVGL_PAGE_MUSIC) || (s_cover_jpeg == NULL) ||
+        (s_cover_decode_jpeg == NULL) ||
         (s_cover_rgb565 == NULL) || (s_ui_cover == NULL)) {
         return;
     }
 
     taskENTER_CRITICAL();
+    if ((!s_cover_ready) || s_cover_decoding) {
+        taskEXIT_CRITICAL();
+        return;
+    }
     jpeg_size = s_cover_jpeg_size;
+    generation = s_cover_generation;
+    ready_tick = s_cover_ready_tick;
     s_cover_ready = 0u;
     s_cover_decoding = 1u;
+    decode_jpeg = s_cover_jpeg;
+    s_cover_jpeg = s_cover_decode_jpeg;
+    s_cover_decode_jpeg = decode_jpeg;
+    s_cover_jpeg_size = 0u;
     taskEXIT_CRITICAL();
     if (jpeg_size == 0u) {
         s_cover_decoding = 0u;
@@ -1286,7 +1525,7 @@ static void lvgl_bt_cover_decode_if_ready(void)
     }
 
     memset(&image, 0, sizeof(image));
-    image.image_source = (INT32S)(uintptr_t)s_cover_jpeg;
+    image.image_source = (INT32S)(uintptr_t)decode_jpeg;
     image.source_size = jpeg_size;
     image.source_type = TK_IMAGE_SOURCE_TYPE_BUFFER;
     image.output_format = C_SCALER_CTRL_OUT_RGB565;
@@ -1298,14 +1537,19 @@ static void lvgl_bt_cover_decode_if_ready(void)
     image.output_image_height = LVGL_COVER_SIZE;
     image.output_buffer_pointer = (INT32U)s_cover_rgb565;
 
-    cache_drain_range((INT32U)s_cover_jpeg, jpeg_size);
+    decode_start_tick = xTaskGetTickCount();
+    cache_drain_range((INT32U)decode_jpeg, jpeg_size);
     if (jpeg_buffer_decode_and_scale(&image, 0u, 0u) != STATUS_OK) {
-        ERR_PRINT("[LVGL] cover JPEG decode failed\r\n");
+        ERR_PRINT("[LVGL] cover JPEG decode failed gen=%u elapsed_ms=%u\r\n",
+                  (unsigned int)generation,
+                  (unsigned int)((xTaskGetTickCount() - decode_start_tick) *
+                                  portTICK_PERIOD_MS));
         s_cover_decoding = 0u;
         return;
     }
     cache_invalid_range((INT32U)s_cover_rgb565,
                         LVGL_COVER_SIZE * LVGL_COVER_SIZE * sizeof(lv_color_t));
+    decode_end_tick = xTaskGetTickCount();
     s_cover_img.header.cf = LV_IMG_CF_TRUE_COLOR;
     s_cover_img.header.w = LVGL_COVER_SIZE;
     s_cover_img.header.h = LVGL_COVER_SIZE;
@@ -1325,9 +1569,13 @@ static void lvgl_bt_cover_decode_if_ready(void)
         lv_obj_add_flag(s_ui_cover_loading, LV_OBJ_FLAG_HIDDEN);
     }
     s_cover_cached = 1u;
-    LVGL_RUNTIME_LOG("[LVGL] cover displayed %ux%u\r\n",
-                     (unsigned int)LVGL_COVER_SIZE,
-                     (unsigned int)LVGL_COVER_SIZE);
+    s_cover_submit_tick = xTaskGetTickCount();
+    s_cover_submit_generation = generation;
+    s_cover_flush_pending = 1u;
+    LVGL_RUNTIME_LOG("[cover timing] gen=%u bytes=%u wait_ms=%u decode_ms=%u submitted\r\n",
+                     (unsigned int)generation, (unsigned int)jpeg_size,
+                     (unsigned int)((decode_start_tick - ready_tick) * portTICK_PERIOD_MS),
+                     (unsigned int)((decode_end_tick - decode_start_tick) * portTICK_PERIOD_MS));
     s_cover_decoding = 0u;
 }
 
@@ -1427,7 +1675,8 @@ static void lvgl_dashboard_tick(lv_timer_t *timer)
     if (!s_dashboard_active || (s_active_page != LVGL_PAGE_DASHBOARD)) {
         return;
     }
-    s_dashboard_speed_tenths += 5 * s_dashboard_speed_direction;
+    s_dashboard_speed_tenths += LVGL_DASHBOARD_SPEED_STEP_TENTHS *
+                                s_dashboard_speed_direction;
     if (s_dashboard_speed_tenths >= 1440) {
         s_dashboard_speed_direction = -1;
     }
@@ -1475,7 +1724,7 @@ static void lvgl_dashboard_tick(lv_timer_t *timer)
         }
         lv_obj_clear_flag(bar, LV_OBJ_FLAG_HIDDEN);
         amplitude = s_dashboard_voice_wave_table[
-            (s_dashboard_voice_wave_phase / 3u + i * 3u) % 16u];
+            (s_dashboard_voice_wave_phase + i * 3u) % 16u];
         height = (lv_coord_t)(LVGL_DASHBOARD_VOICE_WAVE_MIN_H +
                  (amplitude * (LVGL_DASHBOARD_VOICE_WAVE_MAX_H -
                  LVGL_DASHBOARD_VOICE_WAVE_MIN_H)) / 15u);
@@ -1561,7 +1810,7 @@ static void lvgl_dashboard_ui_create(lv_obj_t *screen)
     s_dashboard_voice_elapsed = 0u;
     s_dashboard_voice_wave_phase = 0u;
     s_dashboard_headlight_is_on = 0u;
-    s_dashboard_voice_is_active = 0u;
+    s_dashboard_voice_is_active = 1u;
     lvgl_dashboard_memory_images_init();
     lv_group_remove_all_objs(s_group);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x000811), LV_PART_MAIN);
@@ -1613,7 +1862,7 @@ static void lvgl_dashboard_ui_create(lv_obj_t *screen)
                                                       LVGL_DASHBOARD_HEADLIGHT_X,
                                                       LVGL_DASHBOARD_HEADLIGHT_Y);
     s_dashboard_voice = lvgl_dashboard_add_image(screen,
-                                                 &s_dashboard_voice_idle_img,
+                                                 &s_dashboard_voice_active_img,
                                                  LVGL_DASHBOARD_VOICE_X,
                                                  LVGL_DASHBOARD_VOICE_Y);
     for (i = 0u; i < LVGL_DASHBOARD_VOICE_WAVE_BARS; i++) {
@@ -1845,13 +2094,16 @@ static void lvgl_phone_sync_start_if_needed(void)
 {
     int sync_status;
 
-    if (s_phone_sync_active || (s_phone_contact_count != 0u) ||
+    if (s_phone_sync_active || s_phone_sync_attempted ||
+        (s_phone_contact_count != 0u) ||
         (s_phone_call_count != 0u)) {
         return;
     }
+
     sync_status = bt_xstack_demo_phonebook_sync();
     if (sync_status == BT_XSTACK_OK) {
         s_phone_sync_active = 1u;
+        s_phone_sync_attempted = 1u;
         lvgl_phone_status_set("电话本同步中...");
     } else if (sync_status == BT_XSTACK_NOT_READY) {
         lvgl_phone_status_set("请先连接手机");
@@ -2195,6 +2447,299 @@ static void lvgl_phone_ui_create(lv_obj_t *screen)
     lvgl_phone_refresh();
 }
 
+/* ── 蓝牙通话悬浮控件：来电 / 去电 / 通话中（自动出现/自动消失，不占页面） ── */
+static const char *lvgl_call_state_text(INT8U state, INT8U ringing)
+{
+    switch (state) {
+    case BT_XSTACK_HFP_STATE_OUTGOING:
+        return "正在呼叫";
+    case BT_XSTACK_HFP_STATE_INCOMING:
+    case BT_XSTACK_HFP_STATE_ACTIVE_WITH_INCOMING:
+        return "来电";
+    case BT_XSTACK_HFP_STATE_ACTIVE:
+        return "通话中";
+    case BT_XSTACK_HFP_STATE_HELD:
+        return "通话保持";
+    case BT_XSTACK_HFP_STATE_ACTIVE_WITH_HELD:
+        return "通话中/一路保持";
+    case BT_XSTACK_HFP_STATE_MULTIPARTY:
+        return "多方通话";
+    default:
+        return ringing ? "来电" : "通话中";
+    }
+}
+
+/* 号码比对：忽略 +86/空格/横线等格式差异，只比数字尾号。 */
+static INT8U lvgl_call_tail_match(const char *a, const char *b)
+{
+    char digits_a[LVGL_PHONE_NUMBER_MAX];
+    char digits_b[LVGL_PHONE_NUMBER_MAX];
+    INT32U len_a = 0u;
+    INT32U len_b = 0u;
+    INT32U count;
+    INT32U i;
+
+    if ((a == NULL) || (b == NULL)) {
+        return 0u;
+    }
+    while ((*a != '\0') && (len_a < sizeof(digits_a))) {
+        if ((*a >= '0') && (*a <= '9')) {
+            digits_a[len_a++] = *a;
+        }
+        a++;
+    }
+    while ((*b != '\0') && (len_b < sizeof(digits_b))) {
+        if ((*b >= '0') && (*b <= '9')) {
+            digits_b[len_b++] = *b;
+        }
+        b++;
+    }
+    count = (len_a < len_b) ? len_a : len_b;
+    if (count < LVGL_CALL_NUMBER_MIN_DIGITS) {
+        return 0u;
+    }
+    for (i = 0u; i < count; i++) {
+        if (digits_a[len_a - 1u - i] != digits_b[len_b - 1u - i]) {
+            return 0u;
+        }
+    }
+    return 1u;
+}
+
+/* 用已同步的 PBAP 通讯录匹配来电号码；匹配不到则清空名字。 */
+static void lvgl_call_match_contact(void)
+{
+    INT8U i;
+
+    s_call_name[0] = '\0';
+    if (s_call_number[0] == '\0') {
+        return;
+    }
+    for (i = 0u; i < s_phone_contact_count; i++) {
+        if (lvgl_call_tail_match(s_call_number, s_phone_contacts[i].number)) {
+            lvgl_phone_copy_text(s_call_name, s_phone_contacts[i].name,
+                                 sizeof(s_call_name));
+            return;
+        }
+    }
+}
+
+static void lvgl_call_refresh(void)
+{
+    INT32U minutes;
+    INT32U seconds;
+
+    if (!s_call_page_active) {
+        return;
+    }
+    if (s_call_caller_label != NULL) {
+        /* 通话人：优先通讯录匹配到的名字，否则显示号码。 */
+        lv_label_set_text_fmt(s_call_caller_label, "%s%s",
+                              (s_call_name[0] != '\0') ? s_call_name :
+                              ((s_call_number[0] != '\0') ? s_call_number :
+                                                           "未知号码"),
+                              s_call_muted ? " / 已静音" : "");
+    }
+    if (s_call_timer_label != NULL) {
+        if (s_call_talking) {
+            minutes = s_call_seconds / 60u;
+            seconds = s_call_seconds % 60u;
+            lv_label_set_text_fmt(s_call_timer_label, "%02u:%02u",
+                                  (unsigned int)minutes, (unsigned int)seconds);
+        } else {
+            /* 还没接通，用状态文字占住时长位。 */
+            lv_label_set_text(s_call_timer_label,
+                              lvgl_call_state_text(s_call_hfp_state,
+                                                   s_call_ringing));
+        }
+    }
+    if (s_call_answer_btn != NULL) {
+        /* 只有来电（还没接通）才需要绿色接听。 */
+        if (s_call_incoming != 0u) {
+            lv_obj_clear_flag(s_call_answer_btn, LV_OBJ_FLAG_HIDDEN);
+        } else {
+            lv_obj_add_flag(s_call_answer_btn, LV_OBJ_FLAG_HIDDEN);
+        }
+    }
+}
+
+static void lvgl_call_tick(lv_timer_t *timer)
+{
+    (void)timer;
+    if (!s_call_page_active || !s_call_talking) {
+        return;
+    }
+    s_call_seconds++;
+    lvgl_call_refresh();
+}
+
+static void lvgl_call_panel_destroy(void)
+{
+    if (s_call_timer != NULL) {
+        lv_timer_del(s_call_timer);
+        s_call_timer = NULL;
+    }
+    if (s_call_panel != NULL) {
+        lv_obj_del(s_call_panel);
+        s_call_panel = NULL;
+    }
+    s_call_caller_label = NULL;
+    s_call_timer_label = NULL;
+    s_call_answer_btn = NULL;
+}
+
+/* 圆形图标按钮（绿接听 / 红挂断）：只有颜色和图标不同，尺寸样式一致。 */
+static lv_obj_t *lvgl_call_icon_btn_create(lv_obj_t *parent, lv_coord_t x_ofs,
+                                           lv_color_t color, const char *symbol)
+{
+    lv_obj_t *btn = lv_obj_create(parent);
+    lv_obj_t *icon;
+
+    lv_obj_set_size(btn, 48, 48);
+    lv_obj_align(btn, LV_ALIGN_RIGHT_MID, x_ofs, 0);
+    lv_obj_set_style_bg_color(btn, color, LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(btn, LV_OPA_COVER, LV_PART_MAIN);
+    lv_obj_set_style_border_width(btn, 0, LV_PART_MAIN);
+    lv_obj_set_style_radius(btn, LV_RADIUS_CIRCLE, LV_PART_MAIN);
+    lv_obj_set_style_shadow_width(btn, 0, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(btn, 0, LV_PART_MAIN);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_CLICKABLE);
+
+    icon = lv_label_create(btn);
+    lv_label_set_text(icon, symbol);
+    lv_obj_set_style_text_font(icon, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_color(icon, lv_color_white(), LV_PART_MAIN);
+    lv_obj_center(icon);
+    return btn;
+}
+
+/* 通话控件：一条悬浮小横幅（通话人 / 时长 / 绿接听 / 红挂断）。
+   挂在 lv_layer_top()，可显示在任意页面上方，且不遮挡页面内容。 */
+static void lvgl_call_panel_create(void)
+{
+    s_call_panel = lv_obj_create(lv_layer_top());
+    lv_obj_set_size(s_call_panel, 660, 76);
+    lv_obj_align(s_call_panel, LV_ALIGN_TOP_MID, 0, 10);
+    lv_obj_set_style_bg_color(s_call_panel, lv_color_hex(0x0B2632), LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(s_call_panel, LV_OPA_COVER, LV_PART_MAIN);
+    lv_obj_set_style_border_color(s_call_panel, lv_color_hex(0x1BB8C9), LV_PART_MAIN);
+    lv_obj_set_style_border_width(s_call_panel, 1, LV_PART_MAIN);
+    lv_obj_set_style_radius(s_call_panel, 16, LV_PART_MAIN);
+    lv_obj_set_style_shadow_width(s_call_panel, 0, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(s_call_panel, 0, LV_PART_MAIN);
+    lv_obj_clear_flag(s_call_panel, LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_CLICKABLE);
+
+    s_call_caller_label = lv_label_create(s_call_panel);
+    lv_obj_set_width(s_call_caller_label, 340);
+    lv_label_set_long_mode(s_call_caller_label, LV_LABEL_LONG_DOT);
+    lv_obj_set_style_text_font(s_call_caller_label, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_color(s_call_caller_label, lv_color_white(), LV_PART_MAIN);
+    lv_obj_align(s_call_caller_label, LV_ALIGN_LEFT_MID, 24, 0);
+
+    s_call_timer_label = lv_label_create(s_call_panel);
+    lv_obj_set_style_text_font(s_call_timer_label, &lv_font_cn_18, LV_PART_MAIN);
+    lv_obj_set_style_text_color(s_call_timer_label, lv_color_hex(0x82ACB6), LV_PART_MAIN);
+    lv_obj_align(s_call_timer_label, LV_ALIGN_RIGHT_MID, -184, 0);
+
+    s_call_answer_btn = lvgl_call_icon_btn_create(s_call_panel, -92,
+                                                  lv_color_hex(0x22C55E),
+                                                  LV_SYMBOL_CALL);
+    (void)lvgl_call_icon_btn_create(s_call_panel, -24,
+                                    lv_color_hex(0xE8453C), LV_SYMBOL_CLOSE);
+}
+
+static void lvgl_call_page_show(void)
+{
+    bool muted = false;
+
+    if (s_call_page_active) {
+        return;
+    }
+    s_call_seconds = 0u;
+    if (bt_xstack_get_microphone_mute(&muted) == BT_XSTACK_OK) {
+        s_call_muted = muted ? 1u : 0u;
+    }
+    lvgl_call_panel_create();
+    s_call_page_active = 1u;
+    lvgl_call_match_contact();
+    lvgl_call_refresh();
+    s_call_timer = lv_timer_create(lvgl_call_tick, LVGL_CALL_TICK_MS, NULL);
+    lv_obj_invalidate(lv_layer_top());
+    LVGL_RUNTIME_LOG("[LVGL] call widget shown state=%u\n",
+                     (unsigned int)s_call_hfp_state);
+}
+
+static void lvgl_call_page_hide(void)
+{
+    if (!s_call_page_active) {
+        return;
+    }
+    s_call_page_active = 0u;
+    s_call_seconds = 0u;
+    lvgl_call_panel_destroy();
+    lv_obj_invalidate(lv_layer_top());
+    LVGL_RUNTIME_LOG("[LVGL] call widget hidden\n");
+}
+
+/* 通话事件驱动悬浮控件：present=去电/来电/通话中，任一到来自动弹出，结束自动关闭。 */
+static void lvgl_call_apply_event(const bt_ui_event_t *event)
+{
+    INT8U present;
+    INT8U talking;
+
+    if (event == NULL) {
+        return;
+    }
+    switch (event->type) {
+    case BT_UI_EVENT_HFP_STATE:
+        s_call_hfp_state = (INT8U)event->values[0];
+        if ((s_call_hfp_state != BT_XSTACK_HFP_STATE_INCOMING) &&
+            (s_call_hfp_state != BT_XSTACK_HFP_STATE_ACTIVE_WITH_INCOMING)) {
+            s_call_ringing = 0u;
+        }
+        break;
+    case BT_UI_EVENT_CALL_NUMBER:
+        lvgl_phone_copy_text(s_call_number, event->text, sizeof(s_call_number));
+        lvgl_call_match_contact();
+        break;
+    case BT_UI_EVENT_RING:
+        s_call_ringing = (event->values[0] != 0u) ? 1u : 0u;
+        break;
+    case BT_UI_EVENT_MIC_MUTE:
+        s_call_muted = (event->values[0] != 0u) ? 1u : 0u;
+        break;
+    case BT_UI_EVENT_PB_CONTACT:
+    case BT_UI_EVENT_PB_DONE:
+        lvgl_call_match_contact();
+        break;
+    default:
+        return;
+    }
+
+    present = ((s_call_hfp_state >= BT_XSTACK_HFP_STATE_OUTGOING) &&
+               (s_call_hfp_state <= BT_XSTACK_HFP_STATE_MULTIPARTY)) ||
+              (s_call_ringing != 0u);
+    talking = ((s_call_hfp_state == BT_XSTACK_HFP_STATE_ACTIVE) ||
+               (s_call_hfp_state == BT_XSTACK_HFP_STATE_ACTIVE_WITH_INCOMING) ||
+               (s_call_hfp_state == BT_XSTACK_HFP_STATE_ACTIVE_WITH_HELD) ||
+               (s_call_hfp_state == BT_XSTACK_HFP_STATE_MULTIPARTY));
+    s_call_incoming = ((s_call_hfp_state == BT_XSTACK_HFP_STATE_INCOMING) ||
+                       (s_call_hfp_state == BT_XSTACK_HFP_STATE_ACTIVE_WITH_INCOMING));
+    if (talking && !s_call_talking) {
+        s_call_seconds = 0u;    /* 进入通话态才开始计时 */
+    }
+    s_call_talking = talking ? 1u : 0u;
+    s_call_present = present ? 1u : 0u;
+
+    if (!s_call_present) {
+        lvgl_call_page_hide();
+    } else if (!s_call_page_active) {
+        lvgl_call_page_show();
+    } else {
+        lvgl_call_refresh();
+    }
+}
+
 static void lvgl_show_music_page(void)
 {
     if (!s_dashboard_active || (s_active_page == LVGL_PAGE_MUSIC)) {
@@ -2455,12 +3000,48 @@ int lvgl_phone_key_send(lvgl_phone_key_t key)
     return 1;
 }
 
+/* 通话控件期间，媒体键改作通话控制：Key5=接听、Key6=挂断/拒接、Key8=静音。
+   始终返回 1，把按键留给通话控件，不再下发 AVRCP。 */
+static int lvgl_call_key_send(lvgl_music_key_t key)
+{
+    bt_xstack_result_t status;
+    bool muted = false;
+
+    if (key == LVGL_MUSIC_KEY_PREVIOUS) {
+        if (s_call_incoming == 0u) {
+            return 1;   /* 非来电状态下“接听”无意义 */
+        }
+        status = bt_xstack_hfp_answer();
+    } else if (key == LVGL_MUSIC_KEY_NEXT) {
+        status = bt_xstack_hfp_hang_up();
+    } else if (key == LVGL_MUSIC_KEY_PLAY_PAUSE) {
+        if ((s_call_talking == 0u) ||
+            (bt_xstack_get_microphone_mute(&muted) != BT_XSTACK_OK)) {
+            return 1;
+        }
+        status = bt_xstack_set_microphone_mute(!muted);
+        if (status == BT_XSTACK_OK) {
+            /* 先本地反馈，稍后协议栈的 MICROPHONE_MUTE 事件仍是权威值。 */
+            bt_ui_post_simple(BT_UI_EVENT_MIC_MUTE, muted ? 0u : 1u, 0u, 0u);
+        }
+    } else {
+        return 1;
+    }
+    LVGL_RUNTIME_LOG("[LVGL] call key=%u status=%d\r\n",
+                     (unsigned int)key, status);
+    return 1;
+}
+
 int lvgl_music_key_send(lvgl_music_key_t key)
 {
     bt_xstack_result_t status;
 
     if ((s_dashboard_active == 0u) || (key > LVGL_MUSIC_KEY_PLAY_PAUSE)) {
         return 0;
+    }
+    if (s_call_present != 0u) {
+        /* 来电/通话中优先，物理键不落到音乐页。 */
+        return lvgl_call_key_send(key);
     }
     /* The physical key is reserved by this UI while LVGL is active.  It
      * controls AVRCP only on the selected music page, never opens a page. */
@@ -2474,19 +3055,8 @@ int lvgl_music_key_send(lvgl_music_key_t key)
         status = bt_xstack_avrcp_previous();
     } else if (key == LVGL_MUSIC_KEY_NEXT) {
         status = bt_xstack_avrcp_next();
-    } else if (s_playing) {
-        status = bt_xstack_avrcp_pause();
     } else {
-        status = bt_xstack_avrcp_play();
-    }
-    if ((key == LVGL_MUSIC_KEY_PLAY_PAUSE) && (status == BT_XSTACK_OK)) {
-        /* The H5 link can delay the phone's AVRCP notification.  Reflect an
-         * accepted local Play/Pause command immediately through the normal
-         * UI event queue; a later remote PLAY_STATE remains authoritative. */
-        bt_ui_post_simple(BT_UI_EVENT_PLAY_STATE,
-                          s_playing ? BT_XSTACK_PLAY_STATE_PAUSED :
-                                      BT_XSTACK_PLAY_STATE_PLAYING,
-                          0u, 0u);
+        status = lvgl_bt_music_play_pause_request();
     }
     LVGL_RUNTIME_LOG("[LVGL] physical AVRCP key=%u status=%d\r\n",
                      (unsigned int)key, status);
@@ -2529,6 +3099,8 @@ static void lvgl_phone_copy_text(char *dst, const char *src, INT32U size)
 
 static void lvgl_phone_apply_event(const bt_ui_event_t *event)
 {
+    INT8U refresh = 0u;
+
     switch (event->type) {
     case BT_UI_EVENT_HFP_STATE:
         if (event->value_count > 0u) {
@@ -2539,9 +3111,12 @@ static void lvgl_phone_apply_event(const bt_ui_event_t *event)
             } else if (event->values[0] == BT_XSTACK_HFP_STATE_ACTIVE) {
                 lvgl_phone_status_set("通话中");
             } else if (event->values[0] == BT_XSTACK_HFP_STATE_CONNECTED) {
+                /* A newly connected phone owns a new PBAP cache lifetime. */
+                s_phone_sync_attempted = 0u;
                 lvgl_phone_status_set("已连接手机");
             }
         }
+        refresh = 1u;
         break;
     case BT_UI_EVENT_CALL_NUMBER:
         lvgl_phone_copy_text(s_phone_remote_number, event->text,
@@ -2549,6 +3124,7 @@ static void lvgl_phone_apply_event(const bt_ui_event_t *event)
         if (s_phone_remote_number[0] != '\0') {
             lvgl_phone_status_set(s_phone_remote_number);
         }
+        refresh = 1u;
         break;
     case BT_UI_EVENT_PB_STARTED:
         if (!s_phone_sync_active) {
@@ -2557,6 +3133,7 @@ static void lvgl_phone_apply_event(const bt_ui_event_t *event)
             s_phone_sync_active = 1u;
         }
         lvgl_phone_status_set("电话本同步中...");
+        refresh = 1u;
         break;
     case BT_UI_EVENT_PB_CONTACT:
         if ((event->pb.contact.number_count > 0u) &&
@@ -2569,6 +3146,7 @@ static void lvgl_phone_apply_event(const bt_ui_event_t *event)
                                  event->pb.contact.numbers[0].value,
                                  sizeof(contact->number));
         }
+        refresh = (s_phone_tab == LVGL_PHONE_TAB_CONTACT) ? 1u : 0u;
         break;
     case BT_UI_EVENT_PB_CALL_LOG:
         if (s_phone_call_count < LVGL_PHONE_CALL_MAX) {
@@ -2581,24 +3159,28 @@ static void lvgl_phone_apply_event(const bt_ui_event_t *event)
                                  sizeof(call->timestamp));
             call->direction = event->pb.call.direction;
         }
+        refresh = (s_phone_tab == LVGL_PHONE_TAB_RECENT) ? 1u : 0u;
         break;
     case BT_UI_EVENT_PB_DONE:
         s_phone_sync_active = 0u;
         lvgl_phone_status_set("电话本已同步");
+        refresh = 1u;
         break;
     case BT_UI_EVENT_PB_AUTH:
         s_phone_sync_active = 0u;
         lvgl_phone_status_set("手机需要电话本授权");
+        refresh = 1u;
         break;
     case BT_UI_EVENT_PB_ERROR:
         s_phone_sync_active = 0u;
         lvgl_phone_status_set("电话本同步失败");
+        refresh = 1u;
         break;
     default:
         break;
     }
 
-    if (s_phone_active) {
+    if (s_phone_active && refresh) {
         if (s_phone_tab == LVGL_PHONE_TAB_RECENT &&
             s_phone_cursor >= s_phone_call_count) {
             s_phone_cursor = (s_phone_call_count > 0u) ?
@@ -2629,11 +3211,70 @@ static void lvgl_bt_music_apply_event(const bt_ui_event_t *event)
         s_music_artist[BT_UI_TEXT_MAX - 1u] = '\0';
         strncpy(s_music_album, event->text3, BT_UI_TEXT_MAX - 1u);
         s_music_album[BT_UI_TEXT_MAX - 1u] = '\0';
+    } else if (event->type == BT_UI_EVENT_PLAY_REQUESTED) {
+        INT8U requested_playing = (event->values[0] != 0u) ? 1u : 0u;
+        INT8U apply_state = 0u;
+
+        taskENTER_CRITICAL();
+        if (event->values[1] == s_play_command_sequence) {
+            if (s_play_command_pending &&
+                (requested_playing == s_play_command_target)) {
+                apply_state = (s_playing != requested_playing) ? 1u : 0u;
+                s_playing = requested_playing;
+            } else if (!s_play_command_pending &&
+                       (requested_playing == s_play_confirmed)) {
+                apply_state = (s_playing != requested_playing) ? 1u : 0u;
+                s_playing = requested_playing;
+            }
+        }
+        taskEXIT_CRITICAL();
+
+        if (apply_state && (s_active_page == LVGL_PAGE_MUSIC) &&
+            (s_btn_play != NULL)) {
+            lv_label_set_text(lv_obj_get_child(s_btn_play, 0),
+                              requested_playing ? LV_SYMBOL_PAUSE : LV_SYMBOL_PLAY);
+        }
+        return;
     } else if (event->type == BT_UI_EVENT_PLAY_STATE) {
-        s_playing = (event->values[0] == BT_XSTACK_PLAY_STATE_PLAYING) ? 1u : 0u;
+        INT8U reported_playing =
+            (event->values[0] == BT_XSTACK_PLAY_STATE_PLAYING) ? 1u : 0u;
+        INT8U apply_state = 1u;
+        TickType_t now = xTaskGetTickCount();
+        TickType_t timeout_ticks =
+            (TickType_t)(LVGL_PLAY_STATE_CONFIRM_TIMEOUT_MS /
+                         portTICK_PERIOD_MS);
+
+        taskENTER_CRITICAL();
+        if (s_play_command_pending && s_play_command_guard &&
+            ((int32_t)(event->values[3] -
+                       s_play_request_event_sequence) <= 0)) {
+            apply_state = 0u;
+        } else {
+            s_play_command_guard = 0u;
+            if (s_play_command_pending) {
+                if ((reported_playing == s_play_command_target) ||
+                    ((now - s_play_command_tick) >= timeout_ticks)) {
+                    s_play_command_pending = 0u;
+                    s_play_confirmed = reported_playing;
+                    s_playing = reported_playing;
+                } else {
+                    apply_state = 0u;
+                }
+            } else {
+                s_play_confirmed = reported_playing;
+                s_playing = reported_playing;
+            }
+        }
+        taskEXIT_CRITICAL();
+
+        if (!apply_state) {
+            return;
+        }
     }
 
     lvgl_phone_apply_event(event);
+    /* 通话悬浮控件与当前页无关：来电/去电/通话中自动出现，结束自动消失。 */
+    lvgl_call_apply_event(event);
 
     if (s_active_page != LVGL_PAGE_MUSIC) {
         return;
@@ -2702,11 +3343,13 @@ static void lvgl_bt_ui_notify(const bt_ui_event_t *event, void *context)
     case BT_UI_EVENT_CONN_STATE:
     case BT_UI_EVENT_A2DP_STATE:
     case BT_UI_EVENT_PLAY_STATE:
+    case BT_UI_EVENT_PLAY_REQUESTED:
     case BT_UI_EVENT_TRACK_INFO:
     case BT_UI_EVENT_ABSOLUTE_VOLUME:
     case BT_UI_EVENT_HFP_STATE:
     case BT_UI_EVENT_CALL_NUMBER:
     case BT_UI_EVENT_RING:
+    case BT_UI_EVENT_MIC_MUTE:
     case BT_UI_EVENT_PB_STARTED:
     case BT_UI_EVENT_PB_CONTACT:
     case BT_UI_EVENT_PB_CALL_LOG:
@@ -2727,6 +3370,7 @@ static void lvgl_bt_ui_notify(const bt_ui_event_t *event, void *context)
     next_head = (INT8U)((s_bt_event_head + 1u) % LVGL_BT_EVENT_QUEUE_LEN);
     queue_full = (next_head == s_bt_event_tail);
     if (!queue_full || (event->type == BT_UI_EVENT_PLAY_STATE) ||
+        (event->type == BT_UI_EVENT_PLAY_REQUESTED) ||
         (event->type == BT_UI_EVENT_TRACK_INFO) ||
         (event->type == BT_UI_EVENT_A2DP_STATE) ||
         (event->type == BT_UI_EVENT_PB_DONE) ||
@@ -2739,6 +3383,10 @@ static void lvgl_bt_ui_notify(const bt_ui_event_t *event, void *context)
                                       LVGL_BT_EVENT_QUEUE_LEN);
         }
         s_bt_event_queue[s_bt_event_head] = *event;
+        if (event->type == BT_UI_EVENT_PLAY_STATE &&
+            (event->value_count == 0u || event->values[1] != 1u)) {
+            s_bt_event_queue[s_bt_event_head].values[3] = ++s_play_event_sequence;
+        }
         s_bt_event_head = next_head;
     }
     taskEXIT_CRITICAL();
@@ -2812,10 +3460,12 @@ void state_lvgl_entry(void const *arg)
     s_lvgl_fb = (INT32U)gp_malloc_align(fb_size, 64);
     s_draw_buf_mem = (lv_color_t *)gp_malloc_align(draw_buf_size, 64);
     s_cover_jpeg = (uint8_t *)gp_malloc_align(LVGL_COVER_JPEG_MAX_BYTES, 64);
+    s_cover_decode_jpeg = (uint8_t *)gp_malloc_align(LVGL_COVER_JPEG_MAX_BYTES, 64);
     cover_rgb_size = LVGL_COVER_SIZE * LVGL_COVER_SIZE * sizeof(lv_color_t);
     s_cover_rgb565 = (lv_color_t *)gp_malloc_align(cover_rgb_size, 64);
     if ((s_lvgl_fb == 0) || (s_draw_buf_mem == 0) ||
-        (s_cover_jpeg == NULL) || (s_cover_rgb565 == NULL)) {
+        (s_cover_jpeg == NULL) || (s_cover_decode_jpeg == NULL) ||
+        (s_cover_rgb565 == NULL)) {
         ERR_PRINT("[LVGL] fb alloc fail (fb=0x%x buf=0x%x)\r\n",
                   s_lvgl_fb, (INT32U)s_draw_buf_mem);
         return;
@@ -2825,6 +3475,12 @@ void state_lvgl_entry(void const *arg)
     LVGL_RUNTIME_LOG("[LVGL] fb=0x%x(%dKB) drawbuf=0x%x(%dKB)\r\n",
                      s_lvgl_fb, fb_size / 1024,
                      (INT32U)s_draw_buf_mem, draw_buf_size / 1024);
+
+#if (C_LVGL_UI_RAM_CACHE == CUSTOM_ON)
+    /* Installers have finished and mandatory display/cover buffers already
+     * exist. Cache failure leaves the original read-only Flash path usable. */
+    lvgl_spui_ram_cache_init();
+#endif
 
     /* 3. 注册显示驱动 */
     lv_disp_draw_buf_init(&s_draw_buf, s_draw_buf_mem, NULL,
@@ -2895,6 +3551,7 @@ void state_lvgl_entry(void const *arg)
         }
 
         lvgl_bt_music_process_events();
+        lvgl_bt_music_expire_pending_state();
         lvgl_bt_cover_decode_if_ready();
         lv_timer_handler();
 

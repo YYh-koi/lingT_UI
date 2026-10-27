@@ -2,17 +2,8 @@
 <emIDE_layout_file>
 	<ActiveTarget name="Debug" />
 	<ExpandedNodes>
-		<Node path="/Sources/gplib/liba_wifi_src/atbm/atbm6165" />
-		<Node path="/Sources/gplib/liba_wifi_src/atbm" />
-		<Node path="/Sources/gplib/liba_wifi_src" />
-		<Node path="/Sources/gplib" />
-		<Node path="/Sources" />
+		<Node path="" />
 	</ExpandedNodes>
-	<Expand folder="/Sources/gplib/liba_wifi_src/atbm/atbm6165" />
-	<Expand folder="/Sources/gplib/liba_wifi_src/atbm" />
-	<Expand folder="/Sources/gplib/liba_wifi_src" />
-	<Expand folder="/Sources/gplib" />
-	<Expand folder="/Sources" />
 	<UserSettings>
 		<bookmark>
 			<bookmarks />

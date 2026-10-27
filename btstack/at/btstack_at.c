@@ -254,20 +254,24 @@ static void btstack_at_emit_result(
     }
 }
 
+/* 单条事件的输出出口：拼串 → 状态去重 → 交付客户。
+ * 两个条件都必须成立才发：
+ *   1) format_event 成功（容量不足会置 failed 并返回非 0，宁可整条丢弃也不发半行脏数据）
+ *   2) 不是与上一条完全相同的内容（仅对"状态类"事件生效，抑制 AT 文本的重复上报噪音） */
 static void btstack_at_emit_event(const btstack_at_event_t *event)
 {
     uint16_t length = 0u;
 
-    if (btstack_at_format_event(
+    if (btstack_at_format_event(          /* 拼成 "+NAME=v1,v2,...\r\n" 写入静态 buffer */
             event,
             btstack_at_output,
             sizeof(btstack_at_output),
-            &length) == 0 &&
-        !btstack_at_state_event_is_duplicate(
+            &length) == 0 &&              /* 0 = 拼装成功且未溢出 */
+        !btstack_at_state_event_is_duplicate(   /* 状态事件内容去重，重复则整条不输出 */
             event->id,
             btstack_at_output,
             length)) {
-        btstack_at_emit(length);
+        btstack_at_emit(length);          /* 交 config.output_callback 送客户 */
     }
 }
 
@@ -281,6 +285,9 @@ static int btstack_at_ring_pop(btstack_ring_t *ring, void *item)
     return popped ? 1 : 0;
 }
 
+/* 批量消费事件环：把已积累的事件逐条格式化并以 AT 字符串输出。
+ * 有界批次 —— 本轮最多处理进入时已有的 pending 条，防止长时间霸占 worker
+ * 而拖延 AT 命令的响应。返回 1 表示本轮至少输出了一条事件（供外层判 did_work）。 */
 static int btstack_at_drain_events(void)
 {
     btstack_at_event_t event;
@@ -288,21 +295,25 @@ static int btstack_at_drain_events(void)
     uint16_t index;
     int consumed = 0;
 
+    /* 背压闸门：PBAP 对端断连流程进行中时暂停输出，避免事件与断连时序冲突 */
     if (!btstack_at_event_drain_ready()) {
         return 0;
     }
+    /* 临界区内只取一次条数快照，作为本轮处理上限（生产者可继续并发入环） */
     btstack_platform_enter_critical();
     pending = btstack_ring_count(&btstack_at_event_ring);
     btstack_platform_exit_critical();
     for (index = 0u; index < pending; index++) {
+        /* 每条之前重查闸门，允许消费途中被随时叫停 */
         if (!btstack_at_event_drain_ready()) {
             break;
         }
+        /* 环已被取空（快照之后生产者没补上）则提前收工 */
         if (!btstack_at_ring_pop(&btstack_at_event_ring, &event)) {
             break;
         }
-        btstack_at_emit_event(&event);
-        btstack_at_event_consumed(&event);
+        btstack_at_emit_event(&event);      /* 格式化 + 状态去重 + 交 output_callback */
+        btstack_at_event_consumed(&event);  /* 交付后置钩子：HFPLOST 触发 PBAP 断连排队 / 解除背压 */
         consumed = 1;
     }
     return consumed;
